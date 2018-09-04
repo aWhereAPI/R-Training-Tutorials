@@ -1,38 +1,54 @@
 ---
-title: "Area Analysis"
-output: html_document
+title: "aWhere Area Analysis"
+output: 
+  html_document: default
+  #pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE,
+                      eval=TRUE,
+                      message = FALSE,
+                      warning = FALSE,
+                      results='hide')
+```
+
+```{r load_packages}
+# load required packages
 library(aWhereAPI)
 library(dplyr)
-aWhereAPI::load_credentials("C:/aWhere/credentials/credentials.txt")
+
+# load credentials to access aWhere API
+aWhereAPI::load_credentials("credentials.txt")
 ```
+
 
 ## Getting Observed Data For An Area
 Included in the aWhere API package are two functions to facilitate retrieving larger amounts of data. This can be especially useful for doing geographic analysis over an area. There are area functions for daily observed data as well as long-term normals data. These functions require you to provide a polygon to pull data for. The functions will determine all aWhere grid cells that fall within the polygon and retrieve the data for each one. We use parallel processing to more quickly pull the data, rather than doing it one by one. These functions use a few different packages that you should make sure are installed: doParallel and foreach. One important, new parameter for the functions is `numcores`. This is the number of CPU cores you would like to allocate for the parallel processing. The more cores allocated, the quicker the function will finish. You can check the total number of cores your computer has by running:
-```{r detectCores, eval=TRUE}
+```{r detectCores, results=TRUE}
 parallel::detectCores()
 ```
 
 Using the area API functions is very similar to the point or fields versions of the functions. Instead of passing in a single latitude/longitude coordinate or a field, you'll need to pass in a polygon to pull data for. This polygon should be either a SpatialPolygons data type or a well-known text string. Let's use the following code to return observed data for a rectangular area in the Singida region in central Tanzania:
-```{r observedArea, eval=TRUE}
+```{r observedArea}
 polygon_wkt <- "POLYGON((34.3 -5.3,34.3 -5.9,35 -5.9,35 -5.3,34.3 -5.3))"
 obs_startdate <- as.character(Sys.Date() - 30)
 obs_enddate <- as.character(Sys.Date() - 1)
 
-obs_area <- aWhereAPI::daily_observed_area(polygon = polygon_wkt, day_start = obs_startdate, 
-                                          day_end = obs_enddate, numcores = 4, bypassNumCallCheck = TRUE)
+obs_area <- aWhereAPI::daily_observed_area(polygon = polygon_wkt, 
+                                           day_start = obs_startdate, 
+                                           day_end = obs_enddate, 
+                                           numcores = 4, 
+                                           bypassNumCallCheck = TRUE)
 ```
 
 We should check to make sure there is the correct amount of data for each location. First we'll need to determine how many unique locations there are. The API function returns a GridY column and a GridX column. These are integer values that represent unique locations in aWhere's gridded data. We can concatenate these coordinates to create a key for each location that will be unique for every aWhere grid cell.
-```{r createKey, eval=TRUE}
+```{r createKey}
 obs_area$key <- paste(obs_area$gridx, obs_area$gridy, sep = "_")
 ```
 
 Now that we have a unique value for each location, we'll use that to get both a count of locations returned from our polygon, and the number of days of data per location.
-```{r checkData, eval=TRUE}
+```{r checkData}
 ## This will return the number of aWhere grid cells within the polygon
 length(unique(obs_area$key))
 
@@ -45,56 +61,66 @@ plyr::count(obs_area$key)
 Using the daily observed function and the long-term normals function, we can do some analysis comparing recent weather to long-term data. Let's take a look at how much it's rained over the past month compared to normal.
 
 First we'll need to use the observed data to get a location-by-location sum of precipitation over the month we requested earlier. There are many ways to do this, for this example we'll use some functions from the dplyr package.
-```{r aggregateObsPrecip, eval=TRUE}
-library(dplyr)
+```{r aggregateObsPrecip}
 obs_precip <- obs_area %>% group_by(latitude, longitude, gridy, gridx) %>%
                 summarise(obs_precip = sum(precipitation.amount)) %>% data.frame()
 ```
 
 Now we'll use the `weather_norms_area` function to pull the long-term normals data:
-```{r ltnArea, eval=TRUE}
+```{r ltnArea}
 ltn_startday <- format(Sys.Date() - 30, "%m-%d")
 ltn_endday <- format(Sys.Date() - 1, "%m-%d")
 
-ltn_area <- aWhereAPI::weather_norms_area(polygon = polygon_wkt, monthday_start = ltn_startday,
-                                          monthday_end = ltn_endday, year_start = 2006,
-                                          year_end = 2017, numcores = 4, bypassNumCallCheck = TRUE)
+ltn_area <- aWhereAPI::weather_norms_area(polygon = polygon_wkt, 
+                                          monthday_start = ltn_startday,
+                                          monthday_end = ltn_endday, 
+                                          year_start = 2006,
+                                          year_end = 2017, 
+                                          numcores = 4, 
+                                          bypassNumCallCheck = TRUE)
 ```
 
 A look at the data shows us a similar format to the `weather_norms_latlng` function, however now we have data for each of the aWhere grid cells within the polygon:
-```{r headLTN, eval=TRUE}
-head(ltn_area)
+```{r headLTN, results=TRUE}
+# take a look at the first 6 rows of the location, day, and long-term normal 
+# maximum/minumum temperature data
+head(ltn_area[,c('latitude','longitude','gridy','gridx','day',
+                 'maxTemp.average','minTemp.average')])
 ```
 
 Now that we have the the long-term normals data, we'll sum over the month, like we did with the observed data.
-```{r aggregateLTN, eval=TRUE}
+```{r aggregateLTN}
 ltn_precip <- ltn_area %>% group_by(latitude, longitude, gridy, gridx) %>%
                 summarise(ltn_precip = sum(precipitation.average)) %>% data.frame()
 ```
 
 Merging the two data frames will allow us to easily calculate location-based values comparing the observed data to the long-term averages. We'll use the GridY and GridX values to merge on to avoid any possible precision errors with the latitude and longitude coordinates.
-```{r mergeData, eval=TRUE}
+```{r mergeData}
 precip <- merge(obs_precip, ltn_precip, by = c("gridy", "gridx"))
 precip$diff <- precip$obs_precip - precip$ltn_precip
 precip$perc_diff <- precip$obs_precip/precip$ltn_precip * 100
 ```
 
 When merging two data frames that contain columns with the same name, R keeps both sets and appends a ".x" and ".y" to the end of those columns. We want to keep the latitude and longitude data, but don't need both columns. Let's drop one set and clean up the remaining column names:
-```{r selectColumns, eval=TRUE}
+```{r selectColumns}
 precip[,c("latitude.y", "longitude.y")] <- NULL
 colnames(precip) <- gsub("\\.x", "", colnames(precip))
 ```
 
 We can now easily see which locations are wetter than normal (positive diff values) or drier than normal (negative diff values), as well as a percent difference ( > 100 is wetter than normal, < 100 is drier than normal):
-```{r, eval=TRUE,echo=FALSE}
-precip
+```{r, results=TRUE}
+# take a look at the first six rows of observed precip, long-term normal precip,
+# the difference between them, and the percent difference between them per grid
+head(precip[,c('gridy','gridx','obs_precip','ltn_precip','diff','perc_diff')])
 ```
 
 
 To get a better sense of how data might differ geographically over a given region, we've included some functions to assist with plotting your data. The `create_shapewkt` function takes the latitude and longitude returned by the area API functions and creates a Well-Known Text representation of a grid cell around this point. Let's use this function to create these WKT values and then we'll see how to use this in plotting our data. Rather than looping through each row, we can use the `mapply` function to quickly call the function on each record in our data frame. 
-```{r createWKT, eval=TRUE}
+```{r createWKT, results=TRUE}
 precip$shapewkt <- mapply(aWhereAPI::create_shapewkt, precip$longitude, precip$latitude)
-head(precip)
+
+# take a look at the polygon geometry that was added to the precip data frame
+head(precip$shapewkt)
 ```
 
 
@@ -102,34 +128,52 @@ head(precip)
 Once we have the 'shapewkt' column we can start working on plotting the data. We'll be using the ggplot2 package to do the plotting, so if you don't have that installed, you'll need to do so before going forward. In order to properly draw our grid cells, we'll need to create multiple entries for each row of data, ending up with 5 total entries per record in our data frame. The number 5 represents the 5 points you must draw, in order, to create a 4-sided polygon, in this case our grid cell. The start and end points will be the same coordinate.
 
 To do this we can combine several functions into a single line which will return a data frame with the correct polygon structure so that we can plot the data. First we'll need to assign a unique id to each of the records in our data. At this point, each row in our data frame represents a unique grid cell. Therefore, we can simply assign numbers in order starting at 1 and ending with the number of rows in our data:
-```{r polyID, eval=TRUE}
+```{r polyID}
 precip$id = c(1:nrow(precip))
 ```
 
 To keep our data clean, we'll create a separate data frame with the polygon information. Notice how the id values are repeated 5 times each. The `custom_fortify` function takes a WKT grid cell and turns it into a data frame with one record per coordinate listed in the WKT.
-```{r customFortify, eval=TRUE}
-poly <- setNames(data.frame(rep(precip$id, each=5), matrix(unlist(lapply(precip$shapewkt, aWhereAPI::custom_fortify)), ncol=2, byrow=TRUE)), c('id', 'longitude', 'latitude'))
+```{r customFortify, results=TRUE}
+poly <- setNames(data.frame(rep(precip$id, 
+                                each=5), 
+                            matrix(unlist(lapply(precip$shapewkt, 
+                                                 aWhereAPI::custom_fortify)), 
+                                   ncol=2, 
+                                   byrow=TRUE)), 
+                 c('id', 'longitude', 'latitude'))
 head(poly, 10)
 ```
 
 Now we merge our polygon data frame and our weather data frame (dropping our location info). We won't need the location information in the weather data, so we'll only select the precip columns we're interested in plotting.
-```{r plot_daata, eval=TRUE}
-plot_data <- merge(poly, precip %>% select(id, obs_precip, ltn_precip, diff, perc_diff), by = "id")
+```{r plot_daata, results=TRUE}
+plot_data <- merge(poly, precip %>% 
+                     select(id, obs_precip, ltn_precip, diff, perc_diff), by = "id")
 head(plot_data, 10)
 ```
 
 With our data ready, the only thing left to do is use the ggplot2 package to plot what we've pulled from the API. To change what data is used to color the grid cells, simply change the column name in the `fill = ` part of the `geom_polygon` function. You can use any column in the data frame you are plotting, so in our case the options are `obs_precip`, `ltn_precip`, `diff`, and `perc_diff`.
-```{r normalPlot, eval=TRUE}
-ggplot2::ggplot() + ggplot2::geom_polygon(data = plot_data, ggplot2::aes(x = longitude, y = latitude, group = id, fill = diff)) + ggplot2::scale_fill_gradient(low = "red", high = "green")
+```{r normalPlot, results=TRUE}
+ggplot2::ggplot() + ggplot2::geom_polygon(data = plot_data, 
+                                          ggplot2::aes(x = longitude, 
+                                                       y = latitude, 
+                                                       group = id, 
+                                                       fill = diff)) + 
+  ggplot2::scale_fill_gradient(low = "red", high = "green")
 ```
 
 If you'd like to do some slightly more advanced plotting, you can overlay the grid cells on a Google Maps image by installing the `ggmap` package. Here is some sample code to get started (you will need to manually alter the zoom level to fit your data):
-```{r ggmapPlot, eval=TRUE}
+```{r ggmapPlot, results=TRUE}
 ## Calculate the geographic center of the data pulled from the API
-data_center <- c(mean(min(plot_data$longitude), max(plot_data$longitude)), mean(min(plot_data$latitude), max(plot_data$latitude)))
+data_center <- c(mean(min(plot_data$longitude), max(plot_data$longitude)), 
+                 mean(min(plot_data$latitude), max(plot_data$latitude)))
 
 ## The ggmap function returns an image based off the center and zoom level.
 ## You can then plot over the top off it with any ggplot function as normally used.
-ggmap::ggmap(ggmap::get_googlemap(center = data_center,scale = 1,zoom = 9)) + ggplot2::geom_polygon(data = plot_data, ggplot2::aes(x = longitude, y = latitude, group = id, fill = diff)) + ggplot2::scale_fill_gradient(low = "red", high = "green")
+ggmap::ggmap(ggmap::get_googlemap(center = data_center,scale = 1,zoom = 9)) + 
+  ggplot2::geom_polygon(data = plot_data, ggplot2::aes(x = longitude, 
+                                                       y = latitude, 
+                                                       group = id, 
+                                                       fill = diff)) + 
+  ggplot2::scale_fill_gradient(low = "red", high = "green")
 
 ```
