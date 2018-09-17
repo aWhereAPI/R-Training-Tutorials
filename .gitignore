@@ -4,3 +4,6 @@
 .Ruserdata
 *.html
 testFile.csv
+figures/
+outputCSVs/
+pdfsSentToClass/
