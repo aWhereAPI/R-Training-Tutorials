@@ -92,6 +92,9 @@ list.of.packages.CRAN = c('knitr'
                         ,'data.table'
                         ,'curl'
                         ,'devtools'
+                        ,'foreach'
+                        ,'raster'
+                        ,'rgeos'
                         )
 
 # install aWhere code packages
@@ -102,7 +105,7 @@ new.packages.CRAN = list.of.packages.CRAN[!(list.of.packages.CRAN %in%
                                               installed.packages()[,"Package"])]
 
 #Determine the dependencies of CRAN packages that must be installed
-dependencies.packages.CRAN <- tools::package_dependencies(new.packages.CRAN,recursive = TRUE)
+try(dependencies.packages.CRAN <- tools::package_dependencies(new.packages.CRAN,recursive = TRUE),silent = TRUE)
 
 #If dependencies need to be installed, install each one individually
 if(length(dependencies.packages.CRAN) > 0) {

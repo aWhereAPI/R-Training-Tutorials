@@ -9,3 +9,4 @@ outputCSVs/
 pdfsSentToClass/
 packrat/
 .Rprofile
+*.Rproj
