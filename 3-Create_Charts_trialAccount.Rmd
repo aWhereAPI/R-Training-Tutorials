@@ -1,5 +1,5 @@
 ---
-title: "aWhere Charts Tutorial"
+title: "aWhere Charts Tutorial - Trial Account Access"
 subtitle: "Create aWhere Data Charts for a given location and timespan with additional selected years" 
 author: "Victoria Scholl"
 date: "8/26/2018"
@@ -17,6 +17,13 @@ knitr::opts_chunk$set(echo = TRUE,
 working.dir <- ''
 
 ```
+# Note
+
+This tutorial is intended for those users that have trial access to aWhere's API;
+such access is limited to being able to retrive 6 months worth of historical daily
+data.  If you are currently have greater account privlidges, you are encouraged to
+reference the tutorial "3-Create_Charts_fullAccount.RMD" as it will cover 
+functions/features of the R package that cannot be leveraged using a trial account
 
 # Introduction
 
@@ -181,17 +188,6 @@ day.end <- as.character(Sys.Date() + 6) # today plus n
 days <- c(day.start, day.end)
 ```
 
-Specify additional selected year(s) to add onto the Accumulated 
-Precipitation, P/PET, and eP/PET charts to compare to the current
-year(s) (in the `day.start` and `day.end` range) and LTN data.
-
-```{r add_years}
-# add additional selected year(s) to charts. 
-# If you do not want to add additional years, set add.year = NA
-#add.years <- NA
-add.years <- c(2016, 2017)
-```
-
 Some of the charts will require additional parameters. For instance, 
 effective precipitation is calculated using a threshold 
 (`eP` in the code below). Rolling average calculations require a window 
@@ -263,244 +259,6 @@ the utils R package.
 utils::head(weather.df[,1:5], n = 10)
 ```
 
-**Pull the aWhere weather data for the additional selected year(s).**
-
-If additional selected year(s) are specified, pull the aWhere weather data
-for those years. Since we will be adding these years onto charts, 
-store the data-to-be-charted in a data frame called `add.years.df`.
-This data frame is created using the "long" format, which is preferred
-for the *ggplot* graphing package. 
-
-**Wide vs. Long data formats**
-
-To illustrate the difference between "wide" and "long" data formats, 
-check out the example below where the exact same information is 
-represented in both wide and long form. 
-
-"Wide" datasets are often easier to visually interpret. As shown in Table 1, each row 
-contains multiple features that describe a single individual. 
-
-```{r wide_long_example, echo=FALSE}
-# create example data with wide format
-data.wide <- data.frame(individual = c(1, 2, 3),
-                        feature_A = c('red', 'green', 'blue'),
-                        feature_B = c(24, 27, 31),
-                        feature_C = c(2004, 2008, 2011))
-
-# reshape the dataset to have long format.
-# keep "individual" in the first column, use the "feature"
-# number as the key (new variable) and fill in the values
-# for each feature for 
-data.long <- tidyr::gather(data = data.wide, 
-                           key = feature, 
-                           value = value, 
-                           feature_A:feature_C)
-```
-
-
-```{r wide_table, echo=FALSE, results='asis'}
-# create nicely formatted example of "wide" data
-knitr::kable(data.wide, 
-             align=c(rep('c', times=4)),
-             caption = "Example dataset with wide format")
-```
-
-\newpage
-
-"Long" datasets stack all of the features into a single column and 
-list their values in another. This means that a single individual 
-will have data in multiple rows when using the long format. 
-
-```{r long_table, echo=FALSE, results='asis'}
-# nicely formatted example of "long" data
-knitr::kable(data.long, 
-             align=c(rep('c', times=3)),
-             caption = "Same example dataset with long format")
-```
-
-The best way to shape your data really depends on the application.
-The *ggplot* package used later in this tutorial accepts datasets
-with long format. Let's look at another example, this time with variables
-and values that are present in aWhere data: precipitation and PET
-data for additional selected years 2016 and 2017, covering the dates
-of May 1st through May 3rd: 
-
-```{r wide_long_weather_example, echo=FALSE}
-# create a wide dataset
-data.wide <- data.frame(date = c("2018-05-01", "2018-05-02","2018-05-03"),
-                        precip_2016 = c(4.56, 24.28, 11.25),
-                        precip_2017 = c(5.39,  8.36,  2.03),
-                        PET_2016 = c(5.04, 5.08, 5.02),
-                        PET_2017 = c(7.58, 6.80, 6.17))
-
-# create a long dataset 
-data.long <- data.frame(date = c("2018-05-01", "2018-05-02","2018-05-03",
-                                 "2018-05-01", "2018-05-02","2018-05-03", 
-                                 "2018-05-01", "2018-05-02","2018-05-03",
-                                 "2018-05-01", "2018-05-02","2018-05-03"),
-                        data = c(4.56, 24.28, 11.25,
-                                 5.39,  8.36,  2.03,
-                                 5.04, 5.08, 5.02,
-                                 7.58, 6.80, 6.17),
-                        variable = c("precip", "precip", "precip",
-                                "precip", "precip", "precip",
-                                "PET", "PET", "PET",
-                                "PET", "PET", "PET"),
-                        year = c(2016, 2016, 2016,
-                                 2017, 2017, 2017,
-                                 2016, 2016, 2016,
-                                 2017, 2017, 2017))
-```
-
-```{r wide_long_weather_tables, echo=FALSE, results='asis'}
-# example of wide data format
-knitr::kable(data.wide,
-             caption="Example weather dataset with wide format")
-
-# example of long data format 
-knitr::kable(data.long,
-             caption="Same example weather dataset with wide format")
-```
-
-Notice that the long dataset separates the weather variable and 
-year into two separate columns. This means that we can more easily filter 
-these data for analysis and plotting. Let's create a 
-data frame to store the additional selected year weather data in the 
-long format so it's ready for plotting with *ggplot* later. 
-
-\newpage
-
-```{r add_years_long_data}
-# create a data frame to store additional selected year data.
-# the "long" format of this data frame is ideal for plotting with ggplot.
-add.years.df <- data.frame(date = character(),
-                           data = double(),
-                           var = character(),
-                           year = double())
-```
-
-We specified 2016 and 2017 in the *add.years* variable above. For each of
-these years, the code below modifies the starting and ending date for these
-new timespans. aWhere weather data for each additional year is stored 
-temporarily in the *weather.df.mod* data frame, and the variables of 
-interest are parsed out for writing to a .csv file and later chart creation. 
-
-```{r pull_data_add_years}
-# pull the data sets for additional selected year(s)
-for (year in add.years){
-  
-  # print a status message to the console 
-  print(paste("Pulling weather data for selected year:", year, sep = " "))
-  
-  # if there are no additional selected years to add, break out of loop
-  if(is.na(year)){
-    break
-  }
-  
-  # for each additional selected year, modify the start/end day values.
-  # combine the selected year with the month-day values.
-  day.start.mod <- paste(year,
-                        paste(strsplit(x = days[1], split = "-")[[1]][2:3],
-                                    collapse='-'),
-                         sep="-")
-
-  ending.year <- as.numeric(strsplit(x = days[2], split = "-")[[1]][1])
-  starting.year <- as.numeric(strsplit(x = days[1], split = "-")[[1]][1])
-  
-  # if the date range spans multiple years, make sure the end date 
-  # includes the selected year + 1.  
-  if(ending.year == (starting.year + 1)){
-    day.end.mod <- paste(year+1,
-                         paste(strsplit(x = days[2], split = "-")[[1]][2:3],
-                               collapse='-'),
-                         sep="-")
-  } else {
-    day.end.mod <- paste(year,
-                         paste(strsplit(x = days[2], split = "-")[[1]][2:3],
-                               collapse='-'),
-                         sep="-")
-  }
-  
-  # pull data for selected year with modified start/end days
-  weather.df.mod <- aWhereCharts::generateaWhereDataset(lat = lat, lon = lon, 
-                                                      day_start = day.start.mod, 
-                                                      day_end = day.end.mod, 
-                                                      year_start = years[1], 
-                                                      year_end = years[2])
-  
-  # save the accumulated precip data needed for charts in "long" format
-  temp.data <- data.frame(date = weather.df$date, 
-                          data = weather.df.mod$accumulatedPrecipitation.amount,
-                          var = 'accumulatedPrecipitation.amount',
-                          year = year) 
-  
-  # combine the accumulated precip data with other additional year data
-  add.years.df <- rbind(add.years.df, temp.data)                       
-  
-  # calculate P/PET rolling average values for chart in "long" format
-  temp.data <- data.frame(date = weather.df$date, 
-                          data = weather.df.mod$ppet.amount,
-                          var = 'ppet.amount.rollAvg',
-                          year = year) 
-  temp.data$data <- zoo::rollapply(temp.data$data
-                                           ,width = roll.avg
-                                           ,align = "right"
-                                           ,FUN = mean
-                                           ,na.rm = TRUE
-                                           ,fill = NA)
-  # combine the rolling average P/PET with other additional year data
-  add.years.df <- rbind(add.years.df, temp.data) 
-  
-  # calculate eP/PET rolling average. first, use the ClipValues function to
-  # calculate effective precipitation, then divide eP by PET for eP/PET. 
-  weather.df.mod$ePPET <- ClipValues(weather.df.mod$precipitation.amount, 
-                                     max.thresh = eP) /
-                          weather.df.mod$pet.amount
-  temp.data$date <- weather.df$date
-  temp.data$data <- weather.df.mod$ePPET
-  temp.data$data <- zoo::rollapply(temp.data$data
-                                   ,width = roll.avg
-                                   ,align = "right"
-                                   ,FUN = mean
-                                   ,na.rm = TRUE
-                                   ,fill = NA)
-  temp.data$var <- 'eppet.amount.rollAvg'
-  temp.data$year <- year
-  
-  # combine the rolling average eP/PET with other additional year data
-  add.years.df <- rbind(add.years.df, temp.data) 
-  
-  
-  # add the current selected year's accumulated precip and PPET columns to the
-  # main weather dataframe to write to .csv
-  
-  # Accumulated Precipitation amount
-  weather.df$accumulatedPrecipitation.amount.year <- 
-                              weather.df.mod$accumulatedPrecipitation.amount
-
-  # P/PET 
-  weather.df$ppet.amount.year <- weather.df.mod$ppet.amount
-  weather.df$precipitation.amount.year <- weather.df.mod$precipitation.amount
-  weather.df$pet.amount.year <- weather.df.mod$pet.amount
-  
-  # rename the columns to have the current year value appended on the end,
-  # such as precipitation.amount.year.2016
-  
-  # Accumulated Precipitation 
-  colnames(weather.df)[colnames(weather.df) == 
-                         "accumulatedPrecipitation.amount.year"] <- 
-                        paste0("accumulatedPrecipitation.amount.year", year)
-
-  # P/PET
-  colnames(weather.df)[colnames(weather.df) ==
-                        "ppet.amount.year"] <- paste0("ppet.amount.year", year)
-  colnames(weather.df)[colnames(weather.df) ==
-      "precipitation.amount.year"] <- paste0("precipitation.amount.year", year)
-  colnames(weather.df)[colnames(weather.df) ==
-                        "pet.amount.year"] <- paste0("pet.amount.year", year)
-}
-```
-
 The variables of interest include accumulated precipitation, P/PET, PET 
 and precipitation (to calculate effective precipitation). They are combined
 with the rest of the weather data and written to a .csv file for later 
@@ -543,12 +301,6 @@ weather.df.extended <- weather.df
 weather.df <- weather.df %>% 
   dplyr::filter(as.Date(date) >= day.start)
 
-# copy the data frame with extended dates for rolling averages
-add.years.df.extended <- add.years.df
-
-# filter the additional selected year data according to date
-add.years.df <- add.years.df %>% 
-  dplyr::filter(as.Date(date) >= day.start)
 ```
 
 # Create charts
@@ -683,45 +435,6 @@ acc.precip.2 <- aWhereCharts::generateaWhereChart(weather.df,
                                                             lat.lon))
 ```
 
-Add additional selected year line(s) to the accumulated precipitation chart.
-
-```{r acc_precip_addyears}
-# filter the add.years data frame for the accumulated precip data.
-add.years.accPrecip <- add.years.df %>% 
-  dplyr::filter(var == "accumulatedPrecipitation.amount")
-
-# generate color scale to use including the colors of the original chart:
-# list of original colors for current and LTN lines 
-colors.orig <- c("#1F83B4", "#FF810E")
-
-# list of unique colors for additional lines added 
-colors.additional <- c("black", "red", "yellow", "purple")
-
-# just take the number of line colors that are needed for the final chart
-colors.final <- c(colors.additional[1:length(add.years)], colors.orig)
-
-acc.precip.2.addyears.title <- paste0(location.name, 
-                                      "_Accumulated Precipitation ",
-                                      "with additional selected years")
-
-# add the additional selected year lines to the acc precip chart
-acc.precip.2.addyears <- acc.precip.2 + 
-  geom_line(aes(x = as.Date(add.years.accPrecip$date),
-                y = add.years.accPrecip[,'data'],
-                color = as.factor(add.years.accPrecip[,'year'])),
-            size = 1.5) +
-  ggtitle(acc.precip.2.addyears.title) + 
-  scale_color_manual(values = colors.final)
-```
-
-\newpage
-
-Display the chart. 
-
-```{r chart_acc_precip_addyears, results=TRUE, fig.cap="Accumulated precipitation across the date range specified for the  current year compared to the long term-normal (LTN) and additional selected years. The dashed line marks the current date, beyond which the weather data is forecasted."}
-acc.precip.2.addyears
-```
-
 ## Accumulated PET 
 
 ```{r chart_acc_pet}
@@ -765,85 +478,6 @@ rolling.avg.ppet.2 <- aWhereCharts::generateaWhereChart(weather.df.extended,
                         xlim(as.Date(day.start), as.Date(day.end))
 ```
 
-## 30-day rolling average P/PET chart with additional selected years 
-
-```{r chart_roll_avg_ppet_addyears, results=TRUE, fig.cap="30-day rolling average P/PET across the date range specified for the current year compared to the long term-normal (LTN) and additional selected years. The dashed line marks the current date, beyond which the weather data is forecasted."}
-
-rolling.avg.ppet.2.addyears.title <- paste0(location.name,
-                                 "_30 day rolling avg P PET ",
-                                 "with additional selected years")
-
-# get a chart of P/PET without effective precip (set e_precip to FALSE).
-# as for the previous chart, use the weather date with "extended" dates
-# for this rolling average calculation. 
-rolling.avg.ppet <- aWhereCharts::generateaWhereChart(weather.df.extended, 
-                                                        "rollingavgppet",
-                                  title = paste0(rolling.avg.ppet.2.addyears.title,
-                                                 lat.lon),
-                                  e_precip = FALSE, 
-                                  e_threshold = eP, 
-                                  rolling_window = roll.avg)
-# filter the add.years data frame for just the rolling average P/PET data
-add.years.rollAvgPPet <- add.years.df %>% dplyr::filter(var == "ppet.amount.rollAvg")
-
-# add P/PET lines to the chart for additional selected years.
-# set the x-axis limits to reflect the specified start and end dates.
-rolling.avg.ppet.2.addyears <- rolling.avg.ppet + 
-  geom_line(aes(x = as.Date(add.years.rollAvgPPet$date),
-                y = add.years.rollAvgPPet[,'data'],
-                color = as.factor(add.years.rollAvgPPet[,'year'])),
-            size = 1.5) +
-  ggtitle(rolling.avg.ppet.2.addyears.title) + 
-  scale_color_manual(values = colors.final) +
-  xlim(as.Date(day.start), as.Date(day.end))
-
-# display the chart. 
-rolling.avg.ppet.2.addyears
-```
-
-## 30-day rolling average eP/PET chart with additional selected years 
-
-
-```{r chart_roll_avg_eppet_addyears, results=TRUE, fig.cap="30-day rolling average eP/PET across the date range specified for the current year compared to the long term-normal (LTN) and additional selected years. The dashed line marks the current date, beyond which the weather data is forecasted."}
-
-rolling.avg.eppet.2.addyears.title <- paste0(location.name,
-                                          "_30 day rolling avg eP PET ",
-                                          "with additional selected years")
-
-# get a chart of eP/PET. Since there is no way to isolate the eP/PET curve 
-# within the generateaWhereChart function, let's cap the precipitation using 
-# the eP threshold and then supply this to the function to chart eP/PET for 
-# the current year and LTN. 
-weather.df$precipitation.amount <- ClipValues(weather.df$precipitation.amount,
-                                              max.thresh = eP)
-
-rolling.avg.eppet <- aWhereCharts::generateaWhereChart(weather.df.extended, 
-                          "rollingavgppet",
-                          title = paste0(rolling.avg.eppet.2.addyears.title,
-                                         lat.lon),
-                          e_precip = FALSE, 
-                          e_threshold = eP, 
-                          rolling_window = roll.avg) + 
-                     xlim(as.Date(day.start), as.Date(day.end))
-
-# filter the add.years data frame for just the rolling average P/PET data
-add.years.rollAvgePPet <- add.years.df %>% 
-  dplyr::filter(var == "eppet.amount.rollAvg")
-
-# add P/PET lines to the chart for additional selected years 
-rolling.avg.eppet.2.addyears <- rolling.avg.eppet + 
-  geom_line(aes(x = as.Date(add.years.rollAvgePPet$date),
-                y = add.years.rollAvgePPet[,'data'],
-                color = as.factor(add.years.rollAvgePPet[,'year'])),
-            size = 1.5) +
-  ggtitle(rolling.avg.eppet.2.addyears.title) + 
-  scale_color_manual(values = colors.final) + 
-  xlim(as.Date(day.start), as.Date(day.end))
-
-# display the chart. 
-rolling.avg.eppet.2.addyears
-```
-
 \newpage
 
 
@@ -872,8 +506,8 @@ jpeg(paste0('figures/',location.name,"_4chart.jpeg"),
      units = 'in', res = 500)
 
 # generate the multiplot & write to JPEG
-aWhereCharts::generateMultiplot(acc.precip.2.addyears, 
-                                rolling.avg.ppet.2.addyears, 
+aWhereCharts::generateMultiplot(acc.precip.2, 
+                                rolling.avg.ppet.2, 
                                 max.temp.1, 
                                 pet.1, 
                                 cols = 2, fontsize = 10, 
@@ -940,13 +574,6 @@ WriteJpeg(plt = eprecip.1, plt.title = paste0('figures/',eprecip.1.title))
 #acc.precip.2
 WriteJpeg(plt = acc.precip.2, plt.title = paste0('figures/',acc.precip.2.title))
 
-
-# Accumulated Precipitation with additional selected years
-#acc.precip.2.addyears
-WriteJpeg(plt = acc.precip.2.addyears, 
-          plt.title = paste0('figures/',acc.precip.2.addyears.title))
-
-
 # Accumulated PET 
 #acc.pet.1
 WriteJpeg(plt = acc.pet.1, plt.title = paste0('figures/',acc.pet.1.title))
@@ -962,16 +589,4 @@ WriteJpeg(plt = ppet.2, plt.title = paste0('figures/',ppet.2.title))
 WriteJpeg(plt = rolling.avg.ppet.2, 
           plt.title = paste0('figures/',rolling.avg.ppet.2.title))
 
-
-# 30-day rolling average P/PET with additional selected years
-#rolling.avg.ppet.2.addyears
-WriteJpeg(plt = rolling.avg.ppet.2.addyears, 
-          plt.title = paste0('figures/',rolling.avg.ppet.2.addyears.title))
-
-
-# 30-day rolling average eP/PET with additional selected years
-#rolling.avg.eppet.2.addyears
-WriteJpeg(plt = rolling.avg.eppet.2.addyears, 
-          plt.title = paste0('figures/',rolling.avg.eppet.2.addyears.title))
 ```
-
