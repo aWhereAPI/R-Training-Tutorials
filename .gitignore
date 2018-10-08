@@ -7,3 +7,5 @@ testFile.csv
 figures/
 outputCSVs/
 pdfsSentToClass/
+packrat/
+.Rprofile
