@@ -94,6 +94,9 @@ list.of.packages.CRAN = c('knitr'
                         ,'devtools'
                         )
 
+# install aWhere code packages
+list.of.packages.Github = c("aWhereAPI", "aWhereCharts")
+
 #Determine which CRAN packages are not installed
 new.packages.CRAN = list.of.packages.CRAN[!(list.of.packages.CRAN %in% 
                                               installed.packages()[,"Package"])]
@@ -129,8 +132,8 @@ if(length(dependencies.packages.CRAN) > 0) {
             currentAttemptNumber <- currentAttemptNumber + maxInstallAttempts
           }, error = function(e) {
             if (currentAttemptNumber == maxInstallAttempts) {
-              stop(cat('Problem with installing ',dependenciesToInstall.packages.CRAN[y],' which is a necessary dependency 
-                      \nPlease followup manually'))
+              stop('Problem with installing ',dependenciesToInstall.packages.CRAN[y],' which is a necessary dependency 
+                      \nPlease followup manually')
             }
           })
         }
@@ -157,17 +160,14 @@ if(length(new.packages.CRAN) > 0) {
         currentAttemptNumber <- currentAttemptNumber + maxInstallAttempts
       }, error = function(e) {
         if (currentAttemptNumber == maxInstallAttempts) {
-        stop(cat('Problem with installing ',new.packages.CRAN[x],' which is a necessary dependency 
-                  \nPlease followup manually'))
+        stop('Problem with installing ',new.packages.CRAN[x],' which is a necessary dependency 
+                  \nPlease followup manually')
         }
       })
     }
   }
 } 
 
-
-# install aWhere code packages
-list.of.packages.Github = c("aWhereAPI", "aWhereCharts")
 
 new.packages.Github = list.of.packages.Github[!(list.of.packages.Github %in% 
                                                   installed.packages()[,"Package"])]
