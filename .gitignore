@@ -10,3 +10,4 @@ pdfsSentToClass/
 packrat/
 .Rprofile
 *.Rproj
+packrat/lib*/

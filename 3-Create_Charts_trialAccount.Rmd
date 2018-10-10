@@ -45,11 +45,17 @@ Accumulated Precipitation, P/PET, and effective P/PET.
 **Install / load R packages**  
  
 Install required packages from aWhere and CRAN (the official 
-repository of R code).  
+repository of R code).  If an error is encountered with the installation of these
+packages below, a script is provided that will explicitly bypass normal R procedures
+and install all necessary depencies in an automated fashion.  To use run 
+```source('0-completeInstall_aWhereDepencies.R')``` and then run 
+```completeInstall_aWhereDepencies(whichPackage_aWhere = ???)``` and replace ???
+with ```'aWhereAPI','aWhereCharts', or 'all'``` depending on what you would like to
+make use of
  
 ```{r install_packages}
 # install CRAN packages
-list.of.packages.CRAN = c("tidyr", "dplyr", "ggplot2", "ggthemes", "curl", "zoo")
+list.of.packages.CRAN = c("devtools")
 
 new.packages.CRAN = list.of.packages.CRAN[!(list.of.packages.CRAN %in% 
                                               installed.packages()[,"Package"])]
