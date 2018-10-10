@@ -23,17 +23,21 @@ aWhere's API package for querying our API is hosted on GitHub and not R's centra
 
 Once the devtools package is installed, you can install the aWhere API package by running ```devtools::install_github("aWhereAPI/aWhere-R-Library")```.
 
-The aWhere package references several other R packages in its inner functions. Therefore those packages must also be installed in order for the aWhere package to function as expected. If you run into issues when first installing the aWhere package, try installing these packages: ```install.packages(c('chron', 'magrittr', 'btcops', 'DBI', 'assertthat', 'Rcpp', 'tibble'))```, and then re-install the aWhere package. 
+The aWhere package references several other R packages in its inner functions. Therefore those packages must also be installed in order for the aWhere package to function as expected. If you run into issues when first installing the aWhere package, try installing these packages: ```install.packages(c('base64enc','curl','data.table','foreach','httr','jsonlite','lubridate','raster','rgeos,'sp'))```, and then re-install the aWhere package. 
 
 Upon re-install, if you are still presented with an error message stating that a certain package is not installed, use the ```install.packages()``` function to install the specified package. 
 
-
 ```{r installPackages, eval=FALSE}
-library(devtools)
-
 #Run if packages are not already installed
-#install.packages(c('chron', 'magrittr', 'btcops', 'DBI', 'assertthat', 'Rcpp', 'tibble')
-                 
+#install.packages('devtools')
+
+library(devtools)
+         
 devtools::install_github("aWhereAPI/aWhere-R-Library")
 
 ```
+If an error is encountered with the installation of this packages, a script is 
+provided that will explicitly bypass normal R procedures
+and install all necessary depencies in an automated fashion.  To use run 
+```source('0-completeInstall_aWhereDepencies.R')``` and then run 
+```completeInstall_aWhereDepencies(whichPackage_aWhere = 'aWhereAPI')```

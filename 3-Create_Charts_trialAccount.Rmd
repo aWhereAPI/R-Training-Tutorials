@@ -45,107 +45,25 @@ Accumulated Precipitation, P/PET, and effective P/PET.
 **Install / load R packages**  
  
 Install required packages from aWhere and CRAN (the official 
-repository of R code).  Note that this code has been made robust by checking for
-each package's depencies recursivly and then installing one by one.  While this
-behavior should not be necessary it has been observed that R will sometimes fail
-on installs of packages where a number of depencies need to first be installed
+repository of R code).  If an error is encountered with the installation of these
+packages below, a script is provided that will explicitly bypass normal R procedures
+and install all necessary depencies in an automated fashion.  To use run 
+```source('0-completeInstall_aWhereDepencies.R')``` and then run 
+```completeInstall_aWhereDepencies(whichPackage_aWhere = ???)``` and replace ???
+with ```'aWhereAPI','aWhereCharts', or 'all'``` depending on what you would like to
+make use of
  
 ```{r install_packages}
-#Number of times to attempt install of each package
-maxInstallAttempts <- 2
+# install CRAN packages
+list.of.packages.CRAN = c("devtools")
 
-#Specify CRAN packages that need to be installed
-list.of.packages.CRAN = c('knitr'
-                        ,'dplyr'
-                        ,'ggplot2'
-                        ,'ggthemes'
-                        ,'grid'
-                        ,'rworldmap'
-                        ,'sp'
-                        ,'tidyr'
-                        ,'zoo'
-                        ,'base64enc'
-                        ,'jsonlite'
-                        ,'lubridate'
-                        ,'data.table'
-                        ,'curl'
-                        ,'devtools'
-                        )
+new.packages.CRAN = list.of.packages.CRAN[!(list.of.packages.CRAN %in% 
+                                              installed.packages()[,"Package"])]
+if(length(new.packages.CRAN)) install.packages(new.packages.CRAN)
+
 
 # install aWhere code packages
 list.of.packages.Github = c("aWhereAPI", "aWhereCharts")
-
-#Determine which CRAN packages are not installed
-new.packages.CRAN = list.of.packages.CRAN[!(list.of.packages.CRAN %in% 
-                                              installed.packages()[,"Package"])]
-
-#Determine the dependencies of CRAN packages that must be installed
-dependencies.packages.CRAN <- tools::package_dependencies(new.packages.CRAN,recursive = TRUE)
-
-#If dependencies need to be installed, install each one individually
-if(length(dependencies.packages.CRAN) > 0) {
-  
-  for (x in 1:length(dependencies.packages.CRAN)) {
-    
-    dependenciesToInstall.packages.CRAN <- unique(dependencies.packages.CRAN[[x]][!(dependencies.packages.CRAN[[x]] %in%
-                                                            installed.packages()[,"Package"])])
-                                             
-    #The recursive options returns the lowest level depencies last so we need to reverse to install them first                                 
-    dependenciesToInstall.packages.CRAN <- rev(dependenciesToInstall.packages.CRAN)
-    
-    if(length(dependenciesToInstall.packages.CRAN) > 0) {
-      for (y in 1:length(dependenciesToInstall.packages.CRAN)) {
-        
-        currentAttemptNumber <- 0
-        
-        #Check to make sure the package didn't already get installed
-        if (dependenciesToInstall.packages.CRAN[y] %in% installed.packages()[,"Package"]) {
-          next
-        }
-        
-        while(currentAttemptNumber <= maxInstallAttempts) {
-          currentAttemptNumber <- currentAttemptNumber + 1
-          tryCatch({
-            install.packages(dependenciesToInstall.packages.CRAN[y])
-            currentAttemptNumber <- currentAttemptNumber + maxInstallAttempts
-          }, error = function(e) {
-            if (currentAttemptNumber == maxInstallAttempts) {
-              stop('Problem with installing ',dependenciesToInstall.packages.CRAN[y],' which is a necessary dependency 
-                      \nPlease followup manually')
-            }
-          })
-        }
-      }
-    }
-  }
-}
-
-#Once all CRAN dependencies are installed, install necessary CRAN packages
-if(length(new.packages.CRAN) > 0) {
-  for (x in 1:length(new.packages.CRAN)) {
-
-    currentAttemptNumber <- 0
-      
-    #Check to make sure the package didn't already get installed
-    if (new.packages.CRAN[x] %in% installed.packages()[,"Package"]) {
-      next
-    }
-    
-    while(currentAttemptNumber <= maxInstallAttempts) {
-      currentAttemptNumber <- currentAttemptNumber + 1
-      tryCatch({
-        install.packages(new.packages.CRAN[x])
-        currentAttemptNumber <- currentAttemptNumber + maxInstallAttempts
-      }, error = function(e) {
-        if (currentAttemptNumber == maxInstallAttempts) {
-        stop('Problem with installing ',new.packages.CRAN[x],' which is a necessary dependency 
-                  \nPlease followup manually')
-        }
-      })
-    }
-  }
-} 
-
 
 new.packages.Github = list.of.packages.Github[!(list.of.packages.Github %in% 
                                                   installed.packages()[,"Package"])]

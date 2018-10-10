@@ -32,17 +32,19 @@ completeInstall_aWhereDepencies <- function(whichPackage_aWhere = 'aWhereAPI') {
   
   
   #Specify CRAN packages that need to be installed
-  dependencies.CRAN.aWhereAPI <- c('httr'
+  dependencies.CRAN.aWhereAPI <- c('knitr'
+                                  ,'devtools'
                                   ,'base64enc'
+                                  ,'curl'
+                                  ,'data.table'
+                                  ,'foreach'
+                                  ,'httr'
                                   ,'jsonlite'
                                   ,'lubridate'
-                                  ,'data.table'
-                                  ,'curl'
-                                  ,'knitr'
-                                  ,'devtools'
-                                  ,'foreach'
                                   ,'raster'
-                                  ,'rgeos')
+                                  ,'rgeos'
+                                  ,'sp'
+                                  )
   
   depencies.CRAN.aWhereCharts <- c('dplyr'
                                    ,'ggplot2'
@@ -53,7 +55,8 @@ completeInstall_aWhereDepencies <- function(whichPackage_aWhere = 'aWhereAPI') {
                                    ,'tidyr'
                                    ,'zoo'
                                    ,'knitr'
-                                   ,'devtools')
+                                   ,'devtools'
+                                   )
   
   
   if (whichPackage_aWhere == 'aWhereAPI') {
