@@ -165,7 +165,7 @@ colors_additional <- c("black", "red", "yellow", "purple")
 # Just take the number of line colors that are needed for the final chart
 colors_final <- c(colors_additional[1:length(add_years)], colors_orig)
 
-
+line_width <- 1
 
 # Create charts  ----------------------------------------------------------
 
@@ -524,11 +524,11 @@ for (i in 1:nrow(locations)) {
   
   acc_precip_eff_stdev <- 
     aWhereCharts::generateaWhereStdDevChart(data = weather_df 
-                        ,variable = "accumulatedPrecipitation"
-                        ,title = paste(acc_precip_eff_stdev_title
-                                        ,lat_lon)
-                        ,e_precip = TRUE
-                        ,e_threshold = eP)
+                                          ,variable = "accumulatedPrecipitation"
+                                          ,title = paste(acc_precip_eff_stdev_title
+                                                          ,lat_lon)
+                                          ,e_precip = TRUE
+                                          ,e_threshold = eP)
   
   # Accumulated Precipitation ---------------------------------------------
   acc_precip_title <- paste0(place_name, ": Accumulated Precipitation")
@@ -536,7 +536,8 @@ for (i in 1:nrow(locations)) {
   acc_precip <- aWhereCharts::generateaWhereChart(data = weather_df
                                     ,variable = "accumulatedPrecipitation"
                                     ,title = paste(acc_precip_title
-                                                    ,lat_lon))
+                                                    ,lat_lon)
+                                    ,includeSTD = TRUE)
   
   # Accumulated Precipitation with Additional Selected Years --------------
   
@@ -549,16 +550,25 @@ for (i in 1:nrow(locations)) {
                                       ,": Accumulated Precipitation\n"
                                       ,"with additional selected years ")
   
+  scale_list <- generateColorScale(acc_precip
+                                   ,add_years
+                                   ,colors_additional)
+  
   # Add the additional selected year lines to the acc precip chart
   acc_precip_addyears <- acc_precip + 
-    geom_line(data = add_years_acc_precip
-              ,aes(x = as.Date(date)
-                   ,y = data
-                   ,color = as.factor(year))
-              ,size = 1.5) +
+    geom_ribbon(data = add_years_acc_precip
+                ,aes(x = as.Date(date)
+                     ,ymin = data
+                     ,ymax = data
+                     ,color = as.factor(year)
+                     ,fill = as.factor(year))
+                ,size = line_width) +
     ggtitle(paste(acc_precip_addyears_title
                    ,lat_lon)) + 
-    scale_color_manual(values = colors_final)  
+    scale_list$colorScale +
+    scale_list$fillScale + 
+    xlim(as.Date(date_start), as.Date(date_end)) +
+    guides(fill = guide_legend(ncol =  length(add_years) +2))
   
   # Accumulated PET with Standard Deviation -------------------------------
   
@@ -596,7 +606,8 @@ for (i in 1:nrow(locations)) {
                                       ,title = paste(rolling_avg_ppet_title
                                                      ,lat_lon)
                                       ,e_precip = FALSE
-                                      ,rolling_window = roll_window)
+                                      ,rolling_window = roll_window
+                                      ,includeSTD = TRUE)
   
   # Rolling-Average PET and P/PET with Additional Selected Years ---
   rolling_avg_ppet_addyears_title <- 
@@ -608,18 +619,28 @@ for (i in 1:nrow(locations)) {
   add_years_avg_ppet <- add_years_df_extended %>% 
     dplyr::filter(var == "ppet.amount.rollAvg")
   
+  scale_list <- generateColorScale(rolling_avg_ppet
+                                   ,add_years
+                                   ,colors_additional)
+  
   # Add P/PET lines to the chart for additional selected years.
   # Set the x-axis limits to reflect the specified start and end dates.
   rolling_avg_ppet_addyears <- rolling_avg_ppet +
-    geom_line(data = add_years_avg_ppet
+    geom_ribbon(data = add_years_avg_ppet
               ,aes(x = as.Date(date)
-                   ,y = data
-                   ,color = as.factor(year))
-              ,size = 1.5) +
+                   ,ymin = data
+                   ,ymax = data
+                   ,color = as.factor(year)
+                   ,fill = as.factor(year))
+              ,size = line_width) +
     ggtitle(paste(rolling_avg_ppet_addyears_title
                   ,lat_lon)) + 
-    scale_color_manual(values = colors_final) +
-    xlim(as.Date(date_start), as.Date(date_end))
+    scale_list$colorScale +
+    scale_list$fillScale + 
+    xlim(as.Date(date_start), as.Date(date_end)) +
+    guides(fill = guide_legend(ncol =  length(add_years) +2))
+  
+
   
   # Rolling-Average PET and P/PET using Effective Precipitation ----
   rolling_avg_eppet_title <- 
@@ -633,7 +654,8 @@ for (i in 1:nrow(locations)) {
                                                       ,lat_lon)
                                       ,e_precip = TRUE
                                       ,e_threshold = eP 
-                                      ,rolling_window = roll_window)
+                                      ,rolling_window = roll_window
+                                      ,includeSTD = TRUE)
   
   
   # Additional selected years 
@@ -646,16 +668,24 @@ for (i in 1:nrow(locations)) {
   add_years_rollling_avg_eppet <- add_years_df %>% 
     dplyr::filter(var == "eppet.amount.rollAvg")
   
+  scale_list <- generateColorScale(rolling_avg_eppet
+                                   ,add_years
+                                   ,colors_additional)
+  
   # add P/PET lines to the chart for additional selected years 
   rolling_avg_eppet_addyears <- rolling_avg_eppet + 
-    geom_line(data = add_years_rollling_avg_eppet
-              ,aes(x = as.Date(date)
-                   ,y = data
-                   ,color = as.factor(year))
-              ,size = 1.5) +
+    geom_ribbon(data = add_years_rollling_avg_eppet
+                ,aes(x = as.Date(date)
+                     ,ymin = data
+                     ,ymax = data
+                     ,color = as.factor(year)
+                     ,fill = as.factor(year))
+              ,size = line_width) +
     ggtitle(rolling_avg_eppet_addyears_title) + 
-    scale_color_manual(values = colors_final) + 
-    xlim(as.Date(date_start), as.Date(date_end))
+    scale_list$colorScale +
+    scale_list$fillScale + 
+    xlim(as.Date(date_start), as.Date(date_end)) +
+    guides(fill = guide_legend(ncol =  length(add_years) +2))
   
   
   # SHOW CHARTS ------------------------------------------------------------

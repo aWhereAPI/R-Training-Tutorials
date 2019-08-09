@@ -160,45 +160,20 @@ for (i in 1:nrow(locations)) {
   lat_title <- round(lat, 2)
   lon_title <- round(lon, 2)
   
-  # Create a title for the climatology chart
-  chart_title <- paste0("Weekly Climate Chart for " , place_name
-                        ,"\n      Latitude ", lat_title
-                        ,",  Longitude ", lon_title
-                        , "       ", date_start, " to ", date_end)
-  
-  # Create climatology chart with original formatting 
-  weekly_chart <- aWhereCharts::generateaWhereChart(data = weather_df
-                                                ,variable = "precipitation"
-                                                ,title = chart_title
-                                                ,includeSTD = TRUE
-                                                ,variable_rightAxis = "maxTemp"
-                                                ,daysToAggregateOver = 7
-                                                ,mainGraphType = "bar")
-  
-  # Write weekly chart to jpg
-  WriteJpeg(plt = weekly_chart
-            ,plt.title = paste0("charts/WeeklyChart_", 
-                                date_end, "_", place_name))
-  
-  #------------------------------------------------------------------------
-  # MODIFIED CLIMATOLOGY CHART 
-  # I downloaded the generateaWhereChart code from Github, made 
-  # modifications in the local copy: "Source/generateaWhereChart_testing.R" 
-  # Load this modified function using the source command 
-  source("Source/generateaWhereChart_testing.R")
   chart_title <- paste0("Weekly Climate Chart for ", place_name, 
                         "\nLatitude: ", lat_title,",  Longitude: ",lon_title
                         , ", Date range: ",date_start, " to ", date_end)
-  weekly_chart <- generateaWhereChart_testing(data = weather_df,
-                                             variable = "precipitation",
-                                             title = chart_title,
-                                             includeSTD = TRUE,
-                                             variable_rightAxis = 'maxTemp',
-                                             daysToAggregateOver = 7,
-                                             mainGraphType = 'bar')
+ 
+   weekly_chart <- generateaWhereChart(data = weather_df,
+                                       variable = "precipitation",
+                                       title = chart_title,
+                                       includeSTD = TRUE,
+                                       variable_rightAxis = 'maxTemp',
+                                       daysToAggregateOver = 7,
+                                       mainGraphType = 'bar')
   # Write weekly chart to jpg
   WriteJpeg(plt = weekly_chart
-            ,plt.title = paste0("charts/WeeklyChart_MODIFIED_", 
+            ,plt.title = paste0("charts/WeeklyChart_", 
                                 date_end, "_", place_name),
             w=12, h=6, r=500)
 
