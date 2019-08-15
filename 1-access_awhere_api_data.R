@@ -97,127 +97,131 @@ locations_file <- "YOUR LOCATION FILE.txt"
 # Read the location(s) text file 
 locations <- read.csv(locations_file)
 
-# Get the first latitude, longitude, and name of your location(s) of interest 
-lat <- locations$latitude[1]
-lon <- locations$longitude[1]
-place_name <- locations$place_name[1]
-
-# Pull the weather forecast directly from the aWhere API
-forecast <- aWhereAPI::forecasts_latlng(lat
-                                         ,lon 
-                                         ,day_start = as.character(Sys.Date()) 
-                                         ,day_end = as.character(Sys.Date()+7)
-                                         ,block_size = 6) 
-#  The default forecast parameters in the code above are: 
-#  Starting date is today, Sys.Date()
-#  Ending date is seven days from now, Sys.Date() + 7
-#  Block size refers to the number of hours each data point will consist 
-#  of. By default, this value is 6, which pulls forecast data in 6-hour blocks. 
-#  A block size of 1 would yield hourly blocks of forecast data. 
-
-# Save a .csv file of the forecast data in the outputCSVs folder that you 
-# created within your working directory
-write.csv(forecast, file = "outputCSVs/Forecast-6hour.csv", row.names=F) 
-
-# You can also click on the forecast dataframe in the "environment" tab in the 
-# top right console to see the data in RStudio!
-
-
-# Observed Data -----------------------------------------------------------
-
-# Here you will pull the historical data for your location of interest. 
-
-# Set the starting and ending dates to a time period of interest
-starting_date <- "2016-01-01" # January 1, 2016
-ending_date <- as.character(Sys.Date() - 1) # yesterday
-
-# Pull observed weather data from the aWhere API 
-observed <- aWhereAPI::daily_observed_latlng(latitude = lat,
-                                             longitude = lon,
-                                             day_start = starting_date,
-                                             day_end = ending_date)
-
-# The parameters for this function can have many formats.
-# You can change the starting/ending dates for a timeframe of interest. 
-#   The starting date can be as early as 2008. 
-#   You can use the "YYYY-MM-DD" format for a specific date.
-#   You can also use Sys.Date() to make your end date today, 
-#   or similarly, use Sys.Date() - 1 to make your end date yesterday. 
-#   NOTE that observed data can ONLY be in the past. You will get an error 
-#   if a future date is selected! 
-
-# Click the "observed" dataframe in the "environment" tab on the top right 
-# console to see the data!
-
-
-# Agronomic data ----------------------------------------------------------
-
-# Here you will pull agronomic data for your location and time of interest. 
-# If you do not change the "starting_date" and "ending_date" variables,
-# then the time period will remain the same from the observed data pulled above. 
-
-# Pull agronomic weather data from the aWhere API 
-ag <- aWhereAPI::agronomic_values_latlng(lat
-                                          ,lon 
-                                          ,day_start = starting_date 
-                                          ,day_end = ending_date)
-
-# Click the "ag" dataframe in the "environment" tab on the top right 
-# console to see the data!
-
-
-# Long Term Normals -------------------------------------------------------
-
-# Here you will pull the long-term normals (LTN) for your location and time 
-# period of interest. 
-
-# LTN values will be calculated across this range of years 
-year_start <- 2011
-year_end <- 2018
-
-# Specify the starting and ending month-day of interest, 
-# such as the growing season in your region 
-monthday_start <- "01-01" # January 1
-monthday_end <- "06-16"   # June 16
-
-# Pull LTN weather data from the aWhere API 
-ltn <- weather_norms_latlng(lat, lon,
-                             monthday_start = monthday_start,
-                             monthday_end = monthday_end,
-                             year_start = year_start,
-                             year_end = year_end,
-                             # you can choose to exclude years from the LTN
-                             exclude_years = c("2011", "2016")) 
-
-# Click the "ltn" dataframe in the "environment" tab on the top right 
-# console to see the data!  
-
-
-# Full aWhere Ag-Weather Dataset ------------------------------------------
-
-# This section combines all of the above datasets into one cohesive .csv for 
-# analysis. You can change the location and time period as needed in 
-# the lines of code below. 
-
-starting_date <- "2018-01-01"
-ending_date <- "2019-06-16"
-year_start <- 2008
-year_end <- 2018
-#lat <-  6.40          
-#lon <-  2.33
-
-# This function generates a clean dataset with observed AND forecast 
-# agronomics AND Long Term Normals!
-weather_df <- generateaWhereDataset(lat = lat, 
-                                    lon = lon, 
-                                    day_start = starting_date, 
-                                    day_end = ending_date, 
-                                    year_start = year_start, 
-                                    year_end = year_end)
-
-# Save .csv file of the dataset in the outputCSVs folder created within 
-# your working directory
-write.csv(weather_df, 
-          file = "outputCSVs/aWhereWeatherDataset.csv", 
-          row.names=F) 
+for (i in(1:nrow(locations))) { 
+  # Get the first latitude, longitude, and name of your location(s) of interest 
+  lat <- locations$latitude[i]
+  lon <- locations$longitude[i]
+  place_name <- locations$place_name[i]
+  
+  # Pull the weather forecast directly from the aWhere API
+  forecast <- aWhereAPI::forecasts_latlng(lat
+                                           ,lon 
+                                           ,day_start = as.character(Sys.Date()) 
+                                           ,day_end = as.character(Sys.Date()+7)
+                                           ,block_size = 6) 
+  #  The default forecast parameters in the code above are: 
+  #  Starting date is today, Sys.Date()
+  #  Ending date is seven days from now, Sys.Date() + 7
+  #  Block size refers to the number of hours each data point will consist 
+  #  of. By default, this value is 6, which pulls forecast data in 6-hour blocks. 
+  #  A block size of 1 would yield hourly blocks of forecast data. 
+  
+  # Save a .csv file of the forecast data in the outputCSVs folder that you 
+  # created within your working directory
+  write.csv(forecast, file = paste0("outputCSVs/Forecast-6hour-",place_name,".csv"), row.names=F) 
+  
+  # You can also click on the forecast dataframe in the "environment" tab in the 
+  # top right console to see the data in RStudio!
+  
+  
+  # Observed Data -----------------------------------------------------------
+  
+  # Here you will pull the historical data for your location of interest. 
+  
+  # Set the starting and ending dates to a time period of interest
+  starting_date <- "2018-01-01" # January 1, 2016
+  ending_date <- as.character(Sys.Date() - 2) # two days ago
+  
+  # Pull observed weather data from the aWhere API 
+  observed <- aWhereAPI::daily_observed_latlng(latitude = lat,
+                                               longitude = lon,
+                                               day_start = starting_date,
+                                               day_end = ending_date)
+  
+  write.csv(observed, file = paste0("outputCSVs/observedData-",place_name,".csv"), row.names=F) 
+  
+  # The parameters for this function can have many formats.
+  # You can change the starting/ending dates for a timeframe of interest. 
+  #   The starting date can be as early as 2008. 
+  #   You can use the "YYYY-MM-DD" format for a specific date.
+  #   You can also use Sys.Date() to make your end date today, 
+  #   or similarly, use Sys.Date() - 1 to make your end date yesterday. 
+  #   NOTE that observed data can ONLY be in the past. You will get an error 
+  #   if a future date is selected! 
+  
+  # Click the "observed" dataframe in the "environment" tab on the top right 
+  # console to see the data!
+  
+  
+  # Agronomic data ----------------------------------------------------------
+  
+  # Here you will pull agronomic data for your location and time of interest. 
+  # If you do not change the "starting_date" and "ending_date" variables,
+  # then the time period will remain the same from the observed data pulled above. 
+  
+  # Pull agronomic weather data from the aWhere API 
+  ag <- aWhereAPI::agronomic_values_latlng(lat
+                                            ,lon 
+                                            ,day_start = starting_date 
+                                            ,day_end = ending_date)
+  
+  # Click the "ag" dataframe in the "environment" tab on the top right 
+  # console to see the data!
+  
+  write.csv(ag, file = paste0("outputCSVs/agronomicsData-",place_name,".csv"), row.names=F) 
+  
+  # Long Term Normals -------------------------------------------------------
+  
+  # Here you will pull the long-term normals (LTN) for your location and time 
+  # period of interest. 
+  
+  # LTN values will be calculated across this range of years 
+  year_start <- 2011
+  year_end <- 2018
+  
+  # Specify the starting and ending month-day of interest, 
+  # such as the growing season in your region 
+  monthday_start <- "01-01" # January 1
+  monthday_end <- "06-16"   # June 16
+  
+  # Pull LTN weather data from the aWhere API 
+  ltn <- weather_norms_latlng(lat, lon,
+                               monthday_start = monthday_start,
+                               monthday_end = monthday_end,
+                               year_start = year_start,
+                               year_end = year_end,
+                               # you can choose to exclude years from the LTN
+                               exclude_years = c("2011", "2016")) 
+  
+  # Click the "ltn" dataframe in the "environment" tab on the top right 
+  # console to see the data!  
+  
+  write.csv(ltn, file = paste0("outputCSVs/ltnData-",place_name,".csv"), row.names=F) 
+  
+  # Full aWhere Ag-Weather Dataset ------------------------------------------
+  
+  # This section combines all of the above datasets into one cohesive .csv for 
+  # analysis. You can change the location and time period as needed in 
+  # the lines of code below. 
+  
+  starting_date <- "2018-01-01"
+  ending_date <- "2019-06-16"
+  year_start <- 2008
+  year_end <- 2018
+  
+  # This function generates a clean dataset with observed AND forecast 
+  # agronomics AND Long Term Normals!
+  weather_df <- generateaWhereDataset(lat = lat, 
+                                      lon = lon, 
+                                      day_start = starting_date, 
+                                      day_end = ending_date, 
+                                      year_start = year_start, 
+                                      year_end = year_end)
+  
+  # Save .csv file of the dataset in the outputCSVs folder created within 
+  # your working directory
+  write.csv(weather_df, 
+            file = paste0("outputCSVs/aWhereWeatherDataset-",place_name,".csv"), 
+            row.names=F) 
+}
 
