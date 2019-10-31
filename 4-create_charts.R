@@ -739,6 +739,9 @@ for (i in 1:nrow(locations)) {
     # rolling average P/PET with additional selected years
     print(rolling_avg_ppet_addyears)
     
+    # rolling average eP/PET
+    print(rolling_avg_eppet)
+    
     # rolling average eP/PET with additional selected years
     print(rolling_avg_eppet_addyears)
     
@@ -822,6 +825,11 @@ for (i in 1:nrow(locations)) {
     WriteJpeg(plt = rolling_avg_ppet_addyears 
               ,plt.title = paste0(current_chart_path
                ,formatGraphTitleForFileName(rolling_avg_ppet_addyears_title)))
+    
+    # rolling average eP/PET
+    WriteJpeg(plt = rolling_avg_eppet
+              ,plt.title = paste0(current_chart_path
+                                  ,formatGraphTitleForFileName(rolling_avg_eppet_title)))
     
     # rolling average eP/PET with additional selected years
     WriteJpeg(plt = rolling_avg_eppet_addyears 
