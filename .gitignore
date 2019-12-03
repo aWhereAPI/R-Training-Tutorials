@@ -5,6 +5,7 @@
 *.html
 testFile.csv
 figures/
+charts/
 outputCSVs/
 pdfsSentToClass/
 packrat/
