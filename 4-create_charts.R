@@ -536,8 +536,7 @@ for (i in 1:nrow(locations)) {
   acc_precip <- aWhereCharts::generateaWhereChart(data = weather_df
                                     ,variable = "accumulatedPrecipitation"
                                     ,title = paste(acc_precip_title
-                                                    ,lat_lon)
-                                    ,includeSTD = TRUE)
+                                                    ,lat_lon))
   
   # Accumulated Precipitation with Additional Selected Years --------------
   
