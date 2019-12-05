@@ -607,7 +607,7 @@ for (i in 1:nrow(locations)) {
                                       ,e_precip = FALSE
                                       ,rolling_window = roll_window)
   
-  # Rolling-Average PET and P/PET with Additional Selected Years ----------
+  # Rolling-Average P/PET with Additional Selected Years ----------
   rolling_avg_ppet_addyears_title <- 
     paste0(place_name
             ,": ",roll_window," day rolling avg P PET \n"
