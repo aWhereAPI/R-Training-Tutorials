@@ -594,7 +594,7 @@ for (i in 1:nrow(locations)) {
   # the effective precipitation threshold 
   rolling_avg_ppet_title <- 
     paste0(place_name
-          ,": ",roll_window," day rolling average \neP PET and P PET ")
+          ,": ",roll_window," day rolling average \nP PET ")
   
   # Create a chart of P/PET without effective precip (set e_precip to FALSE).
   # As for the previous chart, use the weather date with "extended" dates
@@ -605,8 +605,7 @@ for (i in 1:nrow(locations)) {
                                       ,title = paste(rolling_avg_ppet_title
                                                      ,lat_lon)
                                       ,e_precip = FALSE
-                                      ,rolling_window = roll_window
-                                      ,includeSTD = TRUE)
+                                      ,rolling_window = roll_window)
   
   # Rolling-Average PET and P/PET with Additional Selected Years ----------
   rolling_avg_ppet_addyears_title <- 
