@@ -306,7 +306,7 @@ for (i in 1:nrow(locations)) {
     
     temp_data <- data.frame(date = weather_df_extended$date 
                             ,data = temp_eppet
-                            ,var = "eppet.amount.rollAv"
+                            ,var = "eppet.amount.rollAvg"
                             ,year = year) 
     
     
@@ -659,11 +659,11 @@ for (i in 1:nrow(locations)) {
   # Additional selected years 
   rolling_avg_eppet_addyears_title <- 
     paste0(place_name
-           ,": ",roll_window," day rolling avg eP PET \n"
+           ,": ",roll_window," day rolling avg ePPET and PPET \n"
            ,"with additional selected years")
   
   # Filter the add.years data frame for just the rolling average P/PET data
-  add_years_rollling_avg_eppet <- add_years_df %>% 
+  add_years_rollling_avg_eppet <- add_years_df_extended %>% 
     dplyr::filter(var == "eppet.amount.rollAvg")
   
   scale_list <- generateColorScale(rolling_avg_eppet
