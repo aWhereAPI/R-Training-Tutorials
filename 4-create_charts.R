@@ -679,7 +679,8 @@ for (i in 1:nrow(locations)) {
                      ,color = as.factor(year)
                      ,fill = as.factor(year))
               ,size = line_width) +
-    ggtitle(rolling_avg_eppet_addyears_title) + 
+    ggtitle(paste(rolling_avg_eppet_addyears_title,
+                  lat_lon)) + 
     scale_list$colorScale +
     scale_list$fillScale + 
     xlim(as.Date(date_start), as.Date(date_end)) +
