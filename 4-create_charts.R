@@ -640,7 +640,7 @@ for (i in 1:nrow(locations)) {
   
 
   
-  # Rolling-Average PET and P/PET using Effective Precipitation -----------
+  # Rolling-Average P/PET using Effective Precipitation -----------
   rolling_avg_eppet_title <- 
     paste0(place_name
             ,": ",roll_window," day rolling average eP PET")
