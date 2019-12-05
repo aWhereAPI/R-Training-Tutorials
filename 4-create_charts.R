@@ -30,7 +30,7 @@
 # 
 # You will need to be connected to the internet to run this script.
 #
-# Date updated: 2019-06-25
+# Date updated: 2019-12-04
 #--------------------------------------------------------------------------
 
 # Install and load packages -----------------------------------------------
