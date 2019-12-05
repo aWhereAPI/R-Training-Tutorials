@@ -643,7 +643,7 @@ for (i in 1:nrow(locations)) {
   # Rolling-Average P/PET using Effective Precipitation -----------
   rolling_avg_eppet_title <- 
     paste0(place_name
-            ,": ",roll_window," day rolling average eP PET")
+            ,": ",roll_window," day rolling average ePPET and PPET")
   
   rolling_avg_eppet <- 
     aWhereCharts::generateaWhereChart(data = weather_df_extended
