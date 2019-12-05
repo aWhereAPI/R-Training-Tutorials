@@ -588,7 +588,7 @@ for (i in 1:nrow(locations)) {
                                             ,title = paste(ppet_title
                                                            ,lat_lon))
   
-  # Rolling-Average PET and P/PET ----------------------------------
+  # Rolling-Average PET and P/PET -----------------------------------------
   
   # No eprecip/PET shows up if all rainfall events are less than 
   # the effective precipitation threshold 
@@ -608,7 +608,7 @@ for (i in 1:nrow(locations)) {
                                       ,rolling_window = roll_window
                                       ,includeSTD = TRUE)
   
-  # Rolling-Average PET and P/PET with Additional Selected Years ---
+  # Rolling-Average PET and P/PET with Additional Selected Years ----------
   rolling_avg_ppet_addyears_title <- 
     paste0(place_name
             ,": ",roll_window," day rolling avg P PET \n"
@@ -641,7 +641,7 @@ for (i in 1:nrow(locations)) {
   
 
   
-  # Rolling-Average PET and P/PET using Effective Precipitation ----
+  # Rolling-Average PET and P/PET using Effective Precipitation -----------
   rolling_avg_eppet_title <- 
     paste0(place_name
             ,": ",roll_window," day rolling average eP PET")
