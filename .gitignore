@@ -6,6 +6,7 @@
 testFile.csv
 figures/
 outputCSVs/
+charts/
 pdfsSentToClass/
 packrat/
 .Rprofile
