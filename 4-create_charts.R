@@ -475,7 +475,9 @@ for (i in 1:nrow(locations)) {
   max_temp_stdev <- aWhereCharts::generateaWhereStdDevChart(data = weather_df
                                                     ,variable = "maxTemp" 
                                          ,title = paste(max_temp_stdev_title
-                                                        ,lat_lon))
+                                                        ,lat_lon
+                                                        ,date_start, "to"
+                                                        ,date_end))
   
   # Minimum Temperature with Standard Deviation ---------------------------
   min_temp_stdev_title <- paste0(place_name, ": Minimum Temperature w StdDev")
@@ -483,7 +485,9 @@ for (i in 1:nrow(locations)) {
   min_temp_stdev <- aWhereCharts::generateaWhereStdDevChart(data = weather_df
                                                   ,variable = "minTemp"
                                          ,title = paste(min_temp_stdev_title
-                                                        ,lat_lon))
+                                                        ,lat_lon
+                                                        ,date_start, "to"
+                                                        ,date_end))
   
   # PET with Standard Deviation -------------------------------------------
   pet_stdev_title <- paste0(place_name, ": PET w StdDev")
@@ -491,7 +495,9 @@ for (i in 1:nrow(locations)) {
   pet_stdev <- aWhereCharts::generateaWhereStdDevChart(data = weather_df 
                                                        ,variable = "pet"
                                                ,title = paste(pet_stdev_title
-                                                              ,lat_lon))
+                                                              ,lat_lon
+                                                              ,date_start, "to"
+                                                              ,date_end))
 
   # Daily Precip with Standard Deviation ----------------------------------
   precip_stdev_title <- paste0(place_name, ": Daily Precipitation w StdDev")
@@ -499,7 +505,9 @@ for (i in 1:nrow(locations)) {
   precip_stdev <- aWhereCharts::generateaWhereStdDevChart(data = weather_df
                                             ,variable = "precipitation"
                                             ,title = paste(precip_stdev_title
-                                                           ,lat_lon))
+                                                           ,lat_lon
+                                                           ,date_start, "to"
+                                                           ,date_end))
 
   # Daily Precipitation ---------------------------------------------------
   precip_title <- paste0(place_name, ": Daily Precipitation")
@@ -507,7 +515,9 @@ for (i in 1:nrow(locations)) {
   precip <- aWhereCharts::generateaWhereChart(data = weather_df
                                       ,variable = "precipitation"    
                                       ,title = paste(precip_title
-                                                     ,lat_lon))
+                                                     ,lat_lon
+                                                     ,date_start, "to"
+                                                     ,date_end))
 
   # Accumulated Precipitation with Standard Deviation ---------------------
   acc_precip_stdev_title <- paste0(place_name, 
@@ -516,17 +526,21 @@ for (i in 1:nrow(locations)) {
   acc_precip_stdev <- aWhereCharts::generateaWhereStdDevChart(data = weather_df
                                     ,variable = "accumulatedPrecipitation"
                                         ,title = paste(acc_precip_stdev_title
-                                                        ,lat_lon))
+                                                       ,lat_lon
+                                                       ,date_start, "to"
+                                                       ,date_end))
 
   # Accumulated Effective Precipitation with Standard Deviation -----------
   acc_precip_eff_stdev_title <- paste0(place_name, 
-      ": Precipitation and Effective Precipitation\n Accumulated w Std Dev")
+      ": Precipitation and Effective Precipitation\nAccumulated w Std Dev")
   
   acc_precip_eff_stdev <- 
     aWhereCharts::generateaWhereStdDevChart(data = weather_df 
                                           ,variable = "accumulatedPrecipitation"
                                           ,title = paste(acc_precip_eff_stdev_title
-                                                          ,lat_lon)
+                                                         ,lat_lon
+                                                         ,date_start, "to"
+                                                         ,date_end)
                                           ,e_precip = TRUE
                                           ,e_threshold = eP)
   
@@ -536,7 +550,9 @@ for (i in 1:nrow(locations)) {
   acc_precip <- aWhereCharts::generateaWhereChart(data = weather_df
                                     ,variable = "accumulatedPrecipitation"
                                     ,title = paste(acc_precip_title
-                                                    ,lat_lon))
+                                                    ,lat_lon
+                                                    ,date_start, "to"
+                                                    ,date_end))
   
   # Accumulated Precipitation with Additional Selected Years --------------
   
@@ -563,7 +579,9 @@ for (i in 1:nrow(locations)) {
                      ,fill = as.factor(year))
                 ,size = line_width) +
     ggtitle(paste(acc_precip_addyears_title
-                   ,lat_lon)) + 
+                  ,lat_lon
+                  ,date_start, "to"
+                  ,date_end)) + 
     scale_list$colorScale +
     scale_list$fillScale + 
     xlim(as.Date(date_start), as.Date(date_end)) +
@@ -576,17 +594,21 @@ for (i in 1:nrow(locations)) {
   acc_pet_stdev <- aWhereCharts::generateaWhereStdDevChart(data = weather_df
                                                 ,variable = "accumulatedPet"
                                            ,title = paste(acc_pet_stdev_title
-                                                          ,lat_lon))
+                                                          ,lat_lon
+                                                          ,date_start, "to"
+                                                          ,date_end))
   
   # Daily P/PET -----------------------------------------------------------
   # P/PET = Precipitation-over-PET ratio 
   # (NOTE!!! --> P/PET is rarely is interpretable on a daily chart) 
-  ppet_title <- paste0(place_name,": PPET")
+  ppet_title <- paste0(place_name,": P PET")
   
   ppet <- aWhereCharts::generateaWhereChart(data = weather_df 
                                             ,variable = "ppet" 
                                             ,title = paste(ppet_title
-                                                           ,lat_lon))
+                                                           ,lat_lon
+                                                           ,date_start, "to"
+                                                           ,date_end))
   
   # Rolling-Average PET and P/PET -----------------------------------------
   
@@ -603,7 +625,9 @@ for (i in 1:nrow(locations)) {
     aWhereCharts::generateaWhereChart(data = weather_df_extended
                                       ,variable = "rollingavgppet"
                                       ,title = paste(rolling_avg_ppet_title
-                                                     ,lat_lon)
+                                                     ,lat_lon
+                                                     ,date_start, "to"
+                                                     ,date_end)
                                       ,e_precip = FALSE
                                       ,rolling_window = roll_window)
   
@@ -632,7 +656,9 @@ for (i in 1:nrow(locations)) {
                    ,fill = as.factor(year))
               ,size = line_width) +
     ggtitle(paste(rolling_avg_ppet_addyears_title
-                  ,lat_lon)) + 
+                  ,lat_lon
+                  ,date_start, "to"
+                  ,date_end)) + 
     scale_list$colorScale +
     scale_list$fillScale + 
     xlim(as.Date(date_start), as.Date(date_end)) +
@@ -643,13 +669,15 @@ for (i in 1:nrow(locations)) {
   # Rolling-Average P/PET using Effective Precipitation -----------
   rolling_avg_eppet_title <- 
     paste0(place_name
-            ,": ",roll_window," day rolling average ePPET and PPET")
+            ,": ",roll_window," day rolling average eP PET and P PET")
   
   rolling_avg_eppet <- 
     aWhereCharts::generateaWhereChart(data = weather_df_extended
                                       ,variable = "rollingavgppet"
                                       ,title = paste(rolling_avg_eppet_title
-                                                      ,lat_lon)
+                                                     ,lat_lon
+                                                     ,date_start, "to"
+                                                     ,date_end)
                                       ,e_precip = TRUE
                                       ,e_threshold = eP 
                                       ,rolling_window = roll_window
@@ -659,7 +687,7 @@ for (i in 1:nrow(locations)) {
   # Additional selected years 
   rolling_avg_eppet_addyears_title <- 
     paste0(place_name
-           ,": ",roll_window," day rolling avg ePPET and PPET \n"
+           ,": ",roll_window," day rolling avg eP PET and P PET \n"
            ,"with additional selected years")
   
   # Filter the add.years data frame for just the rolling average P/PET data
@@ -680,7 +708,7 @@ for (i in 1:nrow(locations)) {
                      ,fill = as.factor(year))
               ,size = line_width) +
     ggtitle(paste(rolling_avg_eppet_addyears_title,
-                  lat_lon)) + 
+                  lat_lon, date_start, "to",date_end)) + 
     scale_list$colorScale +
     scale_list$fillScale + 
     xlim(as.Date(date_start), as.Date(date_end)) +
