@@ -517,7 +517,8 @@ for (i in 1:nrow(locations)) {
                                       ,title = paste(precip_title
                                                      ,lat_lon
                                                      ,date_start, "to"
-                                                     ,date_end))
+                                                     ,date_end)
+                                      ,mainGraphType = "bar")
 
   # Accumulated Precipitation with Standard Deviation ---------------------
   acc_precip_stdev_title <- paste0(place_name, 
