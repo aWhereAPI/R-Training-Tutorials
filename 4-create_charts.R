@@ -755,17 +755,14 @@ for (i in 1:nrow(locations)) {
     # Precipitation-over-PET ratio (P/PET)
     print(ppet)
     
-    # rolling average eP/PET and P/PET 
+    # rolling average P/PET 
     print(rolling_avg_ppet)
     
     # rolling average P/PET with additional selected years
     print(rolling_avg_ppet_addyears)
     
-    # rolling average eP/PET
+    # rolling average eP/PET and P/PET w std dev
     print(rolling_avg_eppet)
-    
-    # rolling average eP/PET with additional selected years
-    print(rolling_avg_ppet_addyears)
     
   } 
   
@@ -831,19 +828,13 @@ for (i in 1:nrow(locations)) {
                                     ,formatGraphTitleForFileName(ppet_title)))
     
     
-    # rolling average eP/PET and P/PET 
-    # VS-NOTE assess this chart make sure all variables are plotted 
+    # rolling average P/PET 
     WriteJpeg(plt = rolling_avg_ppet
               ,plt.title = paste0(current_chart_path
                         ,formatGraphTitleForFileName(rolling_avg_ppet_title)))
     
     
-    # rolling average P/PET with additional selected years
-    WriteJpeg(plt = rolling_avg_ppet_addyears 
-              ,plt.title = paste0(current_chart_path
-               ,formatGraphTitleForFileName(rolling_avg_ppet_addyears_title)))
-    
-    # rolling average eP/PET and P/PET
+    # rolling average eP/PET and P/PET w std dev
     WriteJpeg(plt = rolling_avg_eppet
               ,plt.title = paste0(current_chart_path
                                   ,formatGraphTitleForFileName(rolling_avg_eppet_title)))
