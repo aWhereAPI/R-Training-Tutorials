@@ -665,11 +665,10 @@ for (i in 1:nrow(locations)) {
     guides(fill = guide_legend(ncol =  length(add_years) +2))
   
 
-  
-  # Rolling-Average P/PET using Effective Precipitation -----------
+  # Rolling-Average eP/PET and P/PET w standard deviation -----------------
   rolling_avg_eppet_title <- 
     paste0(place_name
-            ,": ",roll_window," day rolling average eP PET and P PET")
+           ,": ",roll_window," day rolling average eP PET and P PET \nw Std Dev")
   
   rolling_avg_eppet <- 
     aWhereCharts::generateaWhereChart(data = weather_df_extended
@@ -683,31 +682,39 @@ for (i in 1:nrow(locations)) {
                                       ,rolling_window = roll_window
                                       ,includeSTD = TRUE)
   
-  
-  # Additional selected years 
-  rolling_avg_eppet_addyears_title <- 
+  # Rolling-Average P/PET with additional selected years ------------------
+  rolling_avg_ppet_addyears_title <- 
     paste0(place_name
-           ,": ",roll_window," day rolling avg eP PET and P PET \n"
+           ,": ",roll_window," day rolling avg P PET \n"
            ,"with additional selected years")
   
+  rolling_avg_ppet <- 
+    aWhereCharts::generateaWhereChart(data = weather_df_extended
+                                      ,variable = "rollingavgppet"
+                                      ,title = paste(rolling_avg_ppet_addyears_title
+                                                     ,lat_lon
+                                                     ,date_start, "to"
+                                                     ,date_end)
+                                      ,rolling_window = roll_window)
+  # Additional selected years 
   # Filter the add.years data frame for just the rolling average P/PET data
-  add_years_rollling_avg_eppet <- add_years_df_extended %>% 
+  add_years_rolling_avg_ppet <- add_years_df_extended %>% 
     dplyr::filter(var == "eppet.amount.rollAvg")
   
-  scale_list <- generateColorScale(rolling_avg_eppet
+  scale_list <- generateColorScale(rolling_avg_ppet
                                    ,add_years
                                    ,colors_additional)
   
   # add P/PET lines to the chart for additional selected years 
-  rolling_avg_eppet_addyears <- rolling_avg_eppet + 
-    geom_ribbon(data = add_years_rollling_avg_eppet
+  rolling_avg_ppet_addyears <- rolling_avg_ppet + 
+    geom_ribbon(data = add_years_rolling_avg_ppet
                 ,aes(x = as.Date(date)
                      ,ymin = data
                      ,ymax = data
                      ,color = as.factor(year)
                      ,fill = as.factor(year))
               ,size = line_width) +
-    ggtitle(paste(rolling_avg_eppet_addyears_title,
+    ggtitle(paste(rolling_avg_ppet_addyears_title,
                   lat_lon, date_start, "to",date_end)) + 
     scale_list$colorScale +
     scale_list$fillScale + 
@@ -770,7 +777,7 @@ for (i in 1:nrow(locations)) {
     print(rolling_avg_eppet)
     
     # rolling average eP/PET with additional selected years
-    print(rolling_avg_eppet_addyears)
+    print(rolling_avg_ppet_addyears)
     
   } 
   
@@ -853,15 +860,15 @@ for (i in 1:nrow(locations)) {
               ,plt.title = paste0(current_chart_path
                ,formatGraphTitleForFileName(rolling_avg_ppet_addyears_title)))
     
-    # rolling average eP/PET
+    # rolling average eP/PET and P/PET
     WriteJpeg(plt = rolling_avg_eppet
               ,plt.title = paste0(current_chart_path
                                   ,formatGraphTitleForFileName(rolling_avg_eppet_title)))
     
-    # rolling average eP/PET with additional selected years
-    WriteJpeg(plt = rolling_avg_eppet_addyears 
+    # rolling average P/PET with additional selected years
+    WriteJpeg(plt = rolling_avg_ppet_addyears 
               ,plt.title = paste0(current_chart_path
-              ,formatGraphTitleForFileName(rolling_avg_eppet_addyears_title)))
+              ,formatGraphTitleForFileName(rolling_avg_ppet_addyears_title)))
     
     # Weekly climatology chart comparing current precipitation and maximum 
     # temperature to LTN precip and max temperature
