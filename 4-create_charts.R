@@ -455,7 +455,7 @@ for (i in 1:nrow(locations)) {
   # Weekly climatology chart ----------------------------------------------
   # Only include date from the first day that is specified, 
   # not the extended window for calculating rolling aggregates
-  weekly_chart_title <- paste0("Annual Climate Chart for ", place_name) 
+  weekly_chart_title <- paste0("Weekly Climate Chart for ", place_name) 
   weekly_chart <- aWhereCharts::generateaWhereChart(data = weather_df
                                           ,variable = "precipitation"
                                           ,title = paste(weekly_chart_title
