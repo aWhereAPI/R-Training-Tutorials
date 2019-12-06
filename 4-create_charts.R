@@ -499,16 +499,6 @@ for (i in 1:nrow(locations)) {
                                                               ,date_start, "to"
                                                               ,date_end))
 
-  # Daily Precip with Standard Deviation ----------------------------------
-  precip_stdev_title <- paste0(place_name, ": Daily Precipitation w StdDev")
-  
-  precip_stdev <- aWhereCharts::generateaWhereStdDevChart(data = weather_df
-                                            ,variable = "precipitation"
-                                            ,title = paste(precip_stdev_title
-                                                           ,lat_lon
-                                                           ,date_start, "to"
-                                                           ,date_end))
-
   # Daily Precipitation ---------------------------------------------------
   precip_title <- paste0(place_name, ": Daily Precipitation")
   
@@ -743,9 +733,6 @@ for (i in 1:nrow(locations)) {
     # Potential evapotranspiration (PET) with standard deviation 
     print(pet_stdev)
     
-    # Daily precipitation with standard deviation  
-    print(precip_stdev) 
-    
     # Daily precipitation without standard deviation  
     print(precip) 
     
@@ -804,11 +791,6 @@ for (i in 1:nrow(locations)) {
     WriteJpeg(plt = pet_stdev
               ,plt.title = paste0(current_chart_path
                                ,formatGraphTitleForFileName(pet_stdev_title)))
-    
-    # Daily precipitation with standard deviation  
-    WriteJpeg(plt = precip_stdev
-              ,plt.title = paste0(current_chart_path
-                            ,formatGraphTitleForFileName(precip_stdev_title)))
     
     # Daily precipitation without standard deviation  
     WriteJpeg(plt = precip
