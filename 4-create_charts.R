@@ -462,7 +462,7 @@ for (i in 1:nrow(locations)) {
                                                         ,lat_lon
                                                         ,date_start, "to"
                                                         ,date_end)
-                                          ,includeSTD = TRUE
+                                          #,includeSTD = TRUE
                                           ,variable_rightAxis = "maxTemp"
                                           ,daysToAggregateOver = 7
                                            ,mainGraphType = "bar")  
