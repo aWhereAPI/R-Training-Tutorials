@@ -147,7 +147,7 @@ add_years <- c(2016, 2017)
 eP <- 30    
 
 # Size of rolling aggregates to calculate when smoothing 
-roll_window <- 30
+roll_window <- 20
 
 # Adjust the start date to be "roll.avg" days earlier
 date_start_extended <- as.character(as.Date(date_start) - roll_window)
