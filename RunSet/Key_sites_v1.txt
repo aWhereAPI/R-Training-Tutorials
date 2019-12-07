@@ -1,9 +1,0 @@
-place_name, latitude, longitude
-KeySite_1, 4.958, 32.875
-KeySite_2, 5.375, 31.458
-KeySite_3, 5.042, 29.792
-KeySite_4, 5.875, 27.875
-KeySite_5, 8.958, 27.875
-KeySite_6, 8.542, 31.708
-KeySite_7, 10.208, 32.373
-KeySite_8, 6.625, 29.708
