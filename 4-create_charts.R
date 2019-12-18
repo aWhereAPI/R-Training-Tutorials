@@ -30,7 +30,9 @@
 # 
 # You will need to be connected to the internet to run this script.
 #
+
 # Date updated: 2019-12-04
+
 #--------------------------------------------------------------------------
 
 # Install and load packages -----------------------------------------------
@@ -152,20 +154,25 @@ roll_window <- 20
 # Adjust the start date to be "roll.avg" days earlier
 date_start_extended <- as.character(as.Date(date_start) - roll_window)
 
-# Set color information for additional years 
-# Generate color scale to use including the colors of the original chart. 
+# Set colors for the charts: 
 
 # List of original colors for current and LTN lines 
-colors_orig <- c("#1F83B4", "#FF810E")
-                  # blue     # orange 
+    #colors_orig <- c("#1F83B4", "#FF810E") # blue , orange from original charts
+colors_orig <- c("#4575b4", "#fdae61") # blue, orange from new Colorbrewer palette
 
 # list of unique colors for additional lines added 
-colors_additional <- c("black", "red", "yellow", "purple")
+    #colors_additional <- c("black", "red", "yellow", "purple")
+colors_additional <- c("#000000", "#d73027", "#fee090", "#abd9e9") 
+                        #black     #red       #yellow    #light blue 
 
-# Just take the number of line colors that are needed for the final chart
-colors_final <- c(colors_additional[1:length(add_years)], colors_orig)
+# Just take the number of line colors that are needed for the final chart.
+# Since additional years will be plotted first, put those colors first.
+# Then Current and LTN colors. 
+colors_final <- c(colors_additional[1:length(add_years)],colors_orig)
 
+# Set the width of the lines on the chart
 line_width <- 1
+
 
 # Create charts  ----------------------------------------------------------
 

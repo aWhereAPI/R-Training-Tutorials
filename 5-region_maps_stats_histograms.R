@@ -954,7 +954,45 @@ for (j in 1:length(weather_file_list))  {
           which(bin_names_precip$bins %in% breaks_precip), ]$range
           , " - "), "[", 1))
     
-    # Make the histogram 
+    # # Make the histogram 
+    # ggplot(data = chart_data, # use the "long" formatted chart data 
+    #        aes(x = bin.precip + 0.5 # precip bin on the x-axis. add 0.5 to shift bars over.
+    #            ,y = population # population on the y-axis
+    #            ,col = Variable # color the bars differently for Current vs. LTN
+    #            ,fill = Variable)) + # color the bars differently for Current vs. LTN
+    #   geom_col(alpha = 0.4,  # set the opacity of the bars
+    #            position = "identity") + #stack the bard on top of each other+ 
+    #   theme_bw() + # set the theme for a white background, clean look
+    #   x_scale + # format the x-axis using the breaks and labels from above
+    #   scale_y_continuous(labels = scales::comma) + # remove scientific notation from y-axis
+    #   scale_colour_manual(values = c("#1696AC", "#FF810E")) + # set the bar outline colors
+    #   scale_fill_manual(values = c("#1696AC", "#FF810E")) + # set the bar colors
+    #   theme(legend.position="bottom", # put the color bar legend below the x-axis
+    #         legend.direction="horizontal", 
+    #         legend.title = element_blank(),
+    #         legend.spacing.x = unit(0.3,"cm"), # add some space between legend entries
+    #         axis.text.x = element_text(angle = 90, # format x-axis labels
+    #                                    hjust = 1,
+    #                                    color = "grey20", 
+    #                                    size = 12 ),
+    #         axis.text.y = element_text(size = 12,
+    #                                    color = "grey20")) + # format y-axis labels
+    #   labs(x = "Precipitation [level mm]", 
+    #        y = "Population (# of people)") +
+    #   ggtitle(hist_title) + # set the main title
+    #   theme(plot.title = element_text(size=16)) # main title size)
+    
+    # Set the chart aesthetics based on aWhereCharts::generateaWhereHistogram()
+    # variables for title and label font sizes 
+    size_font_main_title <- 16
+    size_font_axis_titles <- 14
+    size_font_axis_labels <- 14
+    size_font_legend_entries <- 14
+    # scale colors 
+    colorScaleToUse <- scale_colour_manual(values = c("#1696AC", "#FF810E")) 
+    colorFillToUse <- scale_fill_manual(values = c("#1696AC", "#FF810E")) 
+    
+    # Make the histogram
     ggplot(data = chart_data, # use the "long" formatted chart data 
            aes(x = bin.precip + 0.5 # precip bin on the x-axis. add 0.5 to shift bars over.
                ,y = population # population on the y-axis
@@ -962,16 +1000,34 @@ for (j in 1:length(weather_file_list))  {
                ,fill = Variable)) + # color the bars differently for Current vs. LTN
       geom_col(alpha = 0.4,  # set the opacity of the bars
                position = "identity") + #stack the bard on top of each other+ 
-      ggthemes::theme_igray() + 
+      ggplot2::theme_bw() + 
       x_scale + # format the x-axis using the breaks and labels from above
       scale_y_continuous(labels = scales::comma) + # remove scientific notation from y-axis
       theme(legend.position="bottom", # put the color bar legend below the x-axis
             legend.direction="horizontal",
             legend.title = element_blank(),
-            axis.text.x = element_text(angle = 45, hjust = 1)) +
+            legend.spacing.x = unit(0.3,"cm")
+            ,axis.text.x = element_text(color = "grey20", # font color 
+                                        size = size_font_axis_labels, # font size 
+                                        angle = 45,
+                                        hjust = 1,        # horizontal adjustment
+                                        face = "plain")  # font type "plain", "bold" 
+            ,axis.text.y = element_text(color = "grey20", 
+                                        size = size_font_axis_labels, 
+                                        face = "plain")
+            ,axis.title.y = element_text(color = "grey20", 
+                                         size = size_font_axis_titles, 
+                                         face = "bold")
+            ,axis.title.x = element_text(color = "grey20", 
+                                         size = size_font_axis_titles, 
+                                         face = "bold")
+            ,legend.text=element_text(size=size_font_legend_entries)) +
       labs(x = "Precipitation [level mm]", 
            y = "Population (# of people)") +
-      ggtitle(hist_title) # set the main title
+      ggtitle(hist_title) + # set the main title
+      colorScaleToUse + 
+      colorFillToUse + 
+      theme(plot.title = element_text(size=size_font_main_title)) # main title size
     
     # Write histogram to file 
     ggplot2::ggsave(filename = paste0(figures_path, "/"
@@ -1017,23 +1073,41 @@ for (j in 1:length(weather_file_list))  {
     
     # make the histogram
     ggplot(data = chart_data, # use the "long" formatted chart data 
-           aes(bin.ppet + 0.5, # ppet bin on the x-axis. add 0.5 to shift bars over.
-               population, # population on the y-axis
-               col = Variable, # color the bars differently for Current vs. LTN
-               fill = Variable)) + # color the bars differently for Current vs. LTN
-      geom_col(alpha = 0.4,     # set the opacity of the bars
-               position = "identity") + 
-      ggthemes::theme_igray() + 
+           aes(x = bin.ppet + 0.5 # precip bin on the x-axis. add 0.5 to shift bars over.
+               ,y = population # population on the y-axis
+               ,col = Variable # color the bars differently for Current vs. LTN
+               ,fill = Variable)) + # color the bars differently for Current vs. LTN
+      geom_col(alpha = 0.4,  # set the opacity of the bars
+               position = "identity") + #stack the bard on top of each other+ 
+      ggplot2::theme_bw() + 
       x_scale + # format the x-axis using the breaks and labels from above
-      scale_y_continuous(labels =  # remove scientific notation from y-axis
-                           scales::comma) + 
+      scale_y_continuous(labels = scales::comma) + # remove scientific notation from y-axis
       theme(legend.position="bottom", # put the color bar legend below the x-axis
             legend.direction="horizontal",
             legend.title = element_blank(),
-            axis.text.x = element_text(angle = 45, hjust = 1)) +
-      labs(x = "P/PET level", 
+            legend.spacing.x = unit(0.3,"cm")
+            ,axis.text.x = element_text(color = "grey20", # font color 
+                                        size = size_font_axis_labels, # font size 
+                                        angle = 45,
+                                        hjust = 1,        # horizontal adjustment
+                                        face = "plain")  # font type "plain", "bold" 
+            ,axis.text.y = element_text(color = "grey20", 
+                                        size = size_font_axis_labels, 
+                                        face = "plain")
+            ,axis.title.y = element_text(color = "grey20", 
+                                         size = size_font_axis_titles, 
+                                         face = "bold")
+            ,axis.title.x = element_text(color = "grey20", 
+                                         size = size_font_axis_titles, 
+                                         face = "bold")
+            ,legend.text=element_text(size=size_font_legend_entries)) +
+      labs(x = "Precipitation [level mm]", 
            y = "Population (# of people)") +
-      ggtitle(hist_title) # set the main title
+      ggtitle(hist_title) + # set the main title
+      colorScaleToUse + 
+      colorFillToUse + 
+      theme(plot.title = element_text(size=size_font_main_title)) # main title size
+    
     
     # Write histogram to file 
     ggplot2::ggsave(filename = paste0(figures_path,"/",formatGraphTitleForFileName(hist_title), ".png")
