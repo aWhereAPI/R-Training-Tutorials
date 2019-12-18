@@ -30,7 +30,9 @@
 # 
 # You will need to be connected to the internet to run this script.
 #
-# Date updated: 2019-12-03
+
+# Date updated: 2019-12-04
+
 #--------------------------------------------------------------------------
 
 # Install and load packages -----------------------------------------------
@@ -147,7 +149,7 @@ add_years <- c(2016, 2017)
 eP <- 30    
 
 # Size of rolling aggregates to calculate when smoothing 
-roll_window <- 30
+roll_window <- 20
 
 # Adjust the start date to be "roll.avg" days earlier
 date_start_extended <- as.character(as.Date(date_start) - roll_window)
@@ -311,7 +313,7 @@ for (i in 1:nrow(locations)) {
     
     temp_data <- data.frame(date = weather_df_extended$date 
                             ,data = temp_eppet
-                            ,var = "eppet.amount.rollAv"
+                            ,var = "eppet.amount.rollAvg"
                             ,year = year) 
     
     
@@ -460,14 +462,14 @@ for (i in 1:nrow(locations)) {
   # Weekly climatology chart ----------------------------------------------
   # Only include date from the first day that is specified, 
   # not the extended window for calculating rolling aggregates
-  weekly_chart_title <- paste0("Annual Climate Chart for ", place_name) 
+  weekly_chart_title <- paste0("Weekly Climate Chart for ", place_name) 
   weekly_chart <- aWhereCharts::generateaWhereChart(data = weather_df
                                           ,variable = "precipitation"
                                           ,title = paste(weekly_chart_title
                                                         ,lat_lon
                                                         ,date_start, "to"
                                                         ,date_end)
-                                          ,includeSTD = TRUE
+                                          #,includeSTD = TRUE
                                           ,variable_rightAxis = "maxTemp"
                                           ,daysToAggregateOver = 7
                                            ,mainGraphType = "bar")  
@@ -480,7 +482,9 @@ for (i in 1:nrow(locations)) {
   max_temp_stdev <- aWhereCharts::generateaWhereStdDevChart(data = weather_df
                                                     ,variable = "maxTemp" 
                                          ,title = paste(max_temp_stdev_title
-                                                        ,lat_lon))
+                                                        ,lat_lon
+                                                        ,date_start, "to"
+                                                        ,date_end))
   
   # Minimum Temperature with Standard Deviation ---------------------------
   min_temp_stdev_title <- paste0(place_name, ": Minimum Temperature w StdDev")
@@ -488,7 +492,9 @@ for (i in 1:nrow(locations)) {
   min_temp_stdev <- aWhereCharts::generateaWhereStdDevChart(data = weather_df
                                                   ,variable = "minTemp"
                                          ,title = paste(min_temp_stdev_title
-                                                        ,lat_lon))
+                                                        ,lat_lon
+                                                        ,date_start, "to"
+                                                        ,date_end))
   
   # PET with Standard Deviation -------------------------------------------
   pet_stdev_title <- paste0(place_name, ": PET w StdDev")
@@ -496,15 +502,9 @@ for (i in 1:nrow(locations)) {
   pet_stdev <- aWhereCharts::generateaWhereStdDevChart(data = weather_df 
                                                        ,variable = "pet"
                                                ,title = paste(pet_stdev_title
-                                                              ,lat_lon))
-
-  # Daily Precip with Standard Deviation ----------------------------------
-  precip_stdev_title <- paste0(place_name, ": Daily Precipitation w StdDev")
-  
-  precip_stdev <- aWhereCharts::generateaWhereStdDevChart(data = weather_df
-                                            ,variable = "precipitation"
-                                            ,title = paste(precip_stdev_title
-                                                           ,lat_lon))
+                                                              ,lat_lon
+                                                              ,date_start, "to"
+                                                              ,date_end))
 
   # Daily Precipitation ---------------------------------------------------
   precip_title <- paste0(place_name, ": Daily Precipitation")
@@ -512,7 +512,10 @@ for (i in 1:nrow(locations)) {
   precip <- aWhereCharts::generateaWhereChart(data = weather_df
                                       ,variable = "precipitation"    
                                       ,title = paste(precip_title
-                                                     ,lat_lon))
+                                                     ,lat_lon
+                                                     ,date_start, "to"
+                                                     ,date_end)
+                                      ,mainGraphType = "bar")
 
   # Accumulated Precipitation with Standard Deviation ---------------------
   acc_precip_stdev_title <- paste0(place_name, 
@@ -521,17 +524,21 @@ for (i in 1:nrow(locations)) {
   acc_precip_stdev <- aWhereCharts::generateaWhereStdDevChart(data = weather_df
                                     ,variable = "accumulatedPrecipitation"
                                         ,title = paste(acc_precip_stdev_title
-                                                        ,lat_lon))
+                                                       ,lat_lon
+                                                       ,date_start, "to"
+                                                       ,date_end))
 
   # Accumulated Effective Precipitation with Standard Deviation -----------
   acc_precip_eff_stdev_title <- paste0(place_name, 
-      ": Precipitation and Effective Precipitation\n Accumulated w Std Dev")
+      ": Precipitation and Effective Precipitation\nAccumulated w Std Dev")
   
   acc_precip_eff_stdev <- 
     aWhereCharts::generateaWhereStdDevChart(data = weather_df 
                                           ,variable = "accumulatedPrecipitation"
                                           ,title = paste(acc_precip_eff_stdev_title
-                                                          ,lat_lon)
+                                                         ,lat_lon
+                                                         ,date_start, "to"
+                                                         ,date_end)
                                           ,e_precip = TRUE
                                           ,e_threshold = eP)
   
@@ -541,8 +548,9 @@ for (i in 1:nrow(locations)) {
   acc_precip <- aWhereCharts::generateaWhereChart(data = weather_df
                                     ,variable = "accumulatedPrecipitation"
                                     ,title = paste(acc_precip_title
-                                                    ,lat_lon)
-                                    ,includeSTD = TRUE)
+                                                    ,lat_lon
+                                                    ,date_start, "to"
+                                                    ,date_end))
   
   # Accumulated Precipitation with Additional Selected Years --------------
   
@@ -569,7 +577,9 @@ for (i in 1:nrow(locations)) {
                      ,fill = as.factor(year))
                 ,size = line_width) +
     ggtitle(paste(acc_precip_addyears_title
-                   ,lat_lon)) + 
+                  ,lat_lon
+                  ,date_start, "to"
+                  ,date_end)) + 
     scale_list$colorScale +
     scale_list$fillScale + 
     xlim(as.Date(date_start), as.Date(date_end)) +
@@ -582,25 +592,29 @@ for (i in 1:nrow(locations)) {
   acc_pet_stdev <- aWhereCharts::generateaWhereStdDevChart(data = weather_df
                                                 ,variable = "accumulatedPet"
                                            ,title = paste(acc_pet_stdev_title
-                                                          ,lat_lon))
+                                                          ,lat_lon
+                                                          ,date_start, "to"
+                                                          ,date_end))
   
   # Daily P/PET -----------------------------------------------------------
   # P/PET = Precipitation-over-PET ratio 
   # (NOTE!!! --> P/PET is rarely is interpretable on a daily chart) 
-  ppet_title <- paste0(place_name,": PPET")
+  ppet_title <- paste0(place_name,": P PET")
   
   ppet <- aWhereCharts::generateaWhereChart(data = weather_df 
                                             ,variable = "ppet" 
                                             ,title = paste(ppet_title
-                                                           ,lat_lon))
+                                                           ,lat_lon
+                                                           ,date_start, "to"
+                                                           ,date_end))
   
-  # Rolling-Average PET and P/PET ----------------------------------
+  # Rolling-Average PET and P/PET -----------------------------------------
   
   # No eprecip/PET shows up if all rainfall events are less than 
   # the effective precipitation threshold 
   rolling_avg_ppet_title <- 
     paste0(place_name
-          ,": ",roll_window," day rolling average \neP PET and P PET ")
+          ,": ",roll_window," day rolling average \nP PET ")
   
   # Create a chart of P/PET without effective precip (set e_precip to FALSE).
   # As for the previous chart, use the weather date with "extended" dates
@@ -609,12 +623,13 @@ for (i in 1:nrow(locations)) {
     aWhereCharts::generateaWhereChart(data = weather_df_extended
                                       ,variable = "rollingavgppet"
                                       ,title = paste(rolling_avg_ppet_title
-                                                     ,lat_lon)
+                                                     ,lat_lon
+                                                     ,date_start, "to"
+                                                     ,date_end)
                                       ,e_precip = FALSE
-                                      ,rolling_window = roll_window
-                                      ,includeSTD = TRUE)
+                                      ,rolling_window = roll_window)
   
-  # Rolling-Average PET and P/PET with Additional Selected Years ---
+  # Rolling-Average P/PET with Additional Selected Years ----------
   rolling_avg_ppet_addyears_title <- 
     paste0(place_name
             ,": ",roll_window," day rolling avg P PET \n"
@@ -639,54 +654,66 @@ for (i in 1:nrow(locations)) {
                    ,fill = as.factor(year))
               ,size = line_width) +
     ggtitle(paste(rolling_avg_ppet_addyears_title
-                  ,lat_lon)) + 
+                  ,lat_lon
+                  ,date_start, "to"
+                  ,date_end)) + 
     scale_list$colorScale +
     scale_list$fillScale + 
     xlim(as.Date(date_start), as.Date(date_end)) +
     guides(fill = guide_legend(ncol =  length(add_years) +2))
   
 
-  
-  # Rolling-Average PET and P/PET using Effective Precipitation ----
+  # Rolling-Average eP/PET and P/PET w standard deviation -----------------
   rolling_avg_eppet_title <- 
     paste0(place_name
-            ,": ",roll_window," day rolling average eP PET")
+           ,": ",roll_window," day rolling average eP PET and P PET \nw Std Dev")
   
   rolling_avg_eppet <- 
     aWhereCharts::generateaWhereChart(data = weather_df_extended
                                       ,variable = "rollingavgppet"
                                       ,title = paste(rolling_avg_eppet_title
-                                                      ,lat_lon)
+                                                     ,lat_lon
+                                                     ,date_start, "to"
+                                                     ,date_end)
                                       ,e_precip = TRUE
                                       ,e_threshold = eP 
                                       ,rolling_window = roll_window
                                       ,includeSTD = TRUE)
   
-  
-  # Additional selected years 
-  rolling_avg_eppet_addyears_title <- 
+  # Rolling-Average P/PET with additional selected years ------------------
+  rolling_avg_ppet_addyears_title <- 
     paste0(place_name
-           ,": ",roll_window," day rolling avg eP PET \n"
+           ,": ",roll_window," day rolling avg P PET \n"
            ,"with additional selected years")
   
+  rolling_avg_ppet <- 
+    aWhereCharts::generateaWhereChart(data = weather_df_extended
+                                      ,variable = "rollingavgppet"
+                                      ,title = paste(rolling_avg_ppet_addyears_title
+                                                     ,lat_lon
+                                                     ,date_start, "to"
+                                                     ,date_end)
+                                      ,rolling_window = roll_window)
+  # Additional selected years 
   # Filter the add.years data frame for just the rolling average P/PET data
-  add_years_rollling_avg_eppet <- add_years_df %>% 
+  add_years_rolling_avg_ppet <- add_years_df_extended %>% 
     dplyr::filter(var == "eppet.amount.rollAvg")
   
-  scale_list <- generateColorScale(rolling_avg_eppet
+  scale_list <- generateColorScale(rolling_avg_ppet
                                    ,add_years
                                    ,colors_additional)
   
   # add P/PET lines to the chart for additional selected years 
-  rolling_avg_eppet_addyears <- rolling_avg_eppet + 
-    geom_ribbon(data = add_years_rollling_avg_eppet
+  rolling_avg_ppet_addyears <- rolling_avg_ppet + 
+    geom_ribbon(data = add_years_rolling_avg_ppet
                 ,aes(x = as.Date(date)
                      ,ymin = data
                      ,ymax = data
                      ,color = as.factor(year)
                      ,fill = as.factor(year))
               ,size = line_width) +
-    ggtitle(rolling_avg_eppet_addyears_title) + 
+    ggtitle(paste(rolling_avg_ppet_addyears_title,
+                  lat_lon, date_start, "to",date_end)) + 
     scale_list$colorScale +
     scale_list$fillScale + 
     xlim(as.Date(date_start), as.Date(date_end)) +
@@ -713,9 +740,6 @@ for (i in 1:nrow(locations)) {
     # Potential evapotranspiration (PET) with standard deviation 
     print(pet_stdev)
     
-    # Daily precipitation with standard deviation  
-    print(precip_stdev) 
-    
     # Daily precipitation without standard deviation  
     print(precip) 
     
@@ -738,17 +762,14 @@ for (i in 1:nrow(locations)) {
     # Precipitation-over-PET ratio (P/PET)
     print(ppet)
     
-    # rolling average eP/PET and P/PET 
+    # rolling average P/PET 
     print(rolling_avg_ppet)
     
     # rolling average P/PET with additional selected years
     print(rolling_avg_ppet_addyears)
     
-    # rolling average eP/PET
+    # rolling average eP/PET and P/PET w std dev
     print(rolling_avg_eppet)
-    
-    # rolling average eP/PET with additional selected years
-    print(rolling_avg_eppet_addyears)
     
   } 
   
@@ -774,11 +795,6 @@ for (i in 1:nrow(locations)) {
     WriteJpeg(plt = pet_stdev
               ,plt.title = paste0(current_chart_path
                                ,formatGraphTitleForFileName(pet_stdev_title)))
-    
-    # Daily precipitation with standard deviation  
-    WriteJpeg(plt = precip_stdev
-              ,plt.title = paste0(current_chart_path
-                            ,formatGraphTitleForFileName(precip_stdev_title)))
     
     # Daily precipitation without standard deviation  
     WriteJpeg(plt = precip
@@ -819,27 +835,21 @@ for (i in 1:nrow(locations)) {
                                     ,formatGraphTitleForFileName(ppet_title)))
     
     
-    # rolling average eP/PET and P/PET 
-    # VS-NOTE assess this chart make sure all variables are plotted 
+    # rolling average P/PET 
     WriteJpeg(plt = rolling_avg_ppet
               ,plt.title = paste0(current_chart_path
                         ,formatGraphTitleForFileName(rolling_avg_ppet_title)))
     
     
-    # rolling average P/PET with additional selected years
-    WriteJpeg(plt = rolling_avg_ppet_addyears 
-              ,plt.title = paste0(current_chart_path
-               ,formatGraphTitleForFileName(rolling_avg_ppet_addyears_title)))
-    
-    # rolling average eP/PET
+    # rolling average eP/PET and P/PET w std dev
     WriteJpeg(plt = rolling_avg_eppet
               ,plt.title = paste0(current_chart_path
                                   ,formatGraphTitleForFileName(rolling_avg_eppet_title)))
     
-    # rolling average eP/PET with additional selected years
-    WriteJpeg(plt = rolling_avg_eppet_addyears 
+    # rolling average P/PET with additional selected years
+    WriteJpeg(plt = rolling_avg_ppet_addyears 
               ,plt.title = paste0(current_chart_path
-              ,formatGraphTitleForFileName(rolling_avg_eppet_addyears_title)))
+              ,formatGraphTitleForFileName(rolling_avg_ppet_addyears_title)))
     
     # Weekly climatology chart comparing current precipitation and maximum 
     # temperature to LTN precip and max temperature
