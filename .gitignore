@@ -5,7 +5,9 @@
 *.html
 testFile.csv
 figures/
+charts/
 outputCSVs/
+charts/
 pdfsSentToClass/
 packrat/
 .Rprofile
