@@ -1,5 +1,4 @@
  #--------------------------------------------------------------------------
- #
  # Tutorial de R de aWhere: Instalacion y configuracion
  #
  # Proposito del script: 

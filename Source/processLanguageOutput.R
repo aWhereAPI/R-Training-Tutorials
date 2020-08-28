@@ -8,24 +8,32 @@ for (x in 1:length(filesToProcess)) {
     
     languageToUse <- languagesToProcess[z]
     
+    if (languageToUse == 'english') {
+      encodingToUse.input <- 'latin1'
+      encodingToUse.output <- 'UTF-8'
+    } else if (languageToUse == 'spanish') {
+      encodingToUse.input <- 'latin1'
+      encodingToUse.output <- 'UTF-8'
+    }
+    
     outputFile <- paste0('current_training_scripts/',languageToUse,'/',gsub(pattern = '_master.txt'
                                                                             ,replacement = '.R'
                                                                             ,x = fileToUse
                                                                             ,fixed = TRUE))
-    
+  
     if (file.exists(outputFile)) {
       unlink(outputFile)
     }
     
-    
+    outputFile <- file(outputFile, "w", encoding = encodingToUse.output)
     
     dir.create(path = paste0('current_training_scripts/',languageToUse,'/')
                ,showWarnings = FALSE
                ,recursive = TRUE)
     
-    
-    
-    con <- file(paste0('archives/master_version/',fileToUse),'r')
+    con <- file(paste0('archives/master_version/',fileToUse)
+                ,open = 'r'
+                ,encoding = encodingToUse.input)
     
     keepReading <- TRUE
     commentBlock <- FALSE
@@ -37,7 +45,8 @@ for (x in 1:length(filesToProcess)) {
       lineCounter <- lineCounter + 1 
       
       keepLine <- TRUE
-      line = readLines(con, n = 1)
+      line = readLines(con = con
+                       ,n = 1)
       if (length(line) == 0) {
         #this occurs on the last line which should be blank
         keepReading <- FALSE
@@ -76,6 +85,7 @@ for (x in 1:length(filesToProcess)) {
                   ,x = line)) {
           
         #  line <- trimws(line,which = 'left')
+          #skip the first tab
           line <- substr(line,2,nchar(line))  
         } else {
           stop('Comment Block not formatted properly\n')
@@ -90,6 +100,7 @@ for (x in 1:length(filesToProcess)) {
     }
     
     close(con)
+    close(outputFile)
   }
 }
 

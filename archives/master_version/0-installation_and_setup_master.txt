@@ -34,7 +34,6 @@ if (language == 'english') {
   # the install.packages() function with the name of the package, "devtools": 
 } else if (language == 'spanish') {
   #--------------------------------------------------------------------------
-  #
   # Tutorial de R de aWhere: Instalacion y configuracion
   #
   # Proposito del script: 

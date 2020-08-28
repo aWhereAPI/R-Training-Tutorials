@@ -85,7 +85,7 @@ if (language == 'english') {
   # Cargue sus credenciales de aWhere ---------------------------------------
   #
   # Es necesario cargar su Archivo de Credenciales que incluye su Key & Secret
-  # de aWhere, similar a un nombre de usuario y contrase?a. Esto le brinda una
+  # de aWhere, similar a un nombre de usuario y contraseña. Esto le brinda una
   # especie de "Token" que muestra que usted tiene acceso al API y a todos los datos de aWhere.
   # Debe de mantener sus credenciales en una ubicacion que pueda hallar facilmente.
   # Copie la ruta de acceso de este archivo y pegue esta sobre la frase "YOUR CREDENTIALS HERE"

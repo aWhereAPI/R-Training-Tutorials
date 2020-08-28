@@ -240,7 +240,7 @@ for (i in(1:nrow(locations))) {
     # Set the starting and ending dates to a time period of interest
     #
     # January 1, 2016
-  } else if (langauge == 'spanish') {
+  } else if (language == 'spanish') {
     # Puede tambien hacer clic en el dataframe del pronostico en la pesta?a "Environment"
     # en la consola superior derecha para ver los datos en RStudio.
     #
@@ -380,8 +380,13 @@ for (i in(1:nrow(locations))) {
                                monthday_end = monthday_end,
                                year_start = year_start,
                                year_end = year_end,
+                               if (language == 'english') {
+                                # you can choose to exclude years from the LTN
+                               } else if (language == 'spanish') {
+                                # puede tambien excluir ciertos a?os de las variables LTN
+                               }
                                exclude_years = c("2011", "2016")) 
-  
+
   if (language == 'english') {
     # Click the "ltn" dataframe in the "environment" tab on the top right 
     # console to see the data!  

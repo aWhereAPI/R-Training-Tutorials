@@ -111,17 +111,16 @@ for (i in(1:nrow(locations))) {
    # que usted creo dentro de su directorio de trabajo.
   write.csv(forecast, file = paste0("outputCSVs/Forecast-6hour-",place_name,".csv"), row.names=F) 
   
-    # Puede tambien hacer clic en el dataframe del pronostico en la pesta?a "Environment"
-    # en la consola superior derecha para ver los datos en RStudio.
-    #
-    # Datos Observados --------------------------------------------------------
-    #
-    # Establezca sus fechas de inicio y fin para un periodo de interes
-    #
-    # Aqui vamos a agregar los datos historicos para su area de interes.
-    #
-    # 1ero de enero, 2016
-  }
+   # Puede tambien hacer clic en el dataframe del pronostico en la pesta?a "Environment"
+   # en la consola superior derecha para ver los datos en RStudio.
+   #
+   # Datos Observados --------------------------------------------------------
+   #
+   # Establezca sus fechas de inicio y fin para un periodo de interes
+   #
+   # Aqui vamos a agregar los datos historicos para su area de interes.
+   #
+   # 1ero de enero, 2016
   starting_date <- "2018-01-01" 
    
    # hace dos dias
@@ -189,8 +188,9 @@ for (i in(1:nrow(locations))) {
                                monthday_end = monthday_end,
                                year_start = year_start,
                                year_end = year_end,
+                               # puede tambien excluir ciertos a?os de las variables LTN
                                exclude_years = c("2011", "2016")) 
-  
+
    # Haga clic en el dataframe "ltn" en la pesta?a "environment" en la consola superior derecha
    # para ver los datos.
   write.csv(ltn, file = paste0("outputCSVs/ltnData-",place_name,".csv"), row.names=F) 

@@ -28,7 +28,7 @@
  #
  # Usted necesita estar conectado a internet para ejecutar este codigo.
  #
- # Fecha de actualizaci?n: 2020-04-15
+ # Fecha de actualización: 2020-04-15
  #
  #--------------------------------------------------------------------------
  #
@@ -48,7 +48,7 @@ library(aWhereCharts)
  # Cargue sus credenciales de aWhere ---------------------------------------
  #
  # Es necesario cargar su Archivo de Credenciales que incluye su Key & Secret
- # de aWhere, similar a un nombre de usuario y contrase?a. Esto le brinda una
+ # de aWhere, similar a un nombre de usuario y contraseña. Esto le brinda una
  # especie de "Token" que muestra que usted tiene acceso al API y a todos los datos de aWhere.
  # Debe de mantener sus credenciales en una ubicacion que pueda hallar facilmente.
  # Copie la ruta de acceso de este archivo y pegue esta sobre la frase "YOUR CREDENTIALS HERE"
@@ -107,10 +107,10 @@ locations <- read.csv(locations_file)
  # Periodo de interes ------------------------------------------------------
  #
  # Especifique la fecha de inicio y fin segun su interes.
- # La fecha de inicio puede iniciar a partir del a?o 2008.
+ # La fecha de inicio puede iniciar a partir del año 2008.
  # La fecha final puede incluir hasta el pronostico a 7 dias a partir de hoy.
  # Debe proveer ambas fechas en multiples formatos.
- # Puede utilizar el formato "AAAA-MM-DD" para una fecha A?O-MES-DIA espec?fica.
+ # Puede utilizar el formato "AAAA-MM-DD" para una fecha AÑO-MES-DIA específica.
  # Tambien, puede escoger fechas relativas a la almacenada como la fecha actual
  # en su computadora. Por ejemplo: 
  #   day_end <- as.character(Sys.Date())     # Hoy
@@ -122,17 +122,17 @@ date_start <- "2018-05-15"
  # PUEDE CAMBIAR ESTO A LA FECHA FINAL DE SU ELECCION
 date_end <- "2019-05-14"    
                             
- # Los valores promedio a largo plazo (LTN) se calcularan a partir de un rango de a?os.
+ # Los valores promedio a largo plazo (LTN) se calcularan a partir de un rango de años.
  #
- # El a?o inicial tiene que ser igual o mayor al 2008.
+ # El año inicial tiene que ser igual o mayor al 2008.
 year_start <- 2008  
                     
 year_end <- 2018
 
- # Opcional: Puede a?adir a?o(s) seleccionados previamente a los gr?ficos
- # Estas lineas van a graficar los datos para a?os especificos de forma explicita.
- #   add_years <- NA             # Si usted no quiere agregar a?os adicionales. 
- #   add_years <- c(2016, 2017)  # Si desea agregar varios a?os especificos. 
+ # Opcional: Puede añadir año(s) seleccionados previamente a los gráficos
+ # Estas lineas van a graficar los datos para años especificos de forma explicita.
+ #   add_years <- NA             # Si usted no quiere agregar años adicionales. 
+ #   add_years <- c(2016, 2017)  # Si desea agregar varios años especificos. 
 add_years <- c(2016, 2017) 
 
  # Parametros adicionales de los graficos ----------------------------------
@@ -142,7 +142,7 @@ add_years <- c(2016, 2017)
  # (Limita los eventos duraderos de precipitacion de modo que no incluye la escorrentia)
 eP <- 30    
 
- # Tama?o de los agregados dinamico para suavizar los calculos
+ # Tamaño de los agregados dinamico para suavizar los calculos
 roll_window <- 20
 
  # Ajuste a la fecha de inicio para venga dada por "roll.avg" - dias previos
@@ -161,7 +161,7 @@ colors_orig <- c("#4575b4", "#fdae61")
 colors_additional <- c("#000000", "#d73027", "#fee090", "#abd9e9") 
 
  # Solo escoja el numero de los colores de las lineas que son necesarios para el grafico final.
- # Como los a?os adicionales se van a graficar primero, coloque esos colores de primero.
+ # Como los años adicionales se van a graficar primero, coloque esos colores de primero.
  # Posteriormente coloque los colores de las series actuales y LTN.
 colors_final <- c(colors_additional[1:length(add_years)],colors_orig)
 
@@ -217,10 +217,10 @@ for (i in 1:nrow(locations)) {
                                         ,year_start = year_start
                                         ,year_end = year_end)
   
-   # A?os adicionales
-   # Genere datos para graficar a?os especificos
+   # Años adicionales ________________________________________________________
+   # Genere datos para graficar años especificos
    #
-   # cree un "data frame" para almacenar a?os adicionales seleccionados.
+   # cree un "data frame" para almacenar años adicionales seleccionados.
    # el formato "largo" de este "data frame" es ideal para graficar utilizando la funcion ggplot.
   add_years_df <- data.frame(date = character(),
                              data = double(),
@@ -232,11 +232,11 @@ for (i in 1:nrow(locations)) {
                                       var = character(),
                                       year = double())
   
-   # Obtenga el conjunto de datos para el(los) a?o(s) adicional(es) seleccionado(s)
+   # Obtenga el conjunto de datos para el(los) año(s) adicional(es) seleccionado(s)
 
   for (year in add_years) {
     
-     # Si no hay a?os adicionales que agregar, corte el ciclo
+     # Si no hay años adicionales que agregar, corte el ciclo
     if(is.na(year)) {
       break
     }
@@ -273,7 +273,7 @@ for (i in 1:nrow(locations)) {
                             ,var = "accumulatedPrecipitation.amount"
                             ,year = year) 
     
-     # Combine los datos de precipitacion acumulada con algun otro a?o adicional
+     # Combine los datos de precipitacion acumulada con algun otro año adicional
     add_years_df <- rbind(add_years_df, temp_data)                       
     
      # Calcule los valores del promedio dinamico del indice P/PET para los graficos en formato "largo"
@@ -289,7 +289,7 @@ for (i in 1:nrow(locations)) {
                             var = "ppet.amount.rollAvg",
                             year = year) 
     
-     # Combine los promedios dinamicos de P/PET con algun otro a?o adicional
+     # Combine los promedios dinamicos de P/PET con algun otro año adicional
     add_years_df_extended <- rbind(add_years_df_extended, temp_data) 
     
      # Calcule el promedio dinamico eP/PET. Primero, utilice la funcion ClipValues para
@@ -310,11 +310,11 @@ for (i in 1:nrow(locations)) {
                             ,var = "eppet.amount.rollAvg"
                             ,year = year) 
     
-     # Combine el promedio dinamico del indice eP/PET con algun otro a?o adicional
+     # Combine el promedio dinamico del indice eP/PET con algun otro año adicional
     add_years_df_extended <- rbind(add_years_df_extended, temp_data) 
     
      # Agregue las columnas de los  valores de precipitacion acumulada actual y PPET de los 
-     # a?os seleccionados al "dataframe" principal de datos meteorologicos para escribir un archivo .csv
+     # años seleccionados al "dataframe" principal de datos meteorologicos para escribir un archivo .csv
     weather_df_extended$accumulatedPrecipitation.amount.year <- 
                      weather_df_mod_extended$accumulatedPrecipitation.amount
     weather_df_extended$ppet.amount.year <- 
@@ -324,7 +324,7 @@ for (i in 1:nrow(locations)) {
     weather_df_extended$pet.amount.year <- 
                       weather_df_mod_extended$pet.amount
     
-     # cambie el nombre de las columnas para tener el valor del a?o actual agregado al final,
+     # cambie el nombre de las columnas para tener el valor del año actual agregado al final,
      # de la forma precipitation.amount.year.2016
     data.table::setnames(weather_df_extended 
                          ,c("accumulatedPrecipitation.amount.year")
@@ -546,7 +546,7 @@ for (i in 1:nrow(locations)) {
                                                     ,date_start, "to"
                                                     ,date_end))
   
-   # Precipitacion Acumulada junto con A?os Adicionales Seleccionados ------
+   # Precipitacion Acumulada junto con Años Adicionales Seleccionados ------
    #
    # Filtre el data frame "add_years" para los datos de precipitacion acumulada
   add_years_acc_precip <- add_years_df %>% 
@@ -561,7 +561,7 @@ for (i in 1:nrow(locations)) {
                                    ,add_years
                                    ,colors_additional)
   
-   # Agregue las lineas para los a?os adicionales seleccionados al grafico de precipitacion acumulada
+   # Agregue las lineas para los años adicionales seleccionados al grafico de precipitacion acumulada
   acc_precip_addyears <- acc_precip + 
     geom_ribbon(data = add_years_acc_precip
                 ,aes(x = as.Date(date)
@@ -593,7 +593,7 @@ for (i in 1:nrow(locations)) {
    #  
    # P/PET = Razon entre la Precipitacion y la PET
    #
-   # (NOTA!!! --> El indice P/PET es extra?o de interpretar en un grafico de escala diaria)
+   # (NOTA!!! --> El indice P/PET es extraño de interpretar en un grafico de escala diaria)
   ppet_title <- paste0(place_name,": P PET")
   
   ppet <- aWhereCharts::generateaWhereChart(data = weather_df 
@@ -625,7 +625,7 @@ for (i in 1:nrow(locations)) {
                                       ,e_precip = FALSE
                                       ,rolling_window = roll_window)
   
-   # Promedio Dinamico de la P/PET con A?os Adicionales Seleccionados------
+   # Promedio Dinamico de la P/PET con Años Adicionales Seleccionados------
   rolling_avg_ppet_addyears_title <- 
     paste0(place_name
             ,": ",roll_window," day rolling avg P PET \n"
@@ -639,7 +639,7 @@ for (i in 1:nrow(locations)) {
                                    ,add_years
                                    ,colors_additional)
   
-   # Agregue las lineas de P/PET para los a?os adicionales seleccionados al grafico.
+   # Agregue las lineas de P/PET para los años adicionales seleccionados al grafico.
    # Establezca los limites del eje x de modo que se perciban las fechas de inicio y fin.
   rolling_avg_ppet_addyears <- rolling_avg_ppet +
     geom_ribbon(data = add_years_avg_ppet
@@ -676,7 +676,7 @@ for (i in 1:nrow(locations)) {
                                       ,rolling_window = roll_window
                                       ,includeSTD = TRUE)
   
-   # Promedio dinamico de la P/PETcon a?os adicionales seleccionados -------
+   # Promedio dinamico de la P/PETcon años adicionales seleccionados -------
   rolling_avg_ppet_addyears_title <- 
     paste0(place_name
            ,": ",roll_window," day rolling avg P PET \n"
@@ -690,7 +690,7 @@ for (i in 1:nrow(locations)) {
                                                      ,date_start, "to"
                                                      ,date_end)
                                       ,rolling_window = roll_window)
-   # A?os adicionales seleccionados
+   # Años adicionales seleccionados
    #
    # Filtre el "dataframe" add.years para su uso solo con los datos dinamicos de la P/PET
   add_years_rolling_avg_ppet <- add_years_df_extended %>% 
@@ -700,7 +700,7 @@ for (i in 1:nrow(locations)) {
                                    ,add_years
                                    ,colors_additional)
   
-   # agregue las lineas de P/PET para los a?os adicionales seleccionados al grafico
+   # agregue las lineas de P/PET para los años adicionales seleccionados al grafico
   rolling_avg_ppet_addyears <- rolling_avg_ppet + 
     geom_ribbon(data = add_years_rolling_avg_ppet
                 ,aes(x = as.Date(date)
@@ -748,7 +748,7 @@ for (i in 1:nrow(locations)) {
      # Precipitacion acumulada
     print(acc_precip)
     
-     # Precipitacion acumulada con a?os adicionales seleccionados
+     # Precipitacion acumulada con años adicionales seleccionados
     print(acc_precip_addyears)
     
      # Evapotranspiracion Potencial (PET) acumulada con desviacion estandar
@@ -760,7 +760,7 @@ for (i in 1:nrow(locations)) {
      # promedio dinamico de la P/PET
     print(rolling_avg_ppet)
     
-     # promedio dinamico de la P/PET con a?os adicionales seleccionados
+     # promedio dinamico de la P/PET con años adicionales seleccionados
     print(rolling_avg_ppet_addyears)
     
      # promedio dinamico de la eP/PET y P/PET con desviacion estandar
@@ -812,7 +812,7 @@ for (i in 1:nrow(locations)) {
               ,plt.title = paste0(current_chart_path
                               ,formatGraphTitleForFileName(acc_precip_title)))
     
-     # Precipitacion Acumulada con a?os adicionales seleccionados
+     # Precipitacion Acumulada con años adicionales seleccionados
     WriteJpeg(plt = acc_precip_addyears 
               ,plt.title = paste0(current_chart_path
                      ,formatGraphTitleForFileName(acc_precip_addyears_title)))
@@ -838,7 +838,7 @@ for (i in 1:nrow(locations)) {
               ,plt.title = paste0(current_chart_path
                                   ,formatGraphTitleForFileName(rolling_avg_eppet_title)))
     
-     # promedio dinamico de la P/PET con a?os adicionales seleccionados
+     # promedio dinamico de la P/PET con años adicionales seleccionados
     WriteJpeg(plt = rolling_avg_ppet_addyears 
               ,plt.title = paste0(current_chart_path
               ,formatGraphTitleForFileName(rolling_avg_ppet_addyears_title)))
@@ -876,6 +876,6 @@ for (i in 1:nrow(locations)) {
   }
 }
 
- # ?Revise las carpetas "charts" y "outputCSVs" en su directorio de trabajo
+ # ¡Revise las carpetas "charts" y "outputCSVs" en su directorio de trabajo
  # para ver las salidas de este script!
 

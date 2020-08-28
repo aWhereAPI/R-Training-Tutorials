@@ -724,7 +724,7 @@ for (j in 1:length(weather_file_list))  {
      #
      # Tabla resumen de la Precipitacion -----------------------------------
      #
-     # A?ada una columna que exprese en que contendor/rango de contenedores se incluira cada grilla
+     # Añada una columna que exprese en que contendor/rango de contenedores se incluira cada grilla
     weather_template_df$bin.precip <- NA
     weather_template_df$bin.ltn.precip <- NA
     weather_template_df$bin.range.precip <- NA
@@ -747,14 +747,14 @@ for (j in 1:length(weather_file_list))  {
       idx <- weather_template_df$CSUMPRE >= bins_precip[b] & 
              weather_template_df$CSUMPRE < bins_precip[b + 1]
       
-       # A?ada el numero de contenedor a cada fila
+      # Añada el numero de contenedor a cada fila
       weather_template_df$bin.precip[idx] <- b
       
        # Indices de entradas que caen/se incluyen en el contenedor actual
       idx <- weather_template_df$LTNSUMP >= bins_precip[b] & 
              weather_template_df$LTNSUMP < bins_precip[b + 1]           
       
-       # A?ada el numero de contenedor a cada fila
+       # Añada el numero de contenedor a cada fila
       weather_template_df$bin.ltn.precip[idx] <- b
     }
     
@@ -817,7 +817,7 @@ for (j in 1:length(weather_file_list))  {
     
      # Tabla-resumen del indice P/PET --------------------------------------
      #
-     # A?ada una columna que exprese en que contendor se incluira cada grilla
+     # Añada una columna que exprese en que contendor se incluira cada grilla
     weather_template_df$bin.ppet <- NA
     weather_template_df$bin.ltn.ppet <- NA
     weather_template_df$bin.range.ppet <- NA
@@ -941,7 +941,7 @@ for (j in 1:length(weather_file_list))  {
           , " - "), "[", 1))
     
      # Establezca el formato y la estetica del grafico tomando como base el comando aWhereCharts::generateaWhereHistogram()
-     # Variables para el titulo y tama?o de la fuente de las etiquetas
+     # Variables para el titulo y tamaño de la fuente de las etiquetas
     size_font_main_title <- 16
     size_font_axis_titles <- 14
     size_font_axis_labels <- 14
@@ -980,7 +980,7 @@ for (j in 1:length(weather_file_list))  {
              #color de la fuente 
             ,axis.text.x = element_text(color = "grey20", 
                                         
-                                         # tama?o de la fuente
+                                         # tamaño de la fuente 
                                         size = size_font_axis_labels,  
                                         angle = 45,
                                          # ajuste horizontal
@@ -1003,7 +1003,7 @@ for (j in 1:length(weather_file_list))  {
       ggtitle(hist_title) + 
       colorScaleToUse + 
       colorFillToUse + 
-       # tama?o del titulo principal
+       # tamaño del titulo principal
       theme(plot.title = element_text(size=size_font_main_title)) 
     
      # Escriba el histograma en un archivo
@@ -1075,7 +1075,7 @@ for (j in 1:length(weather_file_list))  {
             legend.spacing.x = unit(0.3,"cm")
              # color de la fuente
             ,axis.text.x = element_text(color = "grey20", 
-                                         # tama?o de la fuente
+                                         # tamaño de la fuente
                                         size = size_font_axis_labels, 
                                         angle = 45,
                                          # ajuste horizontal
@@ -1098,7 +1098,7 @@ for (j in 1:length(weather_file_list))  {
       ggtitle(hist_title) +
       colorScaleToUse + 
       colorFillToUse + 
-       # tama?o del titulo principal
+       # tamaño del titulo principal
       theme(plot.title = element_text(size=size_font_main_title))  
     
      # Escriba el histograma como un archivo
@@ -1114,6 +1114,6 @@ for (j in 1:length(weather_file_list))  {
 
 cat("Completed Processing all files and all Regions")
 
- # ?Revise las carpetas "figures" y "outputCSVs" en su directorio de trabajo
+ # ¡Revise las carpetas "figures" y "outputCSVs" en su directorio de trabajo
  # para ver las salidas de este script!
 

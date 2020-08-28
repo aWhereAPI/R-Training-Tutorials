@@ -1065,7 +1065,7 @@ for (j in 1:length(weather_file_list))  {
       #
       # Tabla resumen de la Precipitacion -----------------------------------
       #
-      # A?ada una columna que exprese en que contendor/rango de contenedores se incluira cada grilla
+      # Añada una columna que exprese en que contendor/rango de contenedores se incluira cada grilla
     }
     weather_template_df$bin.precip <- NA
     weather_template_df$bin.ltn.precip <- NA
@@ -1106,7 +1106,7 @@ for (j in 1:length(weather_file_list))  {
       if (language == 'english') {
         # Add the bin number to each row
       } else if (language == 'spanish') {
-        # A?ada el numero de contenedor a cada fila
+       # Añada el numero de contenedor a cada fila
       }
       weather_template_df$bin.precip[idx] <- b
       
@@ -1121,7 +1121,7 @@ for (j in 1:length(weather_file_list))  {
       if (language == 'english') {
         # Add the bin number to each row
       } else if (language == 'spanish') {
-        # A?ada el numero de contenedor a cada fila
+        # Añada el numero de contenedor a cada fila
       }
       weather_template_df$bin.ltn.precip[idx] <- b
     }
@@ -1216,7 +1216,7 @@ for (j in 1:length(weather_file_list))  {
     } else if (language == 'spanish') {
       # Tabla-resumen del indice P/PET --------------------------------------
       #
-      # A?ada una columna que exprese en que contendor se incluira cada grilla
+      # Añada una columna que exprese en que contendor se incluira cada grilla
     }
     weather_template_df$bin.ppet <- NA
     weather_template_df$bin.ltn.ppet <- NA
@@ -1425,7 +1425,7 @@ for (j in 1:length(weather_file_list))  {
       # variables for title and label font sizes 
     } else if (language == 'spanish') {
       # Establezca el formato y la estetica del grafico tomando como base el comando aWhereCharts::generateaWhereHistogram()
-      # Variables para el titulo y tama?o de la fuente de las etiquetas
+      # Variables para el titulo y tamaño de la fuente de las etiquetas
     }
     size_font_main_title <- 16
     size_font_axis_titles <- 14
@@ -1520,7 +1520,7 @@ for (j in 1:length(weather_file_list))  {
                                         if (language == 'english') {
                                           # font size 
                                         } else if (language == 'spanish') {
-                                          # tama?o de la fuente
+                                          # tamaño de la fuente 
                                         }
                                         size = size_font_axis_labels,  
                                         angle = 45,
@@ -1559,7 +1559,7 @@ for (j in 1:length(weather_file_list))  {
       if (language == 'english') {
         # main title size 
       } else if (language == 'spanish') {
-        # tama?o del titulo principal
+        # tamaño del titulo principal
       }
       theme(plot.title = element_text(size=size_font_main_title)) 
     
@@ -1713,7 +1713,7 @@ for (j in 1:length(weather_file_list))  {
                                         if (language == 'english') {
                                           # font size 
                                         } else if (language == 'spanish') {
-                                          # tama?o de la fuente
+                                          # tamaño de la fuente
                                         }
                                         size = size_font_axis_labels, 
                                         angle = 45,
@@ -1752,7 +1752,7 @@ for (j in 1:length(weather_file_list))  {
       if (language == 'english') {
         # main title size
       } else if (language == 'spanish') {
-        # tama?o del titulo principal
+        # tamaño del titulo principal
       }
       theme(plot.title = element_text(size=size_font_main_title))  
     
@@ -1781,6 +1781,6 @@ if (language == 'english') {
   # Check the "figures" and "outputCSVs" folders in your working directory 
   # to see the outputs of this script! 
 } else if (language == 'spanish') {
-  # ?Revise las carpetas "figures" y "outputCSVs" en su directorio de trabajo
+  # ¡Revise las carpetas "figures" y "outputCSVs" en su directorio de trabajo
   # para ver las salidas de este script!
 }

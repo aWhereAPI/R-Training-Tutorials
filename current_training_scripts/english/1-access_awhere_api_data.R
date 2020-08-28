@@ -128,17 +128,6 @@ for (i in(1:nrow(locations))) {
    # Set the starting and ending dates to a time period of interest
    #
    # January 1, 2016
-    # Puede tambien hacer clic en el dataframe del pronostico en la pesta?a "Environment"
-    # en la consola superior derecha para ver los datos en RStudio.
-    #
-    # Datos Observados --------------------------------------------------------
-    #
-    # Establezca sus fechas de inicio y fin para un periodo de interes
-    #
-    # Aqui vamos a agregar los datos historicos para su area de interes.
-    #
-    # 1ero de enero, 2016
-  }
   starting_date <- "2018-01-01" 
    
    # two days ago
@@ -207,8 +196,9 @@ for (i in(1:nrow(locations))) {
                                monthday_end = monthday_end,
                                year_start = year_start,
                                year_end = year_end,
+                               # you can choose to exclude years from the LTN
                                exclude_years = c("2011", "2016")) 
-  
+
    # Click the "ltn" dataframe in the "environment" tab on the top right 
    # console to see the data!  
   write.csv(ltn, file = paste0("outputCSVs/ltnData-",place_name,".csv"), row.names=F) 

@@ -54,7 +54,7 @@ library(aWhereCharts)
  # Cargue sus credenciales de aWhere ---------------------------------------
  #
  # Es necesario cargar su Archivo de Credenciales que incluye su Key & Secret
- # de aWhere, similar a un nombre de usuario y contrase?a. Esto le brinda una
+ # de aWhere, similar a un nombre de usuario y contraseña. Esto le brinda una
  # especie de "Token" que muestra que usted tiene acceso al API y a todos los datos de aWhere.
  # Debe de mantener sus credenciales en una ubicacion que pueda hallar facilmente.
  # Copie la ruta de acceso de este archivo y pegue esta sobre la frase "YOUR CREDENTIALS HERE"
@@ -103,10 +103,10 @@ locations <- read.csv(locations_file)
  # Periodo de interes ------------------------------------------------------
  #
  # Especifique la fecha de inicio y fin segun su interes.
- # La fecha de inicio puede iniciar a partir del a?o 2008.
+ # La fecha de inicio puede iniciar a partir del año 2008.
  # La fecha final puede incluir hasta el pronostico a 7 dias a partir de hoy.
  # Debe proveer ambas fechas en multiples formatos.
- # Puede utilizar el formato "AAAA-MM-DD" para una fecha A?O-MES-DIA espec?fica.
+ # Puede utilizar el formato "AAAA-MM-DD" para una fecha AÑO-MES-DIA específica.
  # Tambien, puede escoger fechas relativas a la almacenada como la fecha actual
  # en su computadora. Por ejemplo: 
  #   day_end <- as.character(Sys.Date())     # Hoy
@@ -118,9 +118,9 @@ date_start <- "2018-01-01"
  # PUEDE CAMBIAR ESTO A LA FECHA FINAL DE SU ELECCION
 date_end <- "2019-06-16"    
 
- # Los valores promedio a largo plazo (LTN) se calcularan a partir de un rango de a?os.
+ # Los valores promedio a largo plazo (LTN) se calcularan a partir de un rango de años.
  #
- # El a?o inicial tiene que ser igual o mayor al 2008.
+ # El año inicial tiene que ser igual o mayor al 2008.
 year_start <- 2011  
                     
 year_end <- 2018 
@@ -232,6 +232,6 @@ for (i in 1:nrow(locations)) {
             row.names = F )
 }
 
- # ?Revise las carpetas charts y outputCSVs en su directorio de trabajo
+ # ¡Revise las carpetas charts y outputCSVs en su directorio de trabajo
  # para ver las salidas de este script!
 
