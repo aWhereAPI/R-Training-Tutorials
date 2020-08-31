@@ -124,10 +124,18 @@ for (i in(1:nrow(locations))) {
    #
    # Here you will pull the historical data for your location of interest.
    #
-   # Set the starting and ending dates to a time period of interest
+   #  Set the starting and ending dates to a time period of interest
+   #  The parameters for this function can have many formats.
+   #  You can change the starting/ending dates for a time frame of interest. 
+   #  The starting date can be as early as 2006.
+   #  You can use the "YYYY-MM-DD" format for a specific date.
+   #  You can also use Sys.Date() to make your end date today, 
+   #  or similarly, use Sys.Date() - 1 to make your end date yesterday. 
+   #  NOTE that observed data can ONLY be in the past. You will get an error 
+   #  if a future date is selected! 
    #
-   # January 1, 2016
-  starting_date <- "2018-01-01" 
+   # January 1, 2020.
+  starting_date <- "2020-01-01" 
    
    # two days ago
   ending_date <- as.character(Sys.Date() - 2) 
@@ -139,15 +147,7 @@ for (i in(1:nrow(locations))) {
                                                day_end = ending_date)
   
   write.csv(observed, file = paste0("outputCSVs/observedData-",place_name,".csv"), row.names=F) 
-  
-   # The parameters for this function can have many formats.
-   # You can change the starting/ending dates for a timeframe of interest. 
-   #   The starting date can be as early as 2008. 
-   #   You can use the "YYYY-MM-DD" format for a specific date.
-   #   You can also use Sys.Date() to make your end date today, 
-   #   or similarly, use Sys.Date() - 1 to make your end date yesterday. 
-   #   NOTE that observed data can ONLY be in the past. You will get an error 
-   #   if a future date is selected! 
+
    #
    # Click the "observed" dataframe in the "environment" tab on the top right 
    # console to see the data!
@@ -174,7 +174,9 @@ for (i in(1:nrow(locations))) {
    # Here you will pull the long-term normals (LTN) for your location and time 
    # period of interest. 
    #
-   # LTN values will be calculated across this range of years 
+   # LTN values will be calculated across this range of years. The year_start
+   # can be as early as 2006. The year_end can be the last full year of data
+   # (for example, in August 2020 you would use 2019 at LTN end year.)
   year_start <- 2011
   year_end <- 2018
   
@@ -207,10 +209,10 @@ for (i in(1:nrow(locations))) {
    # This section combines all of the above datasets into one cohesive .csv for 
    # analysis. You can change the location and time period as needed in 
    # the lines of code below. 
-  starting_date <- "2018-01-01"
-  ending_date <- "2019-06-16"
-  year_start <- 2008
-  year_end <- 2018
+  starting_date <- "2020-01-01"
+  ending_date <- "2020-06-16"
+  year_start <- 2006
+  year_end <- 2019
   
    # This function generates a clean dataset with observed AND forecast 
    # agronomics AND Long Term Normals!
