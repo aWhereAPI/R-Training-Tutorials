@@ -7,7 +7,6 @@
  #
  # Usted necesita estar conectado a internet para ejecutar este codigo.
  #
- # Fecha de actualizacion: 2020-04-17
  #
  #--------------------------------------------------------------------------
  #

@@ -16,7 +16,6 @@
  #
  # Usted necesita estar conectado a internet para ejecutar este codigo.
  #
- # Fecha de actualizacion: 2020-04-14
 
 #--------------------------------------------------------------------------
  # Instalar y cargar paquetes ----------------------------------------------
@@ -168,8 +167,8 @@ for (i in(1:nrow(locations))) {
    # para su sitio y periodo de interes.
    #
    # Las variables LTN se calculan a partir de un rango de a?os.
-  year_start <- 2011
-  year_end <- 2018
+  year_start <- 2006
+  year_end <- 2019
   
    # Por favor especifique su mes-dia de inicio y de fin,
    # asi como tambien su "temporada de crecimiento" de cultivos
@@ -202,8 +201,8 @@ for (i in(1:nrow(locations))) {
    # segun sea el caso en las lineas siguientes del codigo.
   starting_date <- "2018-01-01"
   ending_date <- "2019-06-16"
-  year_start <- 2008
-  year_end <- 2018
+  year_start <- 2006
+  year_end <- 2019
   
    # La siguiente funcion crea un conjunto de datos depurados con los datos observados, 
    # los datos agronomicos y los valores promedio a largo plazo.
