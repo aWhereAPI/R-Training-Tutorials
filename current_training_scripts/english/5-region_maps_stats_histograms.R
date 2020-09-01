@@ -7,7 +7,6 @@
  #
  # You will need to be connected to the internet to run this script.
  #
- # Date updated: 2020-04-17
  #
  #--------------------------------------------------------------------------
  # Install and load packages -----------------------------------------------
@@ -59,7 +58,8 @@ weather_file_list <- c("YOUR PATHFILE HERE/190613_past7.csv")
  # Load TEMPLATE data file.
  # In the RunSet folder, there is a file named similarly to "Template___.csv"
  # This file includes shapewkt (polygon) column as well as population, 
- # soil type, and other data sets for each aWhere grid cell. 
+ # soil type, and other data sets for each aWhere grid cell. Please contact
+ # aWhere for a template for your area of interest.
  #
  # CHANGE THIS to be your path to the template file
 template_file <- "RunSet/Template____.csv" 

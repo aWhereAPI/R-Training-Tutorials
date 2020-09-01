@@ -15,7 +15,6 @@
  #
  # You will need to be connected to the internet to run this script.
  #
- # Date updated: 2020-04-15
 
 #--------------------------------------------------------------------------
  # Install and load packages -----------------------------------------------

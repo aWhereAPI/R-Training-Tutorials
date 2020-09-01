@@ -30,7 +30,6 @@
  # 
  # You will need to be connected to the internet to run this script.
  #
- # Date updated: 2020-04-15
  #
  #--------------------------------------------------------------------------
  #
@@ -111,7 +110,7 @@ locations <- read.csv(locations_file)
  # Time period of interest -------------------------------------------------
  #
  # Specify the starting and ending dates of interest. 
- # The starting date year can be as early as 2008. 
+ # The starting date year can be as early as 2006. 
  # The ending date can include forecast data up to 7 days from now. 
  # You may provide these starting and ending dates in multiple formats.  
  # You can use the "YYYY-MM-DD" format for a specific YEAR-MONTH-DAY date.
@@ -121,17 +120,17 @@ locations <- read.csv(locations_file)
  #   day_end <- as.character(Sys.Date() + 7) # Forecast 7 days from now
  #
  # CHANGE TO THE STARTING DATE OF YOUR CHOICE 
-date_start <- "2018-05-15"  
+date_start <- "2020-01-01"  
                             
  # CHANGE TO THE ENDING DATE OF YOUR CHOICE
-date_end <- "2019-05-14"    
+date_end <- "2020-06-14"    
                             
  # Long-term normal (LTN) values will be calculated across this range of years.
  #
- # Starting year can be as early as 2008
-year_start <- 2008  
+ # Starting year can be as early as 2006
+year_start <- 2006  
                     
-year_end <- 2018
+year_end <- 2019
 
  # Optional: Add additional selected year(s) to charts. 
  # This will plot the data from the specified years explicitly. 
