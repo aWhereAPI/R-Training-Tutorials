@@ -4,7 +4,6 @@
  # Proposito del script: 
  # Este codigo le mostrara como instalar R, RStudio y el paquete (package) de R 
  #
- # Fecha de actualizacion: 2020-04-13
  #
  #--------------------------------------------------------------------------
  # Instalacion de R y RStudio ------------------------------------------------
