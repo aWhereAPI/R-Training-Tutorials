@@ -15,8 +15,6 @@ if (language == 'english') {
   # forecast that can be embedded in reports or visuals for quick interpretation.
   #
   # You will need to be connected to the internet to run this script.
-  #
-  # Date updated: 2020-04-15
 } else if (language == 'spanish') {
   # Tutorial de R de aWhere: Tabla resumen del pronostico
   #
@@ -32,8 +30,6 @@ if (language == 'english') {
   # rapida interprestacion.
   #
   # Usted necesita estar conectado a internet para ejecutar este codigo.
-  #
-  # Fecha de actualizacion: 2020-04-15
 }
 
 #--------------------------------------------------------------------------

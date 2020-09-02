@@ -21,8 +21,6 @@ if (language == 'english') {
   #      from normal. 
   #
   # You will need to be connected to the internet to run this script.
-  #
-  # Date updated: 2020-04-14
 } else if (language == 'spanish') {
   # Proposito del Script:
   # Este codigo le mostrara como acceder a las bases agrometeorologicas de aWhere
@@ -40,8 +38,6 @@ if (language == 'english') {
   # variables LTN incluyendo las diferencias con respecto a los valores normales.
   #
   # Usted necesita estar conectado a internet para ejecutar este codigo.
-  #
-  # Fecha de actualizacion: 2020-04-14
 }
 
 #--------------------------------------------------------------------------
@@ -334,14 +330,18 @@ for (i in(1:nrow(locations))) {
     # Here you will pull the long-term normals (LTN) for your location and time 
     # period of interest. 
     #
-    # LTN values will be calculated across this range of years 
+    # LTN values will be calculated across this range of years.  The year start
+    # can be as early as 2006. The year end can be the last full year of data 
+    # (for example, in August 2020 you would use 2019 at LTN end year) 
   } else if (language == 'spanish') {
     # Valores promedio a largo plazo (LTN) ------------------------------------
     #
     # Aqui usted podra obtener los valores promedio a largo plazo (LTN) de las variables meteorologicas
     # para su sitio y periodo de interes.
     #
-    # Las variables LTN se calculan a partir de un rango de a?os.
+    # Las variables LTN se calculan a partir de un rango de años. El año comienza
+    # puede ser tan temprano como 2006. El final del año puede ser el último año completo 
+    # de datos (por ejemplo, en agosto de 2020 usaría 2019 en el año final de LTN).
   }
   year_start <- 2011
   year_end <- 2018
@@ -409,10 +409,10 @@ for (i in(1:nrow(locations))) {
     # en un archivo .csv para su posterior analisis. Puede cambiar la ubicacion y periodo de interes,
     # segun sea el caso en las lineas siguientes del codigo.
   }
-  starting_date <- "2018-01-01"
-  ending_date <- "2019-06-16"
-  year_start <- 2008
-  year_end <- 2018
+  starting_date <- "2020-01-01"
+  ending_date <- "2020-06-16"
+  year_start <- 2006
+  year_end <- 2019
   
   if (language == 'english') {
     # This function generates a clean dataset with observed AND forecast 

@@ -8,8 +8,6 @@ if (language == 'english') {
   #
   # You will need to be connected to the internet to run this script.
   #
-  # Date updated: 2020-04-17
-  #
   #--------------------------------------------------------------------------
   # Install and load packages -----------------------------------------------
   #
@@ -22,8 +20,6 @@ if (language == 'english') {
   # y graficos para las regiones o subregiones dentro de esta.
   #
   # Usted necesita estar conectado a internet para ejecutar este codigo.
-  #
-  # Fecha de actualizacion: 2020-04-17
   #
   #--------------------------------------------------------------------------
   #
@@ -66,9 +62,14 @@ if (language == 'english') {
   # esta sobre la frase "YOUR WD HERE"
 }
 working_dir <- "YOUR WD HERE" 
-setwd(working_dir) # This sets your working directory to the working_dir path
-                   # Esto establece su directorio de trabajo en la ruta de acceso de working_dir
 
+if (language == 'english') {
+  # This sets your working directory to the working_dir path
+} else if (language == 'spanish') {
+# Esto establece su directorio de trabajo en la ruta de acceso de working_dir
+}
+setwd(working_dir) 
+                   
 if (language == 'english') {
   # Supporting functions ----------------------------------------------------
   #
@@ -115,7 +116,8 @@ if (language == 'english') {
   # Load TEMPLATE data file.
   # In the RunSet folder, there is a file named similarly to "Template___.csv"
   # This file includes shapewkt (polygon) column as well as population, 
-  # soil type, and other data sets for each aWhere grid cell. 
+  # soil type, and other data sets for each aWhere grid cell. Please contact aWhere for a 
+  # template for your area of interes
   #
   # CHANGE THIS to be your path to the template file
 } else if (language == 'spanish') {
@@ -123,6 +125,7 @@ if (language == 'english') {
   # En la carpeta RunSet, hay un archivo cuyo nombre es similar a "Template___.csv".
   # Este archivo incluye la columna shapewkt (poligono) asi como tambien los datos de poblacion,
   # tipo de suelo, y otros conjuntos de datos para cada celda de la grilla de aWhere.
+  # Póngase en contacto con aWhere para obtener una plantilla para su área de interés
   #
   # CAMBIE ESTO por su ruta de acceso del archivo de plantilla ("template")
 }

@@ -6,7 +6,6 @@ if (language == 'english') {
   # Purpose of script:
   # This code will show you how to Install R, RStudio, and aWhere R package.
   #
-  # Date updated: 2020-04-13
   #--------------------------------------------------------------------------
   #
   # Installing R and RStudio ------------------------------------------------
@@ -38,8 +37,6 @@ if (language == 'english') {
   #
   # Proposito del script: 
   # Este codigo le mostrara como instalar R, RStudio y el paquete (package) de R 
-  #
-  # Fecha de actualizacion: 2020-04-13
   #
   #--------------------------------------------------------------------------
   # Instalacion de R y RStudio ------------------------------------------------

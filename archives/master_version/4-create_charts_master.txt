@@ -245,20 +245,20 @@ if (language == 'english') {
 } else if (language == 'spanish') {
   # PUEDE CAMBIAR ESTO A LA FECHA FINAL DE SU ELECCION
 }
-date_end <- "2019-05-14"    
+date_end <- "2020-06-14"    
                             
 if (language == 'english') {
   # Long-term normal (LTN) values will be calculated across this range of years.
   #
-  # Starting year can be as early as 2008
+  # Starting year can be as early as 2006
 } else if (language == 'spanish') {
   # Los valores promedio a largo plazo (LTN) se calcularan a partir de un rango de años.
   #
-  # El año inicial tiene que ser igual o mayor al 2008.
+  # El año inicial tiene que ser igual o mayor al 2006.
 }
-year_start <- 2008  
+year_start <- 2006  
                     
-year_end <- 2018
+year_end <- 2019
 
 if (language == 'english') {
   # Optional: Add additional selected year(s) to charts. 
