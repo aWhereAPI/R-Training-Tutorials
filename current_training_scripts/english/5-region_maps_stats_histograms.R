@@ -7,8 +7,6 @@
  #
  # You will need to be connected to the internet to run this script.
  #
- # Date updated: 2020-04-17
- #
  #--------------------------------------------------------------------------
  # Install and load packages -----------------------------------------------
  #
@@ -33,9 +31,10 @@ library(data.table)
  # would like the outputs of this script to be saved, copy the pathfile name 
  # and paste it over the phrase, "YOUR WD HERE"
 working_dir <- "YOUR WD HERE" 
-setwd(working_dir) # This sets your working directory to the working_dir path
-                   # Esto establece su directorio de trabajo en la ruta de acceso de working_dir
 
+ # This sets your working directory to the working_dir path
+setwd(working_dir) 
+                   
  # Supporting functions ----------------------------------------------------
  #
  # This script requires you to load a supporting functions file that is 
@@ -59,7 +58,8 @@ weather_file_list <- c("YOUR PATHFILE HERE/190613_past7.csv")
  # Load TEMPLATE data file.
  # In the RunSet folder, there is a file named similarly to "Template___.csv"
  # This file includes shapewkt (polygon) column as well as population, 
- # soil type, and other data sets for each aWhere grid cell. 
+ # soil type, and other data sets for each aWhere grid cell. Please contact aWhere for a 
+ # template for your area of interes
  #
  # CHANGE THIS to be your path to the template file
 template_file <- "RunSet/Template____.csv" 

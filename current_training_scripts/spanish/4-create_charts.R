@@ -120,14 +120,14 @@ locations <- read.csv(locations_file)
 date_start <- "2018-05-15"  
                             
  # PUEDE CAMBIAR ESTO A LA FECHA FINAL DE SU ELECCION
-date_end <- "2019-05-14"    
+date_end <- "2020-06-14"    
                             
  # Los valores promedio a largo plazo (LTN) se calcularan a partir de un rango de años.
  #
- # El año inicial tiene que ser igual o mayor al 2008.
-year_start <- 2008  
+ # El año inicial tiene que ser igual o mayor al 2006.
+year_start <- 2006  
                     
-year_end <- 2018
+year_end <- 2019
 
  # Opcional: Puede añadir año(s) seleccionados previamente a los gráficos
  # Estas lineas van a graficar los datos para años especificos de forma explicita.

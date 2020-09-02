@@ -5,7 +5,6 @@
  # Purpose of script:
  # This code will show you how to Install R, RStudio, and aWhere R package.
  #
- # Date updated: 2020-04-13
  #--------------------------------------------------------------------------
  #
  # Installing R and RStudio ------------------------------------------------
