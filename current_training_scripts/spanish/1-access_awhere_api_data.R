@@ -15,8 +15,6 @@
  # variables LTN incluyendo las diferencias con respecto a los valores normales.
  #
  # Usted necesita estar conectado a internet para ejecutar este codigo.
- #
- # Fecha de actualizacion: 2020-04-14
 
 #--------------------------------------------------------------------------
  # Instalar y cargar paquetes ----------------------------------------------
@@ -167,7 +165,9 @@ for (i in(1:nrow(locations))) {
    # Aqui usted podra obtener los valores promedio a largo plazo (LTN) de las variables meteorologicas
    # para su sitio y periodo de interes.
    #
-   # Las variables LTN se calculan a partir de un rango de a?os.
+   # Las variables LTN se calculan a partir de un rango de años. El año comienza
+   # puede ser tan temprano como 2006. El final del año puede ser el último año completo 
+   # de datos (por ejemplo, en agosto de 2020 usaría 2019 en el año final de LTN).
   year_start <- 2011
   year_end <- 2018
   
@@ -200,10 +200,10 @@ for (i in(1:nrow(locations))) {
    # Esta seccion combina todas las bases de datos anteriores de una forma cohesiva
    # en un archivo .csv para su posterior analisis. Puede cambiar la ubicacion y periodo de interes,
    # segun sea el caso en las lineas siguientes del codigo.
-  starting_date <- "2018-01-01"
-  ending_date <- "2019-06-16"
-  year_start <- 2008
-  year_end <- 2018
+  starting_date <- "2020-01-01"
+  ending_date <- "2020-06-16"
+  year_start <- 2006
+  year_end <- 2019
   
    # La siguiente funcion crea un conjunto de datos depurados con los datos observados, 
    # los datos agronomicos y los valores promedio a largo plazo.

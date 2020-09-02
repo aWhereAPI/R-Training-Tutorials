@@ -20,8 +20,6 @@
  #      from normal. 
  #
  # You will need to be connected to the internet to run this script.
- #
- # Date updated: 2020-04-14
 
 #--------------------------------------------------------------------------
  # Install and load packages -----------------------------------------------
@@ -175,7 +173,9 @@ for (i in(1:nrow(locations))) {
    # Here you will pull the long-term normals (LTN) for your location and time 
    # period of interest. 
    #
-   # LTN values will be calculated across this range of years 
+   # LTN values will be calculated across this range of years.  The year start
+   # can be as early as 2006. The year end can be the last full year of data 
+   # (for example, in August 2020 you would use 2019 at LTN end year) 
   year_start <- 2011
   year_end <- 2018
   
@@ -208,10 +208,10 @@ for (i in(1:nrow(locations))) {
    # This section combines all of the above datasets into one cohesive .csv for 
    # analysis. You can change the location and time period as needed in 
    # the lines of code below. 
-  starting_date <- "2018-01-01"
-  ending_date <- "2019-06-16"
-  year_start <- 2008
-  year_end <- 2018
+  starting_date <- "2020-01-01"
+  ending_date <- "2020-06-16"
+  year_start <- 2006
+  year_end <- 2019
   
    # This function generates a clean dataset with observed AND forecast 
    # agronomics AND Long Term Normals!

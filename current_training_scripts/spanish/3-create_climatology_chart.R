@@ -29,8 +29,6 @@
  #
  # Usted necesita estar conectado a internet para ejecutar este codigo.
  #
- # Fecha de actualizacion: 2020-04-15
- #
  #--------------------------------------------------------------------------
  # Instalar y cargar paquetes ----------------------------------------------
  #
@@ -103,7 +101,7 @@ locations <- read.csv(locations_file)
  # Periodo de interes ------------------------------------------------------
  #
  # Especifique la fecha de inicio y fin segun su interes.
- # La fecha de inicio puede iniciar a partir del año 2008.
+ # La fecha de inicio puede iniciar a partir del año 2006.
  # La fecha final puede incluir hasta el pronostico a 7 dias a partir de hoy.
  # Debe proveer ambas fechas en multiples formatos.
  # Puede utilizar el formato "AAAA-MM-DD" para una fecha AÑO-MES-DIA específica.
@@ -113,17 +111,17 @@ locations <- read.csv(locations_file)
  #   day_end <- as.character(Sys.Date() + 7) # Pronostico a 7 dias a partir de ahora
  #
  # PUEDE CAMBIAR ESTO A LA FECHA DE INICIO DE SU ELECCION  
-date_start <- "2018-01-01"  
+date_start <- "2020-01-01"  
                      
  # PUEDE CAMBIAR ESTO A LA FECHA FINAL DE SU ELECCION
-date_end <- "2019-06-16"    
+date_end <- "2020-06-16"    
 
  # Los valores promedio a largo plazo (LTN) se calcularan a partir de un rango de años.
  #
- # El año inicial tiene que ser igual o mayor al 2008.
+ # El año inicial tiene que ser igual o mayor al 2006.
 year_start <- 2011  
                     
-year_end <- 2018 
+year_end <- 2019 
 
 # Climatology chart -------------------------------------------------------
  # Las siguientes lineas se denominan un loop (ciclo) - usted solo necesita ejecutar

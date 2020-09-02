@@ -124,14 +124,14 @@ locations <- read.csv(locations_file)
 date_start <- "2018-05-15"  
                             
  # CHANGE TO THE ENDING DATE OF YOUR CHOICE
-date_end <- "2019-05-14"    
+date_end <- "2020-06-14"    
                             
  # Long-term normal (LTN) values will be calculated across this range of years.
  #
- # Starting year can be as early as 2008
-year_start <- 2008  
+ # Starting year can be as early as 2006
+year_start <- 2006  
                     
-year_end <- 2018
+year_end <- 2019
 
  # Optional: Add additional selected year(s) to charts. 
  # This will plot the data from the specified years explicitly. 

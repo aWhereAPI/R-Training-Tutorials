@@ -7,8 +7,6 @@
  #
  # Usted necesita estar conectado a internet para ejecutar este codigo.
  #
- # Fecha de actualizacion: 2020-04-17
- #
  #--------------------------------------------------------------------------
  #
  # Instalar y cargar paquetes ----------------------------------------------
@@ -34,9 +32,10 @@ library(data.table)
  # usted desea que las salidas de este script se guarden, copie la ruta de acceso y pegue
  # esta sobre la frase "YOUR WD HERE"
 working_dir <- "YOUR WD HERE" 
-setwd(working_dir) # This sets your working directory to the working_dir path
-                   # Esto establece su directorio de trabajo en la ruta de acceso de working_dir
 
+ Esto establece su directorio de trabajo en la ruta de acceso de working_dir
+setwd(working_dir) 
+                   
  # Supporting functions ----------------------------------------------------
  #
  # Este script requiere que usted carge el archivo de "supporting functions" que
@@ -61,6 +60,7 @@ weather_file_list <- c("YOUR PATHFILE HERE/190613_past7.csv")
  # En la carpeta RunSet, hay un archivo cuyo nombre es similar a "Template___.csv".
  # Este archivo incluye la columna shapewkt (poligono) asi como tambien los datos de poblacion,
  # tipo de suelo, y otros conjuntos de datos para cada celda de la grilla de aWhere.
+ # Póngase en contacto con aWhere para obtener una plantilla para su área de interés
  #
  # CAMBIE ESTO por su ruta de acceso del archivo de plantilla ("template")
 template_file <- "RunSet/Template____.csv" 
