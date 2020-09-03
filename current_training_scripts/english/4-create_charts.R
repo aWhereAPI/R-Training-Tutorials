@@ -347,8 +347,26 @@ for (i in 1:nrow(locations)) {
   
    # Save weather data to .csv ---------------------------------------------
    #
+   # Calculate Rolling Precipitation
+  weather_df_extended$rolling_precip.amount <- 
+    zoo::rollapply(weather_df_extended$precipitation.amount
+                   ,width = roll_window 
+                   ,align = "right"
+                   ,FUN = sum
+                   ,na.rm = TRUE
+                   ,fill = NA)
+  
+  weather_df_extended$rolling_precip.average <- 
+    zoo::rollapply(weather_df_extended$precipitation.average
+                   ,width = roll_window 
+                   ,align = "right"
+                   ,FUN = sum
+                   ,na.rm = TRUE
+                   ,fill = NA)
+  
    # Calculate Rolling Effective Precipitation
-  weather_df_extended$rolling_precip <- 
+  
+  weather_df_extended$rolling_effectivePrecip.amount <- 
     zoo::rollapply(ifelse(weather_df_extended$precipitation.amount > eP
                           ,eP
                           ,weather_df_extended$precipitation.amount)
@@ -358,24 +376,59 @@ for (i in 1:nrow(locations)) {
                    ,na.rm = TRUE
                    ,fill = NA)
   
-   # Calculate Rolling PET
-  weather_df_extended$rolling_pet <- zoo::rollapply(weather_df_extended$pet.amount
-                                                    ,width = roll_window
-                                                    ,align = "right"
-                                                    ,FUN = sum
-                                                    ,na.rm = TRUE
-                                                    ,fill = NA)
+  weather_df_extended$rolling_effectivePrecip.average <- 
+    zoo::rollapply(ifelse(weather_df_extended$precipitation.average > eP
+                          ,eP
+                          ,weather_df_extended$precipitation.average)
+                   ,width = roll_window 
+                   ,align = "right"
+                   ,FUN = sum
+                   ,na.rm = TRUE
+                   ,fill = NA)
   
+   # Calculate Rolling PET
+  weather_df_extended$rolling_pet.amount <- 
+    zoo::rollapply(weather_df_extended$pet.amount
+                  ,width = roll_window
+                  ,align = "right"
+                  ,FUN = sum
+                  ,na.rm = TRUE
+                  ,fill = NA)
+  
+  weather_df_extended$rolling_pet.average <- 
+    zoo::rollapply(weather_df_extended$pet.average
+                   ,width = roll_window
+                   ,align = "right"
+                   ,FUN = sum
+                   ,na.rm = TRUE
+                   ,fill = NA)
+  
+   # Calculate Rolling P/PET
+  weather_df_extended$rolling_Ppet.amount <- 
+    weather_df_extended$rolling_precip.amount / 
+    weather_df_extended$rolling_pet.amount
+  
+  weather_df_extended$rolling_Ppet.average <- 
+    weather_df_extended$rolling_precip.average / 
+    weather_df_extended$rolling_pet.average
+    
    # Calculate Rolling eP/PET
-  weather_df_extended$rollingppet <- weather_df_extended$rolling_precip / 
-    weather_df_extended$rolling_pet
+  weather_df_extended$rolling_effectivePpet.amount <- 
+    weather_df_extended$rolling_effectivePrecip.amount / 
+    weather_df_extended$rolling_pet.amount
+  
+  weather_df_extended$rolling_effectivePpet.average <- 
+    weather_df_extended$rolling_effectivePrecip.average / 
+    weather_df_extended$rolling_pet.average
+  
+  weather_df_extended[,c('rolling_precip.stdDev'
+                         ,'rolling_effectivePrecip.stdDev'
+                         ,'rolling_pet.stdDev'
+                         ,'rolling_Ppet.stdDev'
+                         ,'rolling_effectivePpet.stdDev')] <- NA
   
   weather2_df <- as.data.frame(weather_df)
   
-   # Add in Rolling eP/PET
-  
-  weather2_df <- merge(weather2_df
-                       ,weather_df_extended[,c('date','rollingppet')])
   
   names(weather2_df)[grep("gdd.amount", names(weather2_df))] <- "GDD"
   names(weather2_df)[grep("gdd.average", names(weather2_df))] <- "GDD_avg"
@@ -406,6 +459,15 @@ for (i in 1:nrow(locations)) {
   names(weather2_df)[grep("solar.amount", names(weather2_df))] <- "solar"
   names(weather2_df)[grep("solar.average", names(weather2_df))] <- "solar_avg"
   
+   # Add in Rolling Indices
+  
+  weather2_df <- merge(weather2_df
+                       ,weather_df_extended[,c('date'
+                                               ,'rolling_Ppet.amount'
+                                               ,'rolling_Ppet.average'
+                                               ,'rolling_effectivePpet.amount'
+                                               ,'rolling_effectivePpet.average')])
+  
    # trim decimal points on weather data values...
   weather2_df$max_wind <- round(weather2_df$max_wind, 1)
   weather2_df$max_wind_avg <- round(weather2_df$max_wind_avg, 1)
@@ -427,6 +489,8 @@ for (i in 1:nrow(locations)) {
   weather2_df$GDD_avg <- round(weather2_df$GDD_avg, 1)
   weather2_df$PET <- round(weather2_df$PET, 2)
   weather2_df$PET_avg <- round(weather2_df$PET_avg, 2)
+  weather2_df$rolling_Ppet.amount <- round(weather2_df$rolling_Ppet.amount, 2)
+  weather2_df$rolling_effectivePpet.amount <- round(weather2_df$rolling_effectivePpet.amount, 2)
   
    # Reorder data to make it easier to read
   weather2_df <- 
@@ -630,6 +694,43 @@ for (i in 1:nrow(locations)) {
                                       ,e_precip = FALSE
                                       ,rolling_window = roll_window)
   
+  
+   # Create a chart of rolling sum of precip divided by rolling sum of PET
+   # As for the previous chart, use the weather date with "extended" dates
+   # for this rolling average calculation. 
+  rolling_Ppet_title <- 
+    paste0(place_name
+           ,": ",roll_window," day rolling average \nRolling Sum of P Rolling Sum of PET ")
+  
+  rolling_Ppet <- 
+    aWhereCharts::generateaWhereChart(data = weather_df_extended
+                                      ,variable = "rolling_Ppet"
+                                      ,title = paste(rolling_Ppet_title
+                                                     ,lat_lon
+                                                     ,date_start, "to"
+                                                     ,date_end)
+                                      ,e_precip = FALSE
+                                      ,doRoll = FALSE
+                                      ,rolling_window = roll_window)
+  
+   # Create a chart of rolling sum of effective precip divided by rolling sum of PET
+   # As for the previous chart, use the weather date with "extended" dates
+   # for this rolling average calculation. 
+  rolling_effectivePpet_title <- 
+    paste0(place_name
+           ,": ",roll_window," day rolling average \nRolling Sum of eP Rolling Sum of PET ")
+  
+  rolling_effectivePpet <- 
+    aWhereCharts::generateaWhereChart(data = weather_df_extended
+                                      ,variable = "rolling_effectivePpet"
+                                      ,title = paste(rolling_effectivePpet_title
+                                                     ,lat_lon
+                                                     ,date_start, "to"
+                                                     ,date_end)
+                                      ,e_precip = FALSE
+                                      ,doRoll = FALSE
+                                      ,rolling_window = roll_window)
+  
    # Rolling-Average P/PET with Additional Selected Years -----------------
   rolling_avg_ppet_addyears_title <- 
     paste0(place_name
@@ -772,6 +873,10 @@ for (i in 1:nrow(locations)) {
      # rolling average eP/PET and P/PET w std dev
     print(rolling_avg_eppet)
     
+    print(rolling_Ppet)
+    
+    print(rolling_effectivePpet)
+    
   } 
   
    # SAVE CHARTS -------------------------------------------------------------
@@ -849,6 +954,14 @@ for (i in 1:nrow(locations)) {
     WriteJpeg(plt = rolling_avg_ppet_addyears 
               ,plt.title = paste0(current_chart_path
               ,formatGraphTitleForFileName(rolling_avg_ppet_addyears_title)))
+    
+    WriteJpeg(plt = rolling_Ppet
+              ,plt.title = paste0(current_chart_path
+                                  ,formatGraphTitleForFileName(rolling_Ppet_title)))
+    
+    WriteJpeg(plt = rolling_effectivePpet
+              ,plt.title = paste0(current_chart_path
+                                  ,formatGraphTitleForFileName(rolling_effectivePpet_title)))
     
      # Weekly climatology chart comparing current precipitation and maximum 
      # temperature to LTN precip and max temperature
