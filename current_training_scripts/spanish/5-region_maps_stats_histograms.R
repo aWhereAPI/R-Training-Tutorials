@@ -1092,7 +1092,7 @@ for (j in 1:length(weather_file_list))  {
                                          size = size_font_axis_titles, 
                                          face = "bold")
             ,legend.text=element_text(size=size_font_legend_entries)) +
-      labs(x = "Precipitation [level mm]", 
+      labs(x = "P/PET", 
            y = "Population (# of people)") +
        # establezca el titulo principal
       ggtitle(hist_title) +
