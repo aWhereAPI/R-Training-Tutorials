@@ -78,17 +78,6 @@ setwd(working_dir)
 dir.create(path = "outputCSVs/", showWarnings = FALSE, recursive = TRUE) 
 dir.create(path = "charts/", showWarnings = FALSE, recursive = TRUE)
 
- # Supporting functions ----------------------------------------------------
- #
- # Este script requiere que usted carge el archivo de "supporting functions" que
- # comunmente debe de estar guardado en la carpeta Source, a partir del tutorial
- # aWhere referente a la estructura de carpetas y archivos. Este paso, carga funciones
- # adicionales para crear el Grafico de la Climatologia.
- #
- # Modifique el nombre y la ruta de acceso del archivo segun sea el caso debajo de esta linea
- # para cargar el archivo de "supporting functions".
-source("Source/supporting_functions.R")
-
  # Sitio(s) de interes -----------------------------------------------------
  #
  # En esta seccion obtendremos los datos del pronostico para su sitio de interes.
@@ -164,10 +153,10 @@ for (i in 1:nrow(locations)) {
                                        daysToAggregateOver = 7,
                                        mainGraphType = 'bar')
    # Convierta el grafico semanal en una imagen con formato jpg
-  WriteJpeg(plt = weekly_chart
-            ,plt.title = paste0("charts/WeeklyChart_", 
-                                date_end, "_", place_name),
-            w=12, h=6, r=500)
+  aWhereCharts::WriteJpeg(plt = weekly_chart
+                          ,plt.title = paste0("charts/WeeklyChart_", 
+                                              date_end, "_", place_name)
+                          ,w=12, h=6, r=500)
 
   #------------------------------------------------------------------------
   

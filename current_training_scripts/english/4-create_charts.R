@@ -86,17 +86,6 @@ dir.create(path = chart_path, showWarnings = FALSE, recursive = TRUE)
 show_charts <- TRUE # TRUE will show charts. FALSE will not show charts. 
 save_charts <- TRUE # TRUE will save charts. FALSE will not save charts. 
 
-
-# Supporting functions ----------------------------------------------------
- # This script requires you to load a supporting functions file that is 
- # typically saved in the Source folder in your aWhere tutorial folder 
- # structure. This step loads additional functions required to create
- # the climatology chart. 
- #
- # Modify the file path and name below to load the supporting functions file. 
- # source("YOUR PATHNAME/supporting_functions.R")
-source("Source/supporting_functions.R")
-
  # Location(s) of interest -------------------------------------------------
  #
  # In this section, we will pull forecast data for your location of interest. 
@@ -193,9 +182,9 @@ for (i in 1:nrow(locations)) {
   
    # Create directories to store outputs for the current location 
   current_csv_path <- paste0(csv_path
-                             ,formatGraphTitleForFileName(place_name), "/")
+                             ,aWhereCharts::formatGraphTitleForFileName(place_name), "/")
   current_chart_path <- paste0(chart_path
-                               ,formatGraphTitleForFileName(place_name), "/")
+                               ,aWhereCharts::formatGraphTitleForFileName(place_name), "/")
   dir.create(path = current_csv_path, showWarnings = FALSE, recursive = TRUE)
   dir.create(path = current_chart_path, showWarnings = FALSE, recursive = TRUE)
   
@@ -298,9 +287,9 @@ for (i in 1:nrow(locations)) {
     
      # Calculate eP/PET rolling average. First, use the ClipValues function to
      # calculate effective precipitation, then divide eP by PET for eP/PET. 
-    weather_df_mod_extended$ePPET <- ClipValues(weather_df_mod_extended$precipitation.amount
-                                                ,max.thresh = eP) /
-      weather_df_mod_extended$pet.amount
+    weather_df_mod_extended$ePPET <- 
+      aWhereCharts::ClipValues(weather_df_mod_extended$precipitation.amount
+                              ,max.thresh = eP) / weather_df_mod_extended$pet.amount
     
     temp_eppet <- zoo::rollapply(weather_df_mod_extended$ePPET
                                  ,width = roll_window
@@ -889,86 +878,86 @@ for (i in 1:nrow(locations)) {
     cat(paste0('   Saving Charts...\n'))
     
      # Maximum temperature with standard deviation
-    WriteJpeg(plt = max_temp_stdev
-              ,plt.title = paste0(current_chart_path
-                          ,formatGraphTitleForFileName(max_temp_stdev_title)))
+    aWhereCharts::WriteJpeg(plt = max_temp_stdev
+                           ,plt.title = paste0(current_chart_path
+                              ,aWhereCharts::formatGraphTitleForFileName(max_temp_stdev_title)))
     
      # Minimum temperature with standard deviation  
-    WriteJpeg(plt = min_temp_stdev
-              ,plt.title = paste0(current_chart_path
-                          ,formatGraphTitleForFileName(min_temp_stdev_title)))
+    aWhereCharts::WriteJpeg(plt = min_temp_stdev
+                          ,plt.title = paste0(current_chart_path
+                              ,aWhereCharts::formatGraphTitleForFileName(min_temp_stdev_title)))
     
      # Potential evapotranspiration (PET) with standard deviation 
-    WriteJpeg(plt = pet_stdev
-              ,plt.title = paste0(current_chart_path
-                               ,formatGraphTitleForFileName(pet_stdev_title)))
+    aWhereCharts::WriteJpeg(plt = pet_stdev
+                           ,plt.title = paste0(current_chart_path
+                              ,aWhereCharts::formatGraphTitleForFileName(pet_stdev_title)))
     
      # Daily precipitation without standard deviation  
-    WriteJpeg(plt = precip
-              ,plt.title = paste0(current_chart_path
-                                  ,formatGraphTitleForFileName(precip_title)))
+    aWhereCharts::WriteJpeg(plt = precip
+                           ,plt.title = paste0(current_chart_path
+                              ,aWhereCharts::formatGraphTitleForFileName(precip_title)))
     
      # Accumulated precipitation with standard deviation 
-    WriteJpeg(plt = acc_precip_stdev
-              ,plt.title = paste0(current_chart_path
-                        ,formatGraphTitleForFileName(acc_precip_stdev_title)))
+    aWhereCharts::WriteJpeg(plt = acc_precip_stdev
+                           ,plt.title = paste0(current_chart_path
+                              ,aWhereCharts::formatGraphTitleForFileName(acc_precip_stdev_title)))
     
      # Precipitation and effective precipitation, accumulated, with 
      # standard deviation 
-    WriteJpeg(plt = acc_precip_eff_stdev
-              ,plt.title = paste0(current_chart_path
-                    ,formatGraphTitleForFileName(acc_precip_eff_stdev_title)))
+    aWhereCharts::WriteJpeg(plt = acc_precip_eff_stdev
+                           ,plt.title = paste0(current_chart_path
+                              ,aWhereCharts::formatGraphTitleForFileName(acc_precip_eff_stdev_title)))
     
      # Accumulated precipitation 
-    WriteJpeg(plt = acc_precip
-              ,plt.title = paste0(current_chart_path
-                              ,formatGraphTitleForFileName(acc_precip_title)))
+    aWhereCharts::WriteJpeg(plt = acc_precip
+                           ,plt.title = paste0(current_chart_path
+                              ,aWhereCharts::formatGraphTitleForFileName(acc_precip_title)))
     
      # Accumulated precipitation with additional selected years
-    WriteJpeg(plt = acc_precip_addyears 
-              ,plt.title = paste0(current_chart_path
-                     ,formatGraphTitleForFileName(acc_precip_addyears_title)))
+    aWhereCharts::WriteJpeg(plt = acc_precip_addyears 
+                           ,plt.title = paste0(current_chart_path
+                              ,aWhereCharts::formatGraphTitleForFileName(acc_precip_addyears_title)))
     
     
      # Accumulated Potential Evapotranspiration (PET) with standard deviation
-    WriteJpeg(plt = acc_pet_stdev
-              ,plt.title = paste0(current_chart_path
-                           ,formatGraphTitleForFileName(acc_pet_stdev_title)))
+    aWhereCharts::WriteJpeg(plt = acc_pet_stdev
+                           ,plt.title = paste0(current_chart_path
+                              ,aWhereCharts::formatGraphTitleForFileName(acc_pet_stdev_title)))
     
      # Precipitation-over-PET ratio (P/PET)
-    WriteJpeg(plt = ppet
-              ,plt.title = paste0(current_chart_path
-                                    ,formatGraphTitleForFileName(ppet_title)))
+    aWhereCharts::WriteJpeg(plt = ppet
+                           ,plt.title = paste0(current_chart_path
+                               ,aWhereCharts::formatGraphTitleForFileName(ppet_title)))
     
      # rolling average P/PET
-    WriteJpeg(plt = rolling_avg_ppet
-              ,plt.title = paste0(current_chart_path
-                        ,formatGraphTitleForFileName(rolling_avg_ppet_title)))
+    aWhereCharts::WriteJpeg(plt = rolling_avg_ppet
+                           ,plt.title = paste0(current_chart_path
+                              ,aWhereCharts::formatGraphTitleForFileName(rolling_avg_ppet_title)))
     
      # rolling average eP/PET and P/PET w std dev
-    WriteJpeg(plt = rolling_avg_eppet
-              ,plt.title = paste0(current_chart_path
-                                  ,formatGraphTitleForFileName(rolling_avg_eppet_title)))
+    aWhereCharts::WriteJpeg(plt = rolling_avg_eppet
+                           ,plt.title = paste0(current_chart_path
+                              ,aWhereCharts::formatGraphTitleForFileName(rolling_avg_eppet_title)))
     
      # rolling average P/PET with additional selected years
-    WriteJpeg(plt = rolling_avg_ppet_addyears 
-              ,plt.title = paste0(current_chart_path
-              ,formatGraphTitleForFileName(rolling_avg_ppet_addyears_title)))
+    aWhereCharts::WriteJpeg(plt = rolling_avg_ppet_addyears 
+                           ,plt.title = paste0(current_chart_path
+                              ,aWhereCharts::formatGraphTitleForFileName(rolling_avg_ppet_addyears_title)))
     
-    WriteJpeg(plt = rolling_Ppet
-              ,plt.title = paste0(current_chart_path
-                                  ,formatGraphTitleForFileName(rolling_Ppet_title)))
+    aWhereCharts::WriteJpeg(plt = rolling_Ppet
+                           ,plt.title = paste0(current_chart_path
+                              ,aWhereCharts::formatGraphTitleForFileName(rolling_Ppet_title)))
     
-    WriteJpeg(plt = rolling_effectivePpet
-              ,plt.title = paste0(current_chart_path
-                                  ,formatGraphTitleForFileName(rolling_effectivePpet_title)))
+    aWhereCharts::WriteJpeg(plt = rolling_effectivePpet
+                           ,plt.title = paste0(current_chart_path
+                              ,aWhereCharts::formatGraphTitleForFileName(rolling_effectivePpet_title)))
     
      # Weekly climatology chart comparing current precipitation and maximum 
      # temperature to LTN precip and max temperature
-    WriteJpeg(plt = weekly_chart
-              ,plt.title = paste0(current_chart_path
-                ,formatGraphTitleForFileName(paste0(place_name
-                                                    ,"weekly_chart"))))
+    aWhereCharts::WriteJpeg(plt = weekly_chart
+                           ,plt.title = paste0(current_chart_path
+                              ,aWhereCharts::formatGraphTitleForFileName(paste0(place_name
+                                                                  ,"weekly_chart"))))
     
      # Multiplot
      #

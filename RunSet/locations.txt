@@ -1,0 +1,4 @@
+place_name,latitude,longitude
+Chiswa,-13.91642107,32.30806104
+Lundazi,-12.28472523,33.15400265
+Chimoto,-14.58832584,31.16489399

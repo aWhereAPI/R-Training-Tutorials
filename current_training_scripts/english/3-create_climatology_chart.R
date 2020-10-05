@@ -83,17 +83,6 @@ setwd(working_dir)
 dir.create(path = "outputCSVs/", showWarnings = FALSE, recursive = TRUE) 
 dir.create(path = "charts/", showWarnings = FALSE, recursive = TRUE)
 
- # Supporting functions ----------------------------------------------------
- #
- # This script requires you to load a supporting functions file that is 
- # typically saved in the Source folder in your aWhere tutorial folder 
- # structure. This step loads additional functions required to create
- # the climatology chart. 
- #
- # Modify the file name and path as needed below to load the supporting
- # functions file. 
-source("Source/supporting_functions.R")
-
  # Location(s) of interest -------------------------------------------------
  #
  # In this section, we will pull forecast data for your location of interest. 
@@ -170,10 +159,10 @@ for (i in 1:nrow(locations)) {
                                        daysToAggregateOver = 7,
                                        mainGraphType = 'bar')
    # Write weekly chart to jpg
-  WriteJpeg(plt = weekly_chart
-            ,plt.title = paste0("charts/WeeklyChart_", 
-                                date_end, "_", place_name),
-            w=12, h=6, r=500)
+  aWhereCharts::WriteJpeg(plt = weekly_chart
+                          ,plt.title = paste0("charts/WeeklyChart_", 
+                                              date_end, "_", place_name)
+                          ,w=12, h=6, r=500)
 
   #------------------------------------------------------------------------
   
