@@ -34,15 +34,6 @@ working_dir <- "YOUR WD HERE"
 
  # This sets your working directory to the working_dir path
 setwd(working_dir) 
-                   
- # Supporting functions ----------------------------------------------------
- #
- # This script requires you to load a supporting functions file that is 
- # typically saved in the Source folder in your aWhere tutorial folder 
- # structure. This step loads additional functions required to create
- # the climatology chart. Copy the path name and paste it over the 
- # phrase, "YOUR PATHNAME".  
-source("YOUR PATHNAME/supporting_functions.R")
 
  # Load external data: template and ag-weather files ------------------------------------
  #

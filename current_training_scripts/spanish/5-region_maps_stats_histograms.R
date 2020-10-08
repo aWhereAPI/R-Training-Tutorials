@@ -35,15 +35,6 @@ working_dir <- "YOUR WD HERE"
 
  Esto establece su directorio de trabajo en la ruta de acceso de working_dir
 setwd(working_dir) 
-                   
- # Supporting functions ----------------------------------------------------
- #
- # Este script requiere que usted carge el archivo de "supporting functions" que
- # comunmente debe de estar guardado en la carpeta Source, a partir del tutorial de
- # aWhere referente a la estructura de carpetas y archivos. Este paso, carga funciones
- # adicionales para crear el Grafico de la Climatologia. Copie la ruta de acceso respectiva
- # y peguela sobre la frase "YOUR PATHNAME".
-source("YOUR PATHNAME/supporting_functions.R")
 
  # cargue los datos externos: plantilla ("template") y archivos agrometeorologicos ------
  #
