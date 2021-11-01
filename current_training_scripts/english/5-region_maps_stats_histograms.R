@@ -39,12 +39,12 @@ setwd(working_dir)
  #
  # Load WEATHER data file(s).
  # These may be provided to you but you can also download them through the
- # interactive maps portal at apps.awhere.com. There are exmaples of data 
+ # interactive maps portal at apps.awhere.com. There are examples of data 
  # in the BaseData folder too. This can be any number of files, individual 
  # files will be looped over.
  #
  # CHANGE THIS to be your path to a weather file
-weather_file_list <- c("YOUR PATHFILE HERE/190613_past7.csv") 
+weather_file_list <- c("YOUR PATHFILE HERE") 
 
  # Load TEMPLATE data file.
  # In the RunSet folder, there is a file named similarly to "Template___.csv"
@@ -53,24 +53,27 @@ weather_file_list <- c("YOUR PATHFILE HERE/190613_past7.csv")
  # template for your area of interes
  #
  # CHANGE THIS to be your path to the template file
-template_file <- "RunSet/Template____.csv" 
+template_file <- "YOUR TEMPLATE FILE HERE" 
 
  # Region(s) of interest ---------------------------------------------------
  #
  # Define the region(s) for which you want to generate maps, histograms, and 
  # statistics based on columns in the template file.
- # Each pairing will be independtly considered (i.e. it is NOT condition1 AND 
+ # Each pairing will be independently considered (i.e. it is NOT condition1 AND 
  # condition2 AND condition3).
  # If a comma-separated list is given, it will subset on all units in that list.
  # If set to "ENTIRE_REGION" the entire region will be run.  
  # Use the following syntax to subset to specific subregions based on any 
  # available attribute. Ability to subset on multiple attributes will be added 
  # later.
- #
+ # Example syntax for Kenya:
  # subarea_select <- c("admin0_name: Kenya"
  #                    ,"admin1_name: Wajir, Kitui, Makueni"
  #                    ,"soiltype: MEDIUM")
- #
+ # The subarea can be any combination of data points identified in the template
+ # file such as administrative boundary. Below is an example using a Zambia
+ # template file. The outputs will be created based on the administrative levels
+ # determined below.
 subarea_select <- c("admin0_name: Zambia"
                     ,"admin1_name: Luapula, Lusaka, Western, Nyamira")
 
