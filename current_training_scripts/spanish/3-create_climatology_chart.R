@@ -78,17 +78,6 @@ setwd(working_dir)
 dir.create(path = "outputCSVs/", showWarnings = FALSE, recursive = TRUE) 
 dir.create(path = "charts/", showWarnings = FALSE, recursive = TRUE)
 
- # Supporting functions ----------------------------------------------------
- #
- # Este script requiere que usted carge el archivo de "supporting functions" que
- # comunmente debe de estar guardado en la carpeta Source, a partir del tutorial
- # aWhere referente a la estructura de carpetas y archivos. Este paso, carga funciones
- # adicionales para crear el Grafico de la Climatologia.
- #
- # Modifique el nombre y la ruta de acceso del archivo segun sea el caso debajo de esta linea
- # para cargar el archivo de "supporting functions".
-source("Source/supporting_functions.R")
-
  # Sitio(s) de interes -----------------------------------------------------
  #
  # En esta seccion obtendremos los datos del pronostico para su sitio de interes.
