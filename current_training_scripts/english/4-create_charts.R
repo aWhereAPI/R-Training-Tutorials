@@ -30,8 +30,6 @@
  # 
  # You will need to be connected to the internet to run this script.
  #
- # Date updated: 2020-04-15
- #
  #--------------------------------------------------------------------------
  #
  # Install and load packages -----------------------------------------------
@@ -86,32 +84,22 @@ dir.create(path = chart_path, showWarnings = FALSE, recursive = TRUE)
 show_charts <- TRUE # TRUE will show charts. FALSE will not show charts. 
 save_charts <- TRUE # TRUE will save charts. FALSE will not save charts. 
 
-
-# Supporting functions ----------------------------------------------------
- # This script requires you to load a supporting functions file that is 
- # typically saved in the Source folder in your aWhere tutorial folder 
- # structure. This step loads additional functions required to create
- # the climatology chart. 
- #
- # Modify the file path and name below to load the supporting functions file. 
- # source("YOUR PATHNAME/supporting_functions.R")
-source("Source/supporting_functions.R")
-
  # Location(s) of interest -------------------------------------------------
- #
- # In this section, we will pull forecast data for your location of interest. 
- # If using a file named "locations.txt" in the RunSet folder: 
-locations_file <- "RunSet/locations.txt" 
+ # In this section, we will set the locations of interest using a text or csv
+ # file. Please see comments at the beginning of this script on formatting
+ # your locations file. 
 
- # Change the path and filename above as needed based on you locations file.
- #
+ # Change 'YOUR LOCATIONS FILE HERE' to the path of your locations file.
+ # Note: This file can be either a text or csv file.
+locations_file <- "YOUR LOCATIONS FILE HERE" 
+ 
  # Read the location(s) text file
 locations <- read.csv(locations_file)
 
  # Time period of interest -------------------------------------------------
  #
  # Specify the starting and ending dates of interest. 
- # The starting date year can be as early as 2008. 
+ # The starting date year can be as early as 2001. 
  # The ending date can include forecast data up to 7 days from now. 
  # You may provide these starting and ending dates in multiple formats.  
  # You can use the "YYYY-MM-DD" format for a specific YEAR-MONTH-DAY date.
@@ -121,24 +109,26 @@ locations <- read.csv(locations_file)
  #   day_end <- as.character(Sys.Date() + 7) # Forecast 7 days from now
  #
  # CHANGE TO THE STARTING DATE OF YOUR CHOICE 
-date_start <- "2018-05-15"  
+date_start <- "2021-01-01"  # Day start can be as early as January 1, 2001
                             
  # CHANGE TO THE ENDING DATE OF YOUR CHOICE
-date_end <- "2020-06-14"    
+date_end <- "2021-06-14"   # Dat end can include the forecast 
                             
  # Long-term normal (LTN) values will be calculated across this range of years.
- #
- # Starting year can be as early as 2006
-year_start <- 2006  
-                    
-year_end <- 2019
+ # Use the following lines to set your long-term year start and end.
+ # Starting year can be as early as 2001
+year_start <- 2001 
+ # Ending year for the LTN should be the last complete year on record                 
+year_end <- 2020
 
- # Optional: Add additional selected year(s) to charts. 
+ # Optional: Add additional selected year(s) to charts. You may want to add
+ # additional years to your analysis paricularly if there is an event such as
+ # La Nina/El Nino and you would like to see how the weather during those
  # This will plot the data from the specified years explicitly. 
- #   add_years <- NA             # If you do not want to add additional years. 
- #   add_years <- c(2016, 2017)  # To specify multiple additional years. 
-add_years <- c(2016, 2017) 
-
+     add_years <- NA             # If you do not want to add additional years. 
+ #   add_years <- c(2016, 2017)  # To specify multiple additional years. Years
+     # added can be from 2001 to the last complete year on record.
+     
  # Additional chart parameters ---------------------------------------------
  # (No need to modify these defaults)
  #
