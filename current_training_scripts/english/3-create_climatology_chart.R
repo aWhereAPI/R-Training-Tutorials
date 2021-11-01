@@ -14,7 +14,7 @@
  #
  # This script uses a locations text file which allows you to create the
  # climatology chart for all of your locations of interest at once by using a
- # process called a "loop." You will need to create a text file with your 
+ # process called a "loop." You will need to create a text or csv file with your 
  # location(s) of interest. You may edit the "locations.txt" text file sample 
  # in the RunSet folder. The locations file must have 3 columns called 
  # place_name, latitude, longitude: 
@@ -83,22 +83,15 @@ setwd(working_dir)
 dir.create(path = "outputCSVs/", showWarnings = FALSE, recursive = TRUE) 
 dir.create(path = "charts/", showWarnings = FALSE, recursive = TRUE)
 
- # Supporting functions ----------------------------------------------------
- #
- # This script requires you to load a supporting functions file that is 
- # typically saved in the Source folder in your aWhere tutorial folder 
- # structure. This step loads additional functions required to create
- # the climatology chart. 
- #
- # Modify the file name and path as needed below to load the supporting
- # functions file. 
-source("Source/supporting_functions.R")
-
  # Location(s) of interest -------------------------------------------------
  #
- # In this section, we will pull forecast data for your location of interest. 
- # CHANGE THIS to the path of your locations text file.
-locations_file <- "RunSet/locations.txt"
+ # In this section, we will set the locations of interest using a text or csv
+ # file. Please see comments at the beginning of this script on formatting
+ # your locations file. 
+
+ # Change 'YOUR LOCATIONS FILE HERE' to the path of your locations file.
+ # Note: This file can be either a text or csv file.
+locations_file <- "YOUR LOCATIONS FILE HERE"
 
  # Read the location(s) text file
 locations <- read.csv(locations_file)
@@ -114,19 +107,20 @@ locations <- read.csv(locations_file)
  # by your computer. For example:   
  #   day_end <- as.character(Sys.Date())     # Today
  #   day_end <- as.character(Sys.Date() + 7) # Forecast 7 days from now
- #
- # CHANGE TO THE STARTING DATE OF YOUR CHOICE
-date_start <- "2020-01-01"  
+ # NOTE: While this chart can be generated for any period of time, it is most
+ # effective when the user looks at one year or less. This chart is particularly
+ # useful when investigating seasonal precipitation.
+ # CHANGE THE FOLLOWING TO THE STARTING DATE OF YOUR CHOICE
+date_start <- "2021-01-01"  #Example January 1, 2021
                      
- # CHANGE TO THE ENDING DATE OF YOUR CHOICE 
-date_end <- "2020-06-16"    
+ # CHANGE THE FOLLOWING TO THE ENDING DATE OF YOUR CHOICE 
+date_end <- "2021-06-16"   #Example: June 16, 2021 
 
  # Long-term normal (LTN) values will be calculated across this range of years
- #
- # Starting year can be as early as 2006
-year_start <- 2011  
-                    
-year_end <- 2019 
+ # Starting year can be as early as 2001
+year_start <- 2001  
+ # Ending year should be the last complete year                  
+year_end <- 2020
 
 # Climatology chart -------------------------------------------------------
  # The following is called a loop process - you only need to run the line 
