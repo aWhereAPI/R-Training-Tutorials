@@ -28,8 +28,6 @@
  #
  # Usted necesita estar conectado a internet para ejecutar este codigo.
  #
- # Fecha de actualización: 2020-04-15
- #
  #--------------------------------------------------------------------------
  #
  # Instalar y cargar paquetes ----------------------------------------------
@@ -96,7 +94,7 @@ locations <- read.csv(locations_file)
  # Periodo de interes ------------------------------------------------------
  #
  # Especifique la fecha de inicio y fin segun su interes.
- # La fecha de inicio puede iniciar a partir del año 2008.
+ # La fecha de inicio puede iniciar a partir del año 2001.
  # La fecha final puede incluir hasta el pronostico a 7 dias a partir de hoy.
  # Debe proveer ambas fechas en multiples formatos.
  # Puede utilizar el formato "AAAA-MM-DD" para una fecha AÑO-MES-DIA específica.
@@ -106,23 +104,23 @@ locations <- read.csv(locations_file)
  #   day_end <- as.character(Sys.Date() + 7) # Pronostico a 7 dias a partir de ahora
  #
  # PUEDE CAMBIAR ESTO A LA FECHA DE INICIO DE SU ELECCION 
-date_start <- "2018-05-15"  
+date_start <- "2021-01-01"  
                             
  # PUEDE CAMBIAR ESTO A LA FECHA FINAL DE SU ELECCION
-date_end <- "2020-06-14"    
+date_end <- "2021-06-14"    
                             
  # Los valores promedio a largo plazo (LTN) se calcularan a partir de un rango de años.
  #
- # El año inicial tiene que ser igual o mayor al 2006.
-year_start <- 2006  
+ # El año inicial tiene que ser igual o mayor al 2001.
+year_start <- 2001 
                     
-year_end <- 2019
+year_end <- 2020
 
  # Opcional: Puede añadir año(s) seleccionados previamente a los gráficos
  # Estas lineas van a graficar los datos para años especificos de forma explicita.
- #   add_years <- NA             # Si usted no quiere agregar años adicionales. 
+     add_years <- NA             # Si usted no quiere agregar años adicionales. 
  #   add_years <- c(2016, 2017)  # Si desea agregar varios años especificos. 
-add_years <- c(2016, 2017) 
+
 
  # Parametros adicionales de los graficos ----------------------------------
  # (No necesita modificar estas configuraciones)

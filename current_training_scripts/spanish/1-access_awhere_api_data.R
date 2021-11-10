@@ -8,8 +8,8 @@
  #
  # Este script le provee a usted las siguientes bases de datos para su sitio de interes:
  # 1. Un archivo csv con el pronostico del tiempo (Horario, a 6 horas, a 12 horas o en franjas diarias de tiempo).
- # 2. Datos observados para cualquier periodo de tiempo entre el 2008 y el presente.
- # 3. Valores promedio a largo plazo (LTN) de las variables meteorologicas para un periodo escogido entre el 2008 y
+ # 2. Datos observados para cualquier periodo de tiempo entre el 2001 y el presente.
+ # 3. Valores promedio a largo plazo (LTN) de las variables meteorologicas para un periodo escogido entre el 2001 y
  # el presente.
  # 4. Un archivo csv llamado "aWhere Weather Dataset" que incluye todas las variables observadas y todas las
  # variables LTN incluyendo las diferencias con respecto a los valores normales.
@@ -118,8 +118,8 @@ for (i in(1:nrow(locations))) {
    #
    # Aqui vamos a agregar los datos historicos para su area de interes.
    #
-   # 1ero de enero, 2016
-  starting_date <- "2018-01-01" 
+   # 1ero de enero, 2001
+  starting_date <- "2001-01-01" 
    
    # hace dos dias
   ending_date <- as.character(Sys.Date() - 2) 
@@ -166,10 +166,10 @@ for (i in(1:nrow(locations))) {
    # para su sitio y periodo de interes.
    #
    # Las variables LTN se calculan a partir de un rango de años. El año comienza
-   # puede ser tan temprano como 2006. El final del año puede ser el último año completo 
+   # puede ser tan temprano como 2001. El final del año puede ser el último año completo 
    # de datos (por ejemplo, en agosto de 2020 usaría 2019 en el año final de LTN).
-  year_start <- 2011
-  year_end <- 2018
+  year_start <- 2001
+  year_end <- 2020
   
    # Por favor especifique su mes-dia de inicio y de fin,
    # asi como tambien su "temporada de crecimiento" de cultivos
@@ -200,10 +200,10 @@ for (i in(1:nrow(locations))) {
    # Esta seccion combina todas las bases de datos anteriores de una forma cohesiva
    # en un archivo .csv para su posterior analisis. Puede cambiar la ubicacion y periodo de interes,
    # segun sea el caso en las lineas siguientes del codigo.
-  starting_date <- "2020-01-01"
-  ending_date <- "2020-06-16"
-  year_start <- 2006
-  year_end <- 2019
+  starting_date <- "2021-01-01"
+  ending_date <- "2021-06-16"
+  year_start <- 2001
+  year_end <- 2020
   
    # La siguiente funcion crea un conjunto de datos depurados con los datos observados, 
    # los datos agronomicos y los valores promedio a largo plazo.

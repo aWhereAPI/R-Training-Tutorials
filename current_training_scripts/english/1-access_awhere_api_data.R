@@ -1,6 +1,5 @@
 #--------------------------------------------------------------------------
  # aWhere R Tutorial: Access aWhere API Data 
- # Tutuorial de R de aWhere: Accesando a los datos del API de aWhere
  #
  # Purpose of script: 
  # This code will show you how to access aWhere's ag-weather datasets from 
@@ -13,8 +12,8 @@
  # This script provides the following datasets for your location of interest:
  # 1. A csv output of the Forecast (Hourly, 6 hour, 12-hour, 
  #      or daily blocks of time) 
- # 2. Observed data for any time period between 2008 and present
- # 3. Long-Term Normals (LTN) for chosen time period between 2008 and present
+ # 2. Observed data for any time period between 2001 and present
+ # 3. Long-Term Normals (LTN) for chosen time period between 2001 and present
  # 4. A csv output called the "aWhere Weather Dataset" which includes all 
  #      observed variables and all LTN variables including the differences 
  #      from normal. 
@@ -71,14 +70,11 @@ setwd(working_dir)
  # your computer and see that this folder was created.
 dir.create(path = "outputCSVs/", showWarnings = FALSE, recursive = TRUE) 
 
- # Now that your parameters have been set for this script, you are ready to 
- # begin requesting data from the API and investigating your area of interest.
+ # Location(s) of interest -------------------------------------------------
  #
- # Forecast ----------------------------------------------------------------
- # In this section, we will pull forecast data for your location of interest. 
  # First, determine the location's name, latitude, and longitude. 
  # You can use QGIS, Google Maps, or your own data to find this information.
- # Next, create a text file with this location information. Refer to 
+ # Next, create a text or csv file with this location information. Refer to 
  # the "locations.txt" text file example in the RunSet folder for formatting
  # this file. It must have 3 columns called place_name, latitude, longitude. 
  # An example of a row with location information would thus be:
@@ -91,13 +87,24 @@ locations_file <- "YOUR LOCATION FILE.txt"
  # Read the location(s) text file 
 locations <- read.csv(locations_file)
 
+ # Now that your parameters have been set for this script, you are ready to 
+ # begin requesting data from the API and investigating your area of interest.
+ # ADJUST THE DATES FOR THE DIFFERENT SECTIONS BELOW
+
 for (i in(1:nrow(locations))) { 
   
    # Get the first latitude, longitude, and name of your location(s) of interest 
   lat <- locations$latitude[i]
   lon <- locations$longitude[i]
   place_name <- locations$place_name[i]
-  
+ 
+  # Forecast Data -----------------------------------------------------------
+  #
+  # Here you will pull the forecast data for your location of interest.
+  #
+  # Set the starting and ending dates to a time period of interest below 
+  # by adjusting the using the day_start, day_end objects below
+   
    # Pull the weather forecast directly from the aWhere API  
   forecast <- aWhereAPI::forecasts_latlng(lat
                                            ,lon 
@@ -122,13 +129,21 @@ for (i in(1:nrow(locations))) {
    # Observed Data -----------------------------------------------------------
    #
    # Here you will pull the historical data for your location of interest.
-   #
+   # The parameters for this function can have many formats.
+   # You can change the starting/ending dates for a timeframe of interest. 
+   # The starting date can be as early as January 1, 2001. 
+   # You can use the "YYYY-MM-DD" format for a specific date.
+   # You can also use Sys.Date() to make your end date today, 
+   # or similarly, use Sys.Date() - 1 to make your end date yesterday. 
+   # NOTE that observed data can ONLY be in the past. You will get an error 
+   # if a future date is selected!
+  
    # Set the starting and ending dates to a time period of interest
-   #
-   # January 1, 2016
-  starting_date <- "2018-01-01" 
+   # The earliest this date can be is January 1, 2001
+  starting_date <- "2001-01-01" 
    
-   # two days ago
+   # By default this is set to two days ago according to the system date 
+   # on your computer. You can adjust this based on the date range you require.
   ending_date <- as.character(Sys.Date() - 2) 
                                   
    # Pull observed weather data from the aWhere API 
@@ -139,15 +154,6 @@ for (i in(1:nrow(locations))) {
   
   write.csv(observed, file = paste0("outputCSVs/observedData-",place_name,".csv"), row.names=F) 
   
-   # The parameters for this function can have many formats.
-   # You can change the starting/ending dates for a timeframe of interest. 
-   #   The starting date can be as early as 2008. 
-   #   You can use the "YYYY-MM-DD" format for a specific date.
-   #   You can also use Sys.Date() to make your end date today, 
-   #   or similarly, use Sys.Date() - 1 to make your end date yesterday. 
-   #   NOTE that observed data can ONLY be in the past. You will get an error 
-   #   if a future date is selected! 
-   #
    # Click the "observed" dataframe in the "environment" tab on the top right 
    # console to see the data!
    #
@@ -174,19 +180,20 @@ for (i in(1:nrow(locations))) {
    # period of interest. 
    #
    # LTN values will be calculated across this range of years.  The year start
-   # can be as early as 2006. The year end can be the last full year of data 
-   # (for example, in August 2020 you would use 2019 at LTN end year) 
-  year_start <- 2011
-  year_end <- 2018
+   # can be as early as 2001. The year end can be the last full year of data 
+   # (for example, in August 2021 you would use 2020 at LTN end year) 
+  year_start <- 2001
+  year_end <- 2020
   
    # Specify the starting and ending month-day of interest, 
-   # such as the growing season in your region 
+   # such as the growing season in your region. If you would like to look at the
+   # entire year make you start in January and end in December
    #
    # January 1
   monthday_start <- "01-01" 
                             
-   # June 16
-  monthday_end <- "06-16"   
+   # December 31
+  monthday_end <- "12-31"   
                             
    # Pull LTN weather data from the aWhere API 
    #
@@ -207,11 +214,11 @@ for (i in(1:nrow(locations))) {
    #
    # This section combines all of the above datasets into one cohesive .csv for 
    # analysis. You can change the location and time period as needed in 
-   # the lines of code below. 
+   # the lines of code below. Starting_date can be as early as January 1, 2001.
   starting_date <- "2020-01-01"
   ending_date <- "2020-06-16"
-  year_start <- 2006
-  year_end <- 2019
+  year_start <- 2001 #this date is the long-term normal start, as early as 2001
+  year_end <- 2020 #this date is the long-term normal end
   
    # This function generates a clean dataset with observed AND forecast 
    # agronomics AND Long Term Normals!

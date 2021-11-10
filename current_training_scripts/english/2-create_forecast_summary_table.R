@@ -78,7 +78,7 @@ dir.create(path = 'outputCSVs/', showWarnings = FALSE, recursive = TRUE)
  #     Nairobi, -1.283, 36.816
  #
  # CHANGE THIS to the path and name of your locations text file
-locations_file <- "RunSet/locations.txt"
+locations_file <- "YOUR LOCATIONS FILE PATH HERE"
 
  # Read the location(s) text file 
 locations <- read.csv(locations_file)
@@ -98,6 +98,10 @@ for (i in(1:nrow(locations))) {
   place_name <- locations$place_name[i]
   
    # Pull the weather forecast directly from the aWhere API
+   # The dates in the lines below refer to the forecast start and end dates.
+   # The system date corresponds to the date of your computer, the end date
+   # can be up to 15 days in the future but a shorter 3-day forecast will be
+   # more accurate.
   forecast<- aWhereAPI::forecasts_latlng(lat
                                         ,lon 
                                         ,day_start = as.character(Sys.Date()) 
