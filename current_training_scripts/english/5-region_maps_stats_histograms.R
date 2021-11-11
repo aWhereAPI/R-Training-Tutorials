@@ -13,6 +13,9 @@
  # Clear your environment and remove all previous variables
 rm(list = ls())
 
+#library(devtools)
+#devtools::install_github("ropensci/wicket")
+
  # Load the packages needed for this script
 library(ggmap)
 library(ggplot2)
@@ -21,6 +24,7 @@ library(wicket)
 library(aWhereAPI)
 library(aWhereCharts)
 library(data.table)
+
 
  # Set working directory ---------------------------------------------------
  #
