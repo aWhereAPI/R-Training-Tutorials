@@ -13,14 +13,10 @@
  # Clear your environment and remove all previous variables
 rm(list = ls())
 
-#library(devtools)
-#devtools::install_github("ropensci/wicket")
-
  # Load the packages needed for this script
 library(ggmap)
 library(ggplot2)
 library(dplyr)  
-library(wicket)
 library(aWhereAPI)
 library(aWhereCharts)
 library(data.table)
@@ -409,9 +405,23 @@ for (j in 1:length(weather_file_list))  {
      #
      # First, download images for the base or background of the maps.  
      # Expand the "wkt" column values to a format usable by ggplot.
-    polygon_df <- tibble::as_tibble(
-                  wicket::wkt_coords(weather_template_df$shapewkt))
+     # NOTE: This replicates the behavior of the wicket:wkt_coords function
+     #       that was removed from CRAN
     
+    polygon_df  <- 
+      lapply(weather_template_df$shapewkt,rgeos::readWKT) %>% 
+      lapply(.,fortify)
+   
+    for (x in 1:length(polygon_df )) {
+      polygon_df [[x]]$id <- x
+    }
+  
+    polygon_df  <- rbindlist(polygon_df)
+    polygon_df$ring <- 'outer'
+    polygon_df <- polygon_df[,c('id','ring','long','lat')]
+    setnames(polygon_df,c('object','ring','lng','lat'))
+    polygon_df <- tibble::as_tibble(polygon_df )
+   
      # Pull the map that will be used as the base for all of the mapping 
      # images. Define a bounding box based on the extent of the data. 
     bounding_box <- make_bbox(lon = polygon_df$lng
