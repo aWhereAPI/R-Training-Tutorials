@@ -412,15 +412,15 @@ for (j in 1:length(weather_file_list))  {
       lapply(weather_template_df$shapewkt,rgeos::readWKT) %>% 
       lapply(.,fortify)
    
-    for (x in 1:length(polygon_df )) {
-      polygon_df [[x]]$id <- x
+    for (id_counter in 1:length(polygon_df)) {
+      polygon_df[[id_counter]]$id <- id_counter
     }
   
     polygon_df  <- rbindlist(polygon_df)
     polygon_df$ring <- 'outer'
     polygon_df <- polygon_df[,c('id','ring','long','lat')]
     setnames(polygon_df,c('object','ring','lng','lat'))
-    polygon_df <- tibble::as_tibble(polygon_df )
+    polygon_df <- tibble::as_tibble(polygon_df)
    
      # Pull the map that will be used as the base for all of the mapping 
      # images. Define a bounding box based on the extent of the data. 
